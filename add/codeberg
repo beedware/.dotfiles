@@ -4,7 +4,7 @@ set -eu
 
 # tags: #pkg
 
-sudo xbps-install -Sy git git-lfs xclip
+sudo xbps-install -Sy git git-lfs xclip forgejo-cli
 
 KEY="$HOME/.ssh/codeberg"
 MIRROR_URL="ssh://git@codeberg.org/beedware/.dotfiles.git"
