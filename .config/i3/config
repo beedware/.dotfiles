@@ -34,6 +34,7 @@ for_window [class="^Firefox$" title="^Gmail — Mozilla Firefox$"] move --no-aut
 for_window [class="^Firefox$" title="^Outlook — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $email_ws
 
 assign [class="KeePassXC"] number 9
+for_window [class="^Firefox$" title="^Google Calendar — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number 9
 
 for_window [class="floatitty"] floating enable, resize set 1024 576, move position center
 for_window [class="pavucontrol"] floating enable, resize set 1024 576, move position center

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Calendar
+Exec=firefox --new-window https://calendar.google.com/
+Type=Application
+Icon=x-office-calendar
+Terminal=false
