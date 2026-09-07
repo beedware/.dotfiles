@@ -3,7 +3,7 @@ vim.pack.add {
 }
 
 local journal_dir = vim.fs.normalize(vim.fn.expand "~/Compendium/Journal")
-local capture_file = journal_dir .. package.config:sub(1, 1) .. "capture.org"
+local repo_file = journal_dir .. package.config:sub(1, 1) .. "repo.org"
 local journal_datetree = {
   tree_type = "custom",
   tree = {
@@ -33,10 +33,10 @@ end
 
 require("orgmode").setup {
   org_agenda_files = {
-    capture_file,
+    repo_file,
     journal_dir .. package.config:sub(1, 1) .. "wishlist.org",
   },
-  org_default_notes_file = capture_file,
+  org_default_notes_file = repo_file,
   org_todo_keywords = { "TODO(t)", "NEXT(n)", "WAITING(w)", "|", "DONE(d)", "CANCELLED(c)" },
   org_todo_keyword_faces = {
     TODO = face_from_hl("DiagnosticError", { bold = true }),
@@ -65,14 +65,14 @@ require("orgmode").setup {
     t = {
       description = "Task",
       template = "** TODO %<%H%M%S> - %?",
-      target = capture_file,
+      target = repo_file,
       ---@diagnostic disable-next-line: missing-fields
       datetree = journal_datetree,
     },
     n = {
       description = "Note",
       template = "** %<%H%M%S> - %?",
-      target = capture_file,
+      target = repo_file,
       ---@diagnostic disable-next-line: missing-fields
       datetree = journal_datetree,
     },
