@@ -31,6 +31,8 @@ local function face_from_hl(hl, opts)
   return table.concat(parts, " ")
 end
 
+require("orgmode.config.defaults").org_capture_templates = {}
+
 require("orgmode").setup {
   org_agenda_files = {
     repo_file,
@@ -62,13 +64,6 @@ require("orgmode").setup {
     },
   },
   org_capture_templates = {
-    t = {
-      description = "Task",
-      template = "** TODO %<%H%M%S> - %?",
-      target = repo_file,
-      ---@diagnostic disable-next-line: missing-fields
-      datetree = journal_datetree,
-    },
     n = {
       description = "Note",
       template = "** %<%H%M%S> - %?",
