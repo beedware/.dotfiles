@@ -1,4 +1,4 @@
-These steps cover using `cfdisk` to create the partitions before installing Void Linux.
+These steps cover using `cfdisk` (or `fdisk` if you're brave) to create the partitions before installing Void Linux.
 
 List disks first so you do not partition the wrong device:
 
