@@ -20,7 +20,8 @@ chmod 700 "$HOME/.ssh"
 eval "$(ssh-agent -s)" >/dev/null
 ssh-add "$KEY"
 
-cat >> "$HOME/.ssh/config" <<EOF
+if ! grep -qx 'Host github.com' "$HOME/.ssh/config" 2>/dev/null; then
+    cat >> "$HOME/.ssh/config" <<EOF
 Host github.com
   HostName github.com
   User git
@@ -28,6 +29,7 @@ Host github.com
   IdentitiesOnly yes
 
 EOF
+fi
 
 chmod 600 "$HOME/.ssh/config"
 
