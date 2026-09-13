@@ -3,6 +3,9 @@
 (defconst beed/journal-capture-file
   (expand-file-name "~/Compendium/Journal/repo.org"))
 
+(defconst beed/journal-inbox-file
+  (expand-file-name "~/Compendium/Journal/inbox.org"))
+
 (defun beed/org-journal-capture-target ()
   "Capture under today's heading in `beed/journal-capture-file'."
   (set-buffer (org-capture-target-buffer beed/journal-capture-file))
@@ -35,9 +38,12 @@
         (expand-file-name "repo.org" org-directory))
 
   (setq org-capture-templates
-        '(("n" "Note" entry
-           (function beed/org-journal-capture-target)
-           "** %<%H%M%S> - %?")))
+         '(("n" "Note" entry
+            (function beed/org-journal-capture-target)
+            "** %<%H%M%S> - %?")
+           ("i" "Inbox" entry
+            (file beed/journal-inbox-file)
+            "* %?")))
 
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
         org-refile-use-outline-path 'file
