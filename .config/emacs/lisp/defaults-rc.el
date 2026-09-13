@@ -27,6 +27,7 @@
       global-auto-revert-non-file-buffers t
       bookmark-save-flag 1
       default-input-method "arabic"
+      display-time-format "%H:%M"
       native-comp-async-report-warnings-errors nil)
 
 (repeat-mode 1)
