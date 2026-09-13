@@ -1,6 +1,7 @@
 {
     "alwaysShowProgBar": false,
     "autoSidebarComments": false,
+    "compactButtons": true,
     "compactHeaderBar": false,
     "compactLeftSidebar": true,
     "decreaseFontSize": false,
@@ -12,7 +13,8 @@
     "disableAutoPause": true,
     "fixChannelLinks": false,
     "forceOgAudio": true,
-    "fullscreenTheaterMode": false,
+    "ftmAutoHideHeader": false,
+    "fullscreenTheaterMode": true,
     "gridSearchResults": true,
     "hideControlsOnPause": true,
     "hideEndCards": "hide",
