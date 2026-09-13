@@ -4,6 +4,7 @@ vim.pack.add {
 
 local journal_dir = vim.fs.normalize(vim.fn.expand "~/Compendium/Journal")
 local repo_file = journal_dir .. package.config:sub(1, 1) .. "repo.org"
+local inbox_file = journal_dir .. package.config:sub(1, 1) .. "inbox.org"
 local journal_datetree = {
   tree_type = "custom",
   tree = {
@@ -64,6 +65,11 @@ require("orgmode").setup {
     },
   },
   org_capture_templates = {
+    i = {
+      description = "Inbox",
+      template = "* %?",
+      target = inbox_file,
+    },
     n = {
       description = "Note",
       template = "** %<%H%M%S> - %?",
