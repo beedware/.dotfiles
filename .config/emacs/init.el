@@ -37,6 +37,8 @@
 (require 'formatter-rc)
 (require 'lsp-rc)
 
+;; Languages
+(require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)
 (require 'org-rc)

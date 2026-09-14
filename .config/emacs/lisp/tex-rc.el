@@ -27,5 +27,10 @@
   :custom
   (reftex-plug-into-AUCTeX t))
 
+(beed/lsp-enable 'LaTeX-mode-hook
+                 '(LaTeX-mode . ("texlab")))
+
+(beed/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
+
 (provide 'tex-rc)
 ;;; tex-rc.el ends here

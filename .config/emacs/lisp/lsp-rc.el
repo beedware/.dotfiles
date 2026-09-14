@@ -2,11 +2,13 @@
 
 (use-package eglot
   :ensure nil
-  :hook ((typst-ts-mode . eglot-ensure)
-         (LaTeX-mode . eglot-ensure))
-  :config
-  (add-to-list 'eglot-server-programs '(typst-ts-mode . ("tinymist")))
-  (add-to-list 'eglot-server-programs '(LaTeX-mode . ("texlab"))))
+  :commands (eglot eglot-ensure))
+
+(defun beed/lsp-enable (hook server)
+  "Enable Eglot on HOOK using SERVER."
+  (add-hook hook #'eglot-ensure)
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs server)))
 
 (provide 'lsp-rc)
 ;;; lsp-rc.el ends here
