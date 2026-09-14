@@ -38,6 +38,7 @@
 (require 'lsp-rc)
 
 ;; Languages
+; (require 'python-rc)
 (require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)
