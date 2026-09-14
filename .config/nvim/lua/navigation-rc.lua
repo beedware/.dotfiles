@@ -4,7 +4,7 @@ vim.pack.add {
 }
 
 require("fzf-lua").setup {
-  { "telescope", "hide" },
+  { "hide" },
   defaults = {
     file_icons = false,
     git_icons = false,
