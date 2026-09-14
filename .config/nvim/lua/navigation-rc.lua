@@ -1,5 +1,6 @@
 vim.pack.add {
   "https://github.com/ibhagwan/fzf-lua",
+  "https://github.com/stevearc/quicker.nvim",
 }
 
 require("fzf-lua").setup {
@@ -31,6 +32,32 @@ require("fzf-lua").setup {
   },
 }
 
+require("quicker").setup {
+  keys = {
+    {
+      ">",
+      function()
+        require("quicker").expand { before = 2, after = 2, add_to_existing = true }
+      end,
+      desc = "Expand quickfix context",
+    },
+    {
+      "<",
+      function()
+        require("quicker").collapse()
+      end,
+      desc = "Collapse quickfix context",
+    },
+  },
+  type_icons = {
+    E = "E ",
+    W = "W ",
+    I = "I ",
+    N = "N ",
+    H = "H ",
+  },
+}
+
 vim.keymap.set("n", "<leader>fa", "<cmd>FzfLua files<CR>", { desc = "Find all files" })
 vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Find recent files in current directory" })
 vim.keymap.set("n", "<leader>ff", "<cmd>FzfLua files hidden=false<CR>", { desc = "Find files" })
@@ -40,6 +67,7 @@ vim.keymap.set("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Find hel
 vim.keymap.set("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", { desc = "Find keymaps" })
 vim.keymap.set("n", "<leader>fm", "<cmd>FzfLua marks<CR>", { desc = "Find marks" })
 vim.keymap.set("n", "<leader>fz", "<cmd>FzfLua blines<CR>", { desc = "Search current buffer" })
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspAttachMappings", { clear = true }),
   callback = function(args)
