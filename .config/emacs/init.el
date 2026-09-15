@@ -14,6 +14,12 @@
 
 (package-initialize)
 
+(defun beed/update-packages ()
+  "Refresh package archives and upgrade installed packages."
+  (interactive)
+  (package-refresh-contents)
+  (package-upgrade-all))
+
 (unless (package-installed-p 'use-package)
   (unless package-archive-contents
     (package-refresh-contents))

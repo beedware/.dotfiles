@@ -141,6 +141,12 @@ vim.api.nvim_create_user_command("GrepAll", has_rg and function(args)
   end
 end or need_rg "GrepAll", { complete = rg_find_all_complete, desc = "Grep including gitignored files", nargs = "+" })
 
+vim.api.nvim_create_user_command("PackUpdate", function()
+  vim.pack.update()
+end, {
+  desc = "Update vim.pack plugins",
+})
+
 vim.api.nvim_create_user_command("PackClean", function(args)
   local unused = {}
   for _, plugin in ipairs(vim.pack.get()) do
