@@ -1,8 +1,28 @@
 [
     {
+        "context": "Workspace",
+        "bindings": {
+            "ctrl-j": null
+        }
+    },
+    {
         "context": "Editor && showing_completions",
         "bindings": {
             "ctrl-y": "editor::ConfirmCompletion"
+        }
+    },
+    {
+        "context": "Editor && in_snippet",
+        "bindings": {
+            "ctrl-j": "editor::NextSnippetTabstop",
+            "ctrl-k": "editor::PreviousSnippetTabstop"
+        }
+    },
+    {
+        "context": "menu",
+        "bindings": {
+            "ctrl-j": "menu::SelectNext",
+            "ctrl-k": "menu::SelectPrevious"
         }
     }
 ]
