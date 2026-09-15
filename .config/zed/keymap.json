@@ -24,5 +24,35 @@
             "ctrl-j": "menu::SelectNext",
             "ctrl-k": "menu::SelectPrevious"
         }
+    },
+    {
+        "context": "Editor && vim_mode == normal",
+        "bindings": {
+            "space f a": [
+                "file_finder::Toggle",
+                {
+                    "include_ignored": true
+                }
+            ],
+            "space f f": "file_finder::Toggle",
+            "space f w": "text_finder::Toggle",
+            "space f b": "tab_switcher::ToggleAll",
+            "space f m": "vim::ToggleMarksView",
+            "g r r": "editor::FindAllReferences",
+            "g r i": "editor::GoToImplementation",
+            "g r t": "editor::GoToTypeDefinition"
+        }
+    },
+    {
+        "context": "!Editor && !Terminal",
+        "bindings": {
+            "space f f": "file_finder::Toggle"
+        }
+    },
+    {
+        "context": "!Editor && !Terminal",
+        "unbind": {
+            "space f": "file_finder::Toggle"
+        }
     }
 ]
