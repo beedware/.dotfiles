@@ -1,5 +1,7 @@
 {
-    "buffer_font_family": "CommitMono Nerd Font Mono",
+    "buffer_font_features": {
+        "calt": false
+    },
     "title_bar": {
         "show_sign_in": false,
         "show_branch_status_icon": true
