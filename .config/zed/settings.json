@@ -1,4 +1,31 @@
 {
+    "cli_default_open_behavior": "existing_window",
+    "project_panel": {
+        "starts_open": false,
+        "indent_guides": {
+            "show": "never"
+        }
+    },
+    "indent_guides": {
+        "enabled": false
+    },
+    "vim": {
+        "cursor_shape": {
+            "replace": "block",
+            "insert": "block"
+        },
+        "use_smartcase_find": true,
+        "use_system_clipboard": "never",
+        "toggle_relative_line_numbers": true
+    },
+    "which_key": {
+        "enabled": true
+    },
+    "autosave": {
+        "after_delay": {
+            "milliseconds": 1000
+        }
+    },
     "cursor_blink": false,
     "git": {
         "inline_blame": {
