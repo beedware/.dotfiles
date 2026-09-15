@@ -1,0 +1,65 @@
+#!/bin/sh
+set -eu
+
+# tags: #pkg
+
+sudo xbps-install -Sy curl tar
+
+VERSION="1.19.2"
+INSTALL_DIR="/opt"
+APP_DIR="${INSTALL_DIR}/zed.app"
+BIN_LINK="/usr/local/bin/zed"
+APP_ID="dev.zed.Zed"
+
+case "$(uname -m)" in
+    x86_64 | x86*)
+        ARCH="x86_64"
+        CHECKSUM="c5acff2e52ac3c64890cce85250734cf7279c1de56d5926e4f4e1d4cf676359c"
+        ;;
+    aarch64 | arm64*)
+        ARCH="aarch64"
+        CHECKSUM="6a7b9dac4c17b3901fda30d07e35f85f7eeb06bb96e1a348ff012aa2abed8af9"
+        ;;
+    *)
+        echo "Unsupported architecture: $(uname -m)"
+        exit 1
+        ;;
+esac
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+cd "$TMP_DIR"
+
+TARBALL="zed-linux-${ARCH}.tar.gz"
+URL="https://github.com/zed-industries/zed/releases/download/v${VERSION}/${TARBALL}"
+
+curl -fL -o "$TARBALL" "$URL"
+printf '%s  %s\n' "$CHECKSUM" "$TARBALL" | sha256sum --check
+tar -xzf "$TARBALL"
+
+sudo rm -rf "$APP_DIR"
+sudo mv "zed.app" "$APP_DIR"
+
+if [ -f "$APP_DIR/bin/zed" ]; then
+    sudo ln -sfn "$APP_DIR/bin/zed" "$BIN_LINK"
+else
+    sudo ln -sfn "$APP_DIR/bin/cli" "$BIN_LINK"
+fi
+
+if [ -d "$APP_DIR/share/applications" ]; then
+    sudo mkdir -p /usr/local/share/applications
+    if [ -f "$APP_DIR/share/applications/${APP_ID}.desktop" ]; then
+        sudo cp "$APP_DIR/share/applications/${APP_ID}.desktop" \
+            "/usr/local/share/applications/${APP_ID}.desktop"
+    else
+        sudo cp "$APP_DIR/share/applications/zed.desktop" \
+            "/usr/local/share/applications/${APP_ID}.desktop"
+    fi
+    sudo sed -i \
+        -e "s|Icon=zed|Icon=$APP_DIR/share/icons/hicolor/512x512/apps/zed.png|g" \
+        -e "s|Exec=zed|Exec=$APP_DIR/bin/zed|g" \
+        "/usr/local/share/applications/${APP_ID}.desktop"
+fi
+
+echo "Zed $VERSION installed: $BIN_LINK -> $APP_DIR/bin/zed"
