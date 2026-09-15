@@ -1,0 +1,8 @@
+[
+    {
+        "context": "Editor && showing_completions",
+        "bindings": {
+            "ctrl-y": "editor::ConfirmCompletion"
+        }
+    }
+]
