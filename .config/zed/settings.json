@@ -34,9 +34,6 @@
         "use_system_clipboard": "never",
         "toggle_relative_line_numbers": true
     },
-    "which_key": {
-        "enabled": true
-    },
     "autosave": {
         "after_delay": {
             "milliseconds": 1000
