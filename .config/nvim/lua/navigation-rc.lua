@@ -30,6 +30,39 @@ require("fzf-lua").setup {
   oldfiles = {
     cwd_only = true,
   },
+  lsp = {
+    document_symbols = {
+      symbol_style = 2,
+      symbol_icons = {
+        File = "Fi",
+        Module = "Mo",
+        Namespace = "N",
+        Package = "P",
+        Class = "Cl",
+        Method = "M",
+        Property = "P",
+        Field = "Fd",
+        Constructor = "C",
+        Enum = "E",
+        Interface = "I",
+        Function = "F",
+        Variable = "V",
+        Constant = "Co",
+        String = "T",
+        Number = "N",
+        Boolean = "B",
+        Array = "A",
+        Object = "O",
+        Key = "K",
+        Null = "Nil",
+        EnumMember = "Em",
+        Struct = "St",
+        Event = "Ev",
+        Operator = "Op",
+        TypeParameter = "Tp",
+      },
+    },
+  },
 }
 
 require("quicker").setup {
