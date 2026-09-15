@@ -1,0 +1,33 @@
+{
+  "git": {
+    "inline_blame": {
+      "enabled": false
+    }
+  },
+  "relative_line_numbers": "enabled",
+  "toolbar": {
+    "agent_review": false,
+    "selections_menu": false,
+    "quick_actions": false,
+    "breadcrumbs": false
+  },
+  "disable_ai": true,
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+    "anthropic_retention": false
+  },
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "system",
+    "light": "Modus Operandi",
+    "dark": "Modus Vivendi"
+  }
+}
