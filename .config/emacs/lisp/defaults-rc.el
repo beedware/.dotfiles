@@ -28,6 +28,8 @@
       bookmark-save-flag 1
       default-input-method "arabic"
       display-time-format "%H:%M"
+      split-height-threshold 0
+      split-width-threshold nil
       native-comp-async-report-warnings-errors nil)
 
 (repeat-mode 1)
