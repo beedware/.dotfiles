@@ -2,7 +2,11 @@
 
 (use-package eglot
   :ensure nil
-  :commands (eglot eglot-ensure))
+  :commands (eglot eglot-ensure)
+  :hook
+  (eglot-managed-mode . (lambda ()
+                          (setq-local eldoc-display-functions
+                                      '(eldoc-display-in-buffer)))))
 
 (defun beed/lsp-enable (hook server)
   "Enable Eglot on HOOK using SERVER."
