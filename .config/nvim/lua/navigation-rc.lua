@@ -16,7 +16,14 @@ require("fzf-lua").setup {
   },
   keymap = {
     fzf = {
+      true,
       ["ctrl-q"] = "select-all+accept",
+    },
+  },
+  actions = {
+    files = {
+      true,
+      ["ctrl-x"] = require("fzf-lua").actions.file_split,
     },
   },
   ---@diagnostic disable-next-line: assign-type-mismatch
