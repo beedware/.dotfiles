@@ -14,6 +14,11 @@ require("fzf-lua").setup {
   fzf_opts = {
     ["--layout"] = "reverse",
   },
+  keymap = {
+    fzf = {
+      ["ctrl-q"] = "select-all+accept",
+    },
+  },
   ---@diagnostic disable-next-line: assign-type-mismatch
   winopts = function()
     return {
