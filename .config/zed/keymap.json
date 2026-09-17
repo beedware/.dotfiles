@@ -34,6 +34,7 @@
                     "include_ignored": true
                 }
             ],
+            "space c f": "editor::Format",
             "space f f": "file_finder::Toggle",
             "space f w": "text_finder::Toggle",
             "space f b": "tab_switcher::ToggleAll",
