@@ -1,4 +1,6 @@
 {
+    "restore_on_startup": "empty_tab",
+    "default_open_behavior": "new_window",
     "lsp_results_location": "picker",
     "show_whitespaces": "trailing",
     "show_completions_on_input": false,
@@ -15,7 +17,7 @@
     "tab_bar": {
         "show": false
     },
-    "cli_default_open_behavior": "existing_window",
+    "cli_default_open_behavior": "new_window",
     "project_panel": {
         "starts_open": false,
         "indent_guides": {
