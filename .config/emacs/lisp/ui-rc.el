@@ -61,13 +61,13 @@
     (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
     (beed/clear-trailing-space-overlays)))
 
-(define-globalized-minor-mode global-beed/trailing-space-mode
+(define-globalized-minor-mode beed/global-trailing-space-mode
   beed/trailing-space-mode
   (lambda ()
     (unless (minibufferp)
       (beed/trailing-space-mode 1))))
 
-(global-beed/trailing-space-mode 1)
+(beed/global-trailing-space-mode 1)
 
 (use-package modus-themes
   :demand t
