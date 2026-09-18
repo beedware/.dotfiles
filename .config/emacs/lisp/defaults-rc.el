@@ -37,6 +37,8 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (savehist-mode 1)
+(recentf-mode 1)
+(delete-selection-mode 1)
 (scroll-bar-mode 0)
 (xterm-mouse-mode 1)
 (display-time-mode 1)
