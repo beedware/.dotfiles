@@ -34,9 +34,9 @@
 
 (require 'ui-rc)
 (require 'completion-rc)
+(require 'snippets-rc)
 (require 'inbuffer-completion-rc)
 (require 'filebrowser-rc)
-(require 'snippets-rc)
 (require 'git-rc)
 
 (require 'treesitter-rc)
