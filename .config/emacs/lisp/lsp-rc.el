@@ -8,6 +8,14 @@
                           (setq-local eldoc-display-functions
                                       '(eldoc-display-in-buffer)))))
 
+(use-package flymake
+  :ensure nil
+  :defer nil
+  :custom
+  (flymake-no-changes-timeout 2.0)
+  (flymake-start-on-flymake-mode nil)
+  (flymake-start-on-save-buffer t))
+
 (add-to-list 'display-buffer-alist
              '("\\*eldoc"
                (display-buffer-reuse-window display-buffer-at-bottom)
