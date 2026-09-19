@@ -14,8 +14,7 @@
   :ensure nil
   :defer nil
   :custom
-  (flymake-no-changes-timeout 2.0)
-  (flymake-start-on-flymake-mode nil)
+  (flymake-no-changes-timeout 0.5)
   (flymake-start-on-save-buffer t))
 
 (add-to-list 'display-buffer-alist
