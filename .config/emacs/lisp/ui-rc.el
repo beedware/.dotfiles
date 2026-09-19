@@ -19,8 +19,6 @@
   :config
   (global-whitespace-mode 1))
 
-(defvar-local beed/trailing-space-overlays nil)
-
 (defface beed/trailing-space-marker
   '((t :inherit shadow))
   "Face used for trailing-space markers.")
@@ -35,21 +33,18 @@
                   0.55)
      :background 'unspecified)))
 
-(defun beed/clear-trailing-space-overlays ()
-  (mapc #'delete-overlay beed/trailing-space-overlays)
-  (setq beed/trailing-space-overlays nil))
-
 (defun beed/show-trailing-spaces-as-dots (&rest _)
-  (beed/clear-trailing-space-overlays)
+  (remove-overlays (point-min) (point-max) 'beed/trailing-space t)
   (save-excursion
     (goto-char (point-min))
     (while (re-search-forward " +$" nil t)
-      (let ((overlay (make-overlay (match-beginning 0) (match-end 0))))
-        (overlay-put overlay 'display
-                     (make-string (- (match-end 0) (match-beginning 0))
-                                  ?·))
+      (let* ((beg (match-beginning 0))
+             (end (match-end 0))
+             (overlay (make-overlay beg end)))
+        (overlay-put overlay 'beed/trailing-space t)
+        (overlay-put overlay 'display (make-string (- end beg) ?·))
         (overlay-put overlay 'face 'beed/trailing-space-marker)
-        (push overlay beed/trailing-space-overlays)))))
+        (overlay-put overlay 'evaporate t)))))
 
 (define-minor-mode beed/trailing-space-mode
   "Display trailing spaces as middle dots."
@@ -59,12 +54,13 @@
         (add-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots nil t)
         (beed/show-trailing-spaces-as-dots))
     (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
-    (beed/clear-trailing-space-overlays)))
+    (remove-overlays (point-min) (point-max) 'beed/trailing-space t)))
 
 (define-globalized-minor-mode beed/global-trailing-space-mode
   beed/trailing-space-mode
   (lambda ()
-    (unless (minibufferp)
+    (unless (or (minibufferp)
+                (derived-mode-p 'shell-mode 'eshell-mode 'term-mode 'vterm-mode))
       (beed/trailing-space-mode 1))))
 
 (beed/global-trailing-space-mode 1)
