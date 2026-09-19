@@ -97,7 +97,7 @@ def get_bookmarks(text: str) -> Bookmarks:
         if title and url:
             bookmarks.append(Bookmark(title, url, tags))
 
-    return tuple(sorted(bookmarks, key=lambda bookmark: bookmark.title.casefold()))
+    return tuple(bookmarks)
 
 
 def select_bookmark(bookmarks: Bookmarks) -> Bookmark | None:
