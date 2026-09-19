@@ -1,56 +1,181 @@
-#!/bin/sh
+#!/usr/bin/env python3
 
-BOOKMARKS_FILE="$HOME/Compendium/Journal/bookmarks.org"
+import os
+import shutil
+import subprocess
+import sys
+from dataclasses import dataclass
+from pathlib import Path
 
-die() {
-    printf '%s\n' "$1" >&2
-    exit 1
-}
+BOOKMARKS_FILE: Path = Path.home() / "Compendium" / "Journal" / "bookmarks.org"
 
-usage() {
-    printf 'Usage: %s [bookmarks_file]\n' "$(basename "$0")"
-}
 
-copy_wayland() {
-    command -v wl-copy >/dev/null 2>&1 || die 'Error: wayland session detected but wl-copy is not installed'
-    printf '%s' "$URL" | wl-copy
-}
+@dataclass(frozen=True)
+class Bookmark:
+    title: str
+    url: str
+    tags: tuple[str, ...]
 
-copy_x11() {
-    command -v xclip >/dev/null 2>&1 && printf '%s' "$URL" | xclip -selection clipboard && return
-    command -v xsel >/dev/null 2>&1 && printf '%s' "$URL" | xsel --clipboard --input && return
-    die 'Error: x11 session detected but neither xclip nor xsel is installed'
-}
 
-copy_url() {
-    [ "${XDG_SESSION_TYPE:-}" = "wayland" ] && copy_wayland && return
-    [ "${XDG_SESSION_TYPE:-}" = "x11" ] && copy_x11 && return
-    die "Error: unsupported or unknown session type: ${XDG_SESSION_TYPE:-unset}"
-}
+Bookmarks = tuple[Bookmark, ...]
 
-[ "$#" -gt 1 ] && die "Error: too many arguments"
 
-case "${1:-}" in
-    -h|--help)
-        usage
-        exit 0
-        ;;
-    -*)
-        die "Error: unknown option: $1"
-        ;;
-    ?*)
-        BOOKMARKS_FILE="$1"
-        ;;
-esac
+def read_file(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
 
-[ -f "$BOOKMARKS_FILE" ] || die "Error: bookmarks file not found: $BOOKMARKS_FILE"
 
-CHOICE="$(awk -F'|' 'NF>=2 {print $1}' "$BOOKMARKS_FILE" | rofi -dmenu -i -p 'Bookmarks')"
+def die(message: str) -> None:
+    raise SystemExit(message)
 
-[ -z "$CHOICE" ] && exit 0
 
-URL="$(awk -F'|' -v choice="$CHOICE" '$1 == choice {print $2; exit}' "$BOOKMARKS_FILE")"
+def usage() -> str:
+    return f"Usage: {Path(sys.argv[0]).name} [bookmarks_file]"
 
-[ -z "$URL" ] && exit 1
 
-copy_url
+def get_bookmarks_file(args: list[str]) -> Path:
+    if len(args) > 1:
+        die("Error: too many arguments")
+
+    if not args:
+        return BOOKMARKS_FILE
+
+    arg = args[0]
+
+    if arg in ("-h", "--help"):
+        print(usage())
+        raise SystemExit(0)
+
+    if arg.startswith("-"):
+        die(f"Error: unknown option: {arg}")
+
+    return Path(arg).expanduser()
+
+
+def parse_heading(line: str) -> tuple[str, tuple[str, ...]] | None:
+    if not line.startswith("* "):
+        return None
+
+    text: str = line.removeprefix("* ").strip()
+    parts: list[str] = text.rsplit(" ", maxsplit=1)
+
+    if len(parts) == 1 or not is_tag_text(parts[1]):
+        return text, ()
+
+    title: str = parts[0].strip()
+    tags: tuple[str, ...] = tuple(parts[1].strip(":").split(":"))
+    return title, tags
+
+
+def is_tag_text(text: str) -> bool:
+    return text.startswith(":") and text.endswith(":") and len(text) > 2
+
+
+def parse_url(line: str) -> str | None:
+    line = line.strip()
+
+    if not line.startswith(":URL:"):
+        return None
+
+    return line.removeprefix(":URL:").strip()
+
+
+def get_bookmarks(text: str) -> Bookmarks:
+    bookmarks: list[Bookmark] = []
+    title: str | None = None
+    tags: tuple[str, ...] = ()
+    lines: list[str] = text.splitlines()
+
+    for line in lines:
+        heading = parse_heading(line)
+
+        if heading:
+            title, tags = heading
+            continue
+
+        url = parse_url(line)
+
+        if title and url:
+            bookmarks.append(Bookmark(title, url, tags))
+
+    return tuple(sorted(bookmarks, key=lambda bookmark: bookmark.title.casefold()))
+
+
+def select_bookmark(bookmarks: Bookmarks) -> Bookmark | None:
+    bookmarks_by_title: dict[str, Bookmark] = {
+        bookmark.title: bookmark for bookmark in bookmarks
+    }
+    titles: str = "\n".join(bookmark.title for bookmark in bookmarks)
+    rofi = subprocess.run(
+        ["rofi", "-dmenu", "-i", "-p", "Bookmarks"],
+        input=titles,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if rofi.returncode != 0:
+        return None
+
+    choice: str = rofi.stdout.strip()
+
+    if not choice:
+        return None
+
+    return bookmarks_by_title.get(choice)
+
+
+def copy_wayland(text: str) -> None:
+    if shutil.which("wl-copy") is None:
+        die("Error: wayland session detected but wl-copy is not installed")
+
+    subprocess.run(["wl-copy"], input=text, text=True, check=True)
+
+
+def copy_x11(text: str) -> None:
+    if shutil.which("xclip") is not None:
+        subprocess.run(
+            ["xclip", "-selection", "clipboard"], input=text, text=True, check=True
+        )
+        return
+
+    if shutil.which("xsel") is not None:
+        subprocess.run(
+            ["xsel", "--clipboard", "--input"], input=text, text=True, check=True
+        )
+        return
+
+    die("Error: x11 session detected but neither xclip nor xsel is installed")
+
+
+def copy_url(url: str) -> None:
+    session_type: str = os.environ.get("XDG_SESSION_TYPE", "")
+
+    if session_type == "wayland":
+        copy_wayland(url)
+        return
+
+    if session_type == "x11":
+        copy_x11(url)
+        return
+
+    die(f"Error: unsupported or unknown session type: {session_type or 'unset'}")
+
+
+def main() -> None:
+    bookmarks_file: Path = get_bookmarks_file(sys.argv[1:])
+
+    if not bookmarks_file.is_file():
+        die(f"Error: bookmarks file not found: {bookmarks_file}")
+
+    text: str = read_file(bookmarks_file)
+    bookmarks: Bookmarks = get_bookmarks(text)
+    bookmark: Bookmark | None = select_bookmark(bookmarks)
+
+    if bookmark is None:
+        return
+
+    copy_url(bookmark.url)
+
+
+if __name__ == "__main__":
+    main()
