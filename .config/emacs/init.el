@@ -42,9 +42,10 @@
 (require 'treesitter-rc)
 (require 'formatter-rc)
 (require 'lsp-rc)
+(require 'debugging-rc)
 
 ;; Languages
-; (require 'python-rc)
+(require 'python-rc)
 (require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)

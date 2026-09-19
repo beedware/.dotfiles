@@ -8,5 +8,11 @@
   :config
   (yas-global-mode 1))
 
+(use-package yasnippet-snippets
+  :after yasnippet
+  :config
+  (add-to-list 'yas-snippet-dirs yasnippet-snippets-dir t)
+  (yas-reload-all))
+
 (provide 'snippets-rc)
 ;;; snippets-rc.el ends here
