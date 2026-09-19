@@ -27,3 +27,4 @@ __pycache__/
 .local/share/applications/battlenet.desktop
 .local/share/applications/ubisoft-connect.desktop
 .config/emacs/transient/history.el
+.config/emacs/tramp
