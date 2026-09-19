@@ -3,6 +3,8 @@
 (use-package eglot
   :ensure nil
   :commands (eglot eglot-ensure)
+  :custom
+  (eglot-ignored-server-capabilities '(:inlayHintProvider))
   :hook
   (eglot-managed-mode . (lambda ()
                           (setq-local eldoc-display-functions
