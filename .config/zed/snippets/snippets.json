@@ -1,0 +1,7 @@
+{
+  "Check snippets health": {
+    "prefix": "checkhealth",
+    "body": ["Yes! Snippets work"],
+    "description": "Check if snippet is working"
+  }
+}
