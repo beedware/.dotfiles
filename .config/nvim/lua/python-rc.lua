@@ -81,4 +81,6 @@ local function python_executable(venv)
   return vim.fs.joinpath(venv, "bin", "python")
 end
 
-require("dap-python").setup(python_executable(vim.fs.joinpath(vim.fn.stdpath "data", "mason", "packages", "debugpy", "venv")))
+require("dap-python").setup(
+  python_executable(vim.fs.joinpath(vim.fn.stdpath "data", "mason", "packages", "debugpy", "venv"))
+)

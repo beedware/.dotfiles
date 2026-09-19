@@ -29,7 +29,8 @@ end
 vim.api.nvim_create_user_command("MasonInstallAll", function()
   require("mason-registry").refresh(function()
     for _, name in ipairs(packages) do
-      if pcall(require("mason-registry").get_package, name)
+      if
+        pcall(require("mason-registry").get_package, name)
         and not select(2, pcall(require("mason-registry").get_package, name)):is_installed()
       then
         select(2, pcall(require("mason-registry").get_package, name)):install()
@@ -57,7 +58,7 @@ vim.api.nvim_create_user_command("MasonClean", function(args)
     end
 
     if vim.tbl_isempty(unused) then
-      vim.notify("No unused Mason packages found")
+      vim.notify "No unused Mason packages found"
       return
     end
 

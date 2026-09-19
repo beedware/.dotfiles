@@ -53,18 +53,33 @@ require("gitsigns").setup {
     vim.keymap.set("n", "<leader>hS", require("gitsigns").stage_buffer, { buffer = bufnr, desc = "Git: stage buffer" })
     vim.keymap.set("n", "<leader>hR", require("gitsigns").reset_buffer, { buffer = bufnr, desc = "Git: reset buffer" })
     vim.keymap.set("n", "<leader>hp", require("gitsigns").preview_hunk, { buffer = bufnr, desc = "Git: preview hunk" })
-    vim.keymap.set("n", "<leader>hi", require("gitsigns").preview_hunk_inline, { buffer = bufnr, desc = "Git: preview inline hunk" })
+    vim.keymap.set(
+      "n",
+      "<leader>hi",
+      require("gitsigns").preview_hunk_inline,
+      { buffer = bufnr, desc = "Git: preview inline hunk" }
+    )
     vim.keymap.set("n", "<leader>hb", function()
       require("gitsigns").blame_line { full = true }
     end, { buffer = bufnr, desc = "Git: blame line" })
-    vim.keymap.set("n", "<leader>hd", require("gitsigns").diffthis, { buffer = bufnr, desc = "Git: diff against index" })
+    vim.keymap.set(
+      "n",
+      "<leader>hd",
+      require("gitsigns").diffthis,
+      { buffer = bufnr, desc = "Git: diff against index" }
+    )
     vim.keymap.set("n", "<leader>hD", function()
       require("gitsigns").diffthis "~"
     end, { buffer = bufnr, desc = "Git: diff against previous commit" })
     vim.keymap.set("n", "<leader>hQ", function()
       require("gitsigns").setqflist "all"
     end, { buffer = bufnr, desc = "Git: hunks to quickfix (all)" })
-    vim.keymap.set("n", "<leader>hq", require("gitsigns").setqflist, { buffer = bufnr, desc = "Git: hunks to quickfix" })
+    vim.keymap.set(
+      "n",
+      "<leader>hq",
+      require("gitsigns").setqflist,
+      { buffer = bufnr, desc = "Git: hunks to quickfix" }
+    )
     vim.keymap.set({ "o", "x" }, "ih", require("gitsigns").select_hunk, { buffer = bufnr, desc = "Select inside hunk" })
   end,
 }

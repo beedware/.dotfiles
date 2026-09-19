@@ -9,7 +9,7 @@ lsp.enable {
   "ts_ls",
   "tailwindcss",
   "svelte",
-  "jsonls"
+  "jsonls",
 }
 
 mason.add {

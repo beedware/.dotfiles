@@ -7,34 +7,34 @@ vim.pack.add {
   "https://github.com/mohseenrm/marko.nvim",
 }
 
-require("theme-rc")
-require("mini-rc")
-require("git-rc")
-require("journal-rc")
-require("filebrowser-rc")
-require("completion-rc")
-require("documentation-rc")
-require("navigation-rc")
-require("mason-rc")
+require "theme-rc"
+require "mini-rc"
+require "git-rc"
+require "journal-rc"
+require "filebrowser-rc"
+require "completion-rc"
+require "documentation-rc"
+require "navigation-rc"
+require "mason-rc"
 
 -- Default languages
-require("lua-rc")
-require("vim-rc")
-require("query-rc")
-require("markdown-rc")
-require("yaml-rc")
-require("shell-rc")
+require "lua-rc"
+require "vim-rc"
+require "query-rc"
+require "markdown-rc"
+require "yaml-rc"
+require "shell-rc"
 
 -- All Paradigm Languages
-require("python-rc")
-require("c-rc")
-require("haskell-rc")
-require("prolog-rc")
-require("typst-rc")
+require "python-rc"
+require "c-rc"
+require "haskell-rc"
+require "prolog-rc"
+require "typst-rc"
 
 -- Additional Languages
-require("gdscript-rc")
-require("web-rc")
+require "gdscript-rc"
+require "web-rc"
 -- require("flutter-rc")
 -- require("tex-rc")
 -- require("csharp-rc")
@@ -96,7 +96,14 @@ local rg_grep = "rg --vimgrep --smart-case --hidden --glob '!.git'"
 local rg_grep_all = "rg --vimgrep --smart-case --hidden --no-ignore --glob '!.git'"
 
 local function rg_find(query, no_ignore, complete)
-  local files = vim.fn.systemlist { "rg", "--files", "--hidden", no_ignore and "--no-ignore" or "--glob", no_ignore and "--glob" or "!.git", no_ignore and "!.git" or nil }
+  local files = vim.fn.systemlist {
+    "rg",
+    "--files",
+    "--hidden",
+    no_ignore and "--no-ignore" or "--glob",
+    no_ignore and "--glob" or "!.git",
+    no_ignore and "!.git" or nil,
+  }
   local pattern = vim.pesc(query:gsub("\\", "/")) .. (complete and ".*" or "")
   return vim.tbl_filter(function(file)
     return file:match(pattern) or vim.fs.basename(file):match(pattern)
@@ -156,7 +163,7 @@ vim.api.nvim_create_user_command("PackClean", function(args)
   end
 
   if vim.tbl_isempty(unused) then
-    vim.notify("No unused packages found")
+    vim.notify "No unused packages found"
     return
   end
 

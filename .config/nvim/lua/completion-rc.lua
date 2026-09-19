@@ -132,7 +132,8 @@ end, { desc = "Show spelling completions" })
 vim.api.nvim_create_autocmd("InsertLeave", {
   group = vim.api.nvim_create_augroup("LuasnipCleanup", { clear = true }),
   callback = function()
-    if require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+    if
+      require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
       and not require("luasnip").session.jump_active
     then
       require("luasnip").unlink_current()

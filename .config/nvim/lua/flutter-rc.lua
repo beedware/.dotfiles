@@ -9,7 +9,6 @@ local flutter_root = vim.fn.fnamemodify(flutter_realpath, ":h:h")
 local flutter_dart = vim.fs.joinpath(flutter_root, "bin", "cache", "dart-sdk", "bin", "dart")
 local dart_sdk = vim.fn.executable(flutter_dart) == 1 and flutter_dart or dart
 
-
 lsp.enable { "dartls" }
 
 treesitter.add { "dart" }

@@ -10,7 +10,7 @@ vim.pack.add {
 mason.add {
   "roslyn-language-server",
   "netcoredbg",
-  "csharpier"
+  "csharpier",
 }
 
 treesitter.add { "c_sharp" }

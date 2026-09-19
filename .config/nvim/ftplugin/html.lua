@@ -43,7 +43,8 @@ end
 local path = vim.api.nvim_buf_get_name(0)
 local normalized = path:gsub("\\", "/")
 
-if normalized ~= ""
+if
+  normalized ~= ""
   and (
     is_django_project(normalized)
     or normalized:match "/templates/"

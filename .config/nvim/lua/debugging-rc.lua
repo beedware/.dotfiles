@@ -3,7 +3,7 @@ vim.pack.add {
   "https://github.com/igorlfs/nvim-dap-view",
 }
 
-local dap = require("dap")
+local dap = require "dap"
 
 vim.fn.sign_define("DapStopped", { text = "> ", texthl = "SignColumn", linehl = "debugPC" })
 
