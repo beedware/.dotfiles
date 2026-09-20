@@ -46,6 +46,8 @@
 
 ;; Languages
 ; (require 'python-rc)
+; (require 'c-rc)
+; (require 'haskell-rc)
 (require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)
