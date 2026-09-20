@@ -39,6 +39,8 @@
                   "repo.org"
                   "kcl.org"
                   "hijri.org"
+                  "planner.org"
+                  "done.org"
                   "wishlist.org")))
 
   (setq org-default-notes-file
