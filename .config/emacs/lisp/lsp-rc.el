@@ -7,14 +7,18 @@
   (eglot-ignored-server-capabilities '(:inlayHintProvider))
   :hook
   (eglot-managed-mode . (lambda ()
+                          (setq-local eldoc-documentation-functions
+                                      (remove #'flymake-eldoc-function
+                                              eldoc-documentation-functions))
                           (setq-local eldoc-display-functions
                                       '(eldoc-display-in-buffer)))))
 
 (use-package flymake
   :ensure nil
   :defer nil
+  :bind (("C-c ! l" . flymake-show-buffer-diagnostics)
+         ("C-c ! p" . flymake-show-project-diagnostics))
   :custom
-  (flymake-no-changes-timeout 2.0)
   (flymake-start-on-save-buffer t))
 
 (add-to-list 'display-buffer-alist
