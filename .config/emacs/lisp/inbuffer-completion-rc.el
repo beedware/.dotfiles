@@ -3,8 +3,11 @@
 (use-package corfu
   :custom
   (corfu-preselect 'prompt)
+  (corfu-popupinfo-delay '(0.0 . 0.0))
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+  :config
+  (corfu-popupinfo-mode 1))
 
 (defvar-local beed/eglot-capf-has-yasnippet nil)
 
