@@ -28,3 +28,4 @@ __pycache__/
 .local/share/applications/ubisoft-connect.desktop
 .config/emacs/transient/history.el
 .config/emacs/tramp
+.local/bin/ical2orgpy
