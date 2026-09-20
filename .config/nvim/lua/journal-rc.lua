@@ -85,6 +85,21 @@ require("orgmode").setup {
       ---@diagnostic disable-next-line: missing-fields
       datetree = journal_datetree,
     },
+    m = {
+      description = "Mark",
+      template = "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%^{Description}%?",
+      target = journal_dir .. package.config:sub(1, 1) .. "marks.org",
+    },
+    t = {
+      description = "Task",
+      template = "* TODO %^{Title} %^{Tags}\n%?",
+      target = journal_dir .. package.config:sub(1, 1) .. "planner.org",
+    },
+    e = {
+      description = "Event",
+      template = "* %^{Title} %^{Tags}\n%?",
+      target = journal_dir .. package.config:sub(1, 1) .. "planner.org",
+    },
   },
 }
 

@@ -52,7 +52,16 @@
             "** %<%H%M%S> - %?")
            ("i" "Inbox" entry
             (file beed/journal-inbox-file)
-            "* %?")))
+            "* %?")
+           ("m" "Mark" entry
+            (file (expand-file-name "marks.org" org-directory))
+            "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%^{Description}%?")
+           ("t" "Task" entry
+            (file (expand-file-name "planner.org" org-directory))
+            "* TODO %^{Title} %^{Tags}\n%?")
+           ("e" "Event" entry
+            (file (expand-file-name "planner.org" org-directory))
+            "* %^{Title} %^{Tags}\n%?")))
 
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
         org-refile-use-outline-path 'file
