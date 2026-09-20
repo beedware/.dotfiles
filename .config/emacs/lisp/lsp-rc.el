@@ -25,7 +25,7 @@
 (add-to-list 'display-buffer-alist
              '("\\*eldoc"
                (display-buffer-reuse-window display-buffer-at-bottom)
-               (window-height . 0.2)))
+               (window-height . 0.25)))
 
 (defun beed/lsp-enable (hook server)
   "Enable Eglot on HOOK using SERVER."
