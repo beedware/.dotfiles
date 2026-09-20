@@ -1,7 +1,10 @@
 vim.pack.add {
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/stevearc/quicker.nvim",
+  "https://github.com/mohseenrm/marko.nvim",
 }
+
+require("marko").setup()
 
 require("fzf-lua").setup {
   { "hide" },
