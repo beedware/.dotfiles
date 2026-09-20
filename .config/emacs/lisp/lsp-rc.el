@@ -8,8 +8,9 @@
   :hook
   (eglot-managed-mode . (lambda ()
                           (setq-local eldoc-documentation-functions
-                                      (remove #'flymake-eldoc-function
-                                              eldoc-documentation-functions))
+                                      (append (remove #'flymake-eldoc-function
+                                                      eldoc-documentation-functions)
+                                              '(flymake-eldoc-function)))
                           (setq-local eldoc-display-functions
                                       '(eldoc-display-in-buffer)))))
 
