@@ -56,6 +56,11 @@
 
 (global-display-line-numbers-mode 1)
 
+(use-package project
+  :ensure nil
+  :config
+  (add-to-list 'project-vc-extra-root-markers ".project"))
+
 (dolist (mode '(shell-mode-hook
                 eshell-mode-hook
                 term-mode-hook
