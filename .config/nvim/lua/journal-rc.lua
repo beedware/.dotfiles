@@ -57,7 +57,7 @@ require("orgmode").setup {
     CANCELLED = face_from_hl("Comment", { italic = true }),
   },
   org_ellipsis = "...",
-  org_startup_folded = "content",
+  org_startup_folded = "overview",
   org_startup_indented = true,
   org_hide_leading_stars = true,
   org_adapt_indentation = false,
