@@ -18,7 +18,8 @@
         org-use-speed-commands t
         org-src-fontify-natively t
         org-src-tab-acts-natively t
-        org-edit-src-content-indentation 0)
+        org-edit-src-content-indentation 0
+        org-tags-column 0)
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
