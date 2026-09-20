@@ -32,7 +32,12 @@
   (setq org-agenda-files
         (mapcar (lambda (file)
                   (expand-file-name file org-directory))
-                '("repo.org" "wishlist.org")))
+                '("inbox.org"
+                  "life.org"
+                  "marks.org"
+                  "media.org"
+                  "repo.org"
+                  "wishlist.org")))
 
   (setq org-default-notes-file
         (expand-file-name "repo.org" org-directory))
