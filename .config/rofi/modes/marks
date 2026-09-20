@@ -7,17 +7,17 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-BOOKMARKS_FILE: Path = Path.home() / "Compendium" / "Journal" / "bookmarks.org"
+ACCESS_FILE: Path = Path.home() / "Compendium" / "Journal" / "marks.org"
 
 
 @dataclass(frozen=True)
-class Bookmark:
+class Mark:
     title: str
     url: str
     tags: tuple[str, ...]
 
 
-Bookmarks = tuple[Bookmark, ...]
+Marks = tuple[Mark, ...]
 
 
 def read_file(path: Path) -> str:
@@ -29,15 +29,15 @@ def die(message: str) -> None:
 
 
 def usage() -> str:
-    return f"Usage: {Path(sys.argv[0]).name} [bookmarks_file]"
+    return f"Usage: {Path(sys.argv[0]).name} [marks_file]"
 
 
-def get_bookmarks_file(args: list[str]) -> Path:
+def get_marks_file(args: list[str]) -> Path:
     if len(args) > 1:
         die("Error: too many arguments")
 
     if not args:
-        return BOOKMARKS_FILE
+        return ACCESS_FILE
 
     arg = args[0]
 
@@ -79,8 +79,8 @@ def parse_url(line: str) -> str | None:
     return line.removeprefix(":URL:").strip()
 
 
-def get_bookmarks(text: str) -> Bookmarks:
-    bookmarks: list[Bookmark] = []
+def get_marks(text: str) -> Marks:
+    marks: list[Mark] = []
     title: str | None = None
     tags: tuple[str, ...] = ()
     lines: list[str] = text.splitlines()
@@ -95,18 +95,18 @@ def get_bookmarks(text: str) -> Bookmarks:
         url = parse_url(line)
 
         if title and url:
-            bookmarks.append(Bookmark(title, url, tags))
+            marks.append(Mark(title, url, tags))
 
-    return tuple(bookmarks)
+    return tuple(marks)
 
 
-def select_bookmark(bookmarks: Bookmarks) -> Bookmark | None:
-    bookmarks_by_title: dict[str, Bookmark] = {
-        bookmark.title: bookmark for bookmark in bookmarks
+def select_mark(marks: Marks) -> Mark | None:
+    marks_by_title: dict[str, Mark] = {
+        mark.title: mark for mark in marks
     }
-    titles: str = "\n".join(bookmark.title for bookmark in bookmarks)
+    titles: str = "\n".join(mark.title for mark in marks)
     rofi = subprocess.run(
-        ["rofi", "-dmenu", "-i", "-p", "Bookmarks"],
+        ["rofi", "-dmenu", "-i", "-p", "Marks"],
         input=titles,
         capture_output=True,
         text=True,
@@ -121,7 +121,7 @@ def select_bookmark(bookmarks: Bookmarks) -> Bookmark | None:
     if not choice:
         return None
 
-    return bookmarks_by_title.get(choice)
+    return marks_by_title.get(choice)
 
 
 def copy_wayland(text: str) -> None:
@@ -162,19 +162,19 @@ def copy_url(url: str) -> None:
 
 
 def main() -> None:
-    bookmarks_file: Path = get_bookmarks_file(sys.argv[1:])
+    marks_file: Path = get_marks_file(sys.argv[1:])
 
-    if not bookmarks_file.is_file():
-        die(f"Error: bookmarks file not found: {bookmarks_file}")
+    if not marks_file.is_file():
+        die(f"Error: marks file not found: {marks_file}")
 
-    text: str = read_file(bookmarks_file)
-    bookmarks: Bookmarks = get_bookmarks(text)
-    bookmark: Bookmark | None = select_bookmark(bookmarks)
+    text: str = read_file(marks_file)
+    marks: Marks = get_marks(text)
+    mark: Mark | None = select_mark(marks)
 
-    if bookmark is None:
+    if mark is None:
         return
 
-    copy_url(bookmark.url)
+    copy_url(mark.url)
 
 
 if __name__ == "__main__":

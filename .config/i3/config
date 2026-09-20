@@ -79,7 +79,7 @@ bindsym $mod+n exec --no-startup-id emacsclient -c -s default
 
 bindsym $mod+Return exec --no-startup-id alacritty
 bindsym $mod+w exec --no-startup-id $browser
-bindsym $mod+Shift+w exec --no-startup-id ~/.config/rofi/modes/bookmarks
+bindsym $mod+Shift+w exec --no-startup-id ~/.config/rofi/modes/marks
 
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/modes/locker
 
