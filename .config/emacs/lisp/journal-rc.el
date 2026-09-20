@@ -33,7 +33,7 @@
         (mapcar (lambda (file)
                   (expand-file-name file org-directory))
                 '("inbox.org"
-                  "life.org"
+                  "goals.org"
                   "marks.org"
                   "media.org"
                   "repo.org"

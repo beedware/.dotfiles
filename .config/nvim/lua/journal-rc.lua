@@ -38,7 +38,7 @@ require("orgmode").setup {
   org_agenda_files = {
     repo_file,
     journal_dir .. package.config:sub(1, 1) .. "wishlist.org",
-    journal_dir .. package.config:sub(1, 1) .. "life.org",
+    journal_dir .. package.config:sub(1, 1) .. "goals.org",
     journal_dir .. package.config:sub(1, 1) .. "marks.org",
     journal_dir .. package.config:sub(1, 1) .. "media.org",
     journal_dir .. package.config:sub(1, 1) .. "inbox.org",
