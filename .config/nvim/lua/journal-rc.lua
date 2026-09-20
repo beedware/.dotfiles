@@ -42,6 +42,8 @@ require("orgmode").setup {
     journal_dir .. package.config:sub(1, 1) .. "marks.org",
     journal_dir .. package.config:sub(1, 1) .. "media.org",
     journal_dir .. package.config:sub(1, 1) .. "inbox.org",
+    journal_dir .. package.config:sub(1, 1) .. "kcl.org",
+    journal_dir .. package.config:sub(1, 1) .. "hijri.org",
   },
   org_default_notes_file = repo_file,
   org_todo_keywords = { "TODO(t)", "NEXT(n)", "WAITING(w)", "|", "DONE(d)", "CANCELLED(c)" },

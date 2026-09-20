@@ -37,6 +37,8 @@
                   "marks.org"
                   "media.org"
                   "repo.org"
+                  "kcl.org"
+                  "hijri.org"
                   "wishlist.org")))
 
   (setq org-default-notes-file
