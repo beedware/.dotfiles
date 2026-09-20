@@ -16,8 +16,7 @@
 (use-package flymake
   :ensure nil
   :defer nil
-  :bind (("C-c ! d" . flymake-show-diagnostic)
-         ("C-c ! l" . flymake-show-buffer-diagnostics)
+  :bind (("C-c ! l" . flymake-show-buffer-diagnostics)
          ("C-c ! p" . flymake-show-project-diagnostics))
   :custom
   (flymake-start-on-save-buffer t))
