@@ -101,6 +101,15 @@ require("quicker").setup {
     N = "N ",
     H = "H ",
   },
+  borders = {
+    vert = "|",
+    strong_header = "=",
+    strong_cross = "+",
+    strong_end = "+",
+    soft_header = "-",
+    soft_cross = "+",
+    soft_end = "+",
+  },
 }
 
 vim.keymap.set("n", "<leader>fa", "<cmd>FzfLua files<CR>", { desc = "Find all files" })
