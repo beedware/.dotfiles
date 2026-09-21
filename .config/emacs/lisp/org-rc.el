@@ -22,8 +22,8 @@
         org-tags-column 0)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "|"
-                    "DONE(d)" "CANCELLED(c)"))))
+        '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|"
+                    "DONE(d)" "KILL(k)"))))
 
 (provide 'org-rc)
 ;;; org-rc.el ends here
