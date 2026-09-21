@@ -15,15 +15,13 @@
 
 (defconst beed/journal-agenda-file-names
   '("inbox.org"
-    "goals.org"
     "marks.org"
-    "media.org"
+    "wants.org"
     "repo.org"
     "kcl.org"
     "hijri.org"
     "planner.org"
-    "done.org"
-    "wishlist.org"))
+    "done.org"))
 
 (defun beed/org-journal-capture-target ()
   "Capture under today's heading in `beed/journal-capture-file'."
