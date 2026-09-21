@@ -25,7 +25,7 @@ local repo_file = org_file "repo.org"
 local inbox_file = org_file "inbox.org"
 local org_agenda_file_names = {
   "repo.org",
-  "wants.org",
+  "folio.org",
   "marks.org",
   "inbox.org",
   "kcl.org",
