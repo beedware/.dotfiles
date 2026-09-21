@@ -58,7 +58,7 @@
             "* %?")
            ("m" "Mark" entry
             (file ,(beed/journal-file "marks.org"))
-            "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%^{Description}%?")
+            "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
            ("t" "Task" entry
             (file ,(beed/journal-file "planner.org"))
             "* TODO %^{Title} %^{Tags}\n%?")

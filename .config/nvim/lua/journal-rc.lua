@@ -104,7 +104,7 @@ require("orgmode").setup {
     },
     m = {
       description = "Mark",
-      template = "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%^{Description}%?",
+      template = "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?",
       target = org_file "marks.org",
     },
     t = {
