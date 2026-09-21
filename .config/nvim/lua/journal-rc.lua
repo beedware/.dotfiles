@@ -3,8 +3,38 @@ vim.pack.add {
 }
 
 local journal_dir = vim.fs.normalize(vim.fn.expand "~/Compendium/Journal")
-local repo_file = journal_dir .. package.config:sub(1, 1) .. "repo.org"
-local inbox_file = journal_dir .. package.config:sub(1, 1) .. "inbox.org"
+local path_sep = package.config:sub(1, 1)
+local function org_file(name)
+  return journal_dir .. path_sep .. name
+end
+
+local function unique_files(files)
+  local seen = {}
+  local result = {}
+  for _, file in ipairs(files) do
+    local normalized = vim.fs.normalize(file)
+    if not seen[normalized] then
+      seen[normalized] = true
+      table.insert(result, normalized)
+    end
+  end
+  return result
+end
+
+local repo_file = org_file "repo.org"
+local inbox_file = org_file "inbox.org"
+local org_agenda_file_names = {
+  "repo.org",
+  "wishlist.org",
+  "goals.org",
+  "marks.org",
+  "media.org",
+  "inbox.org",
+  "kcl.org",
+  "hijri.org",
+  "planner.org",
+  "done.org",
+}
 local journal_datetree = {
   tree_type = "custom",
   tree = {
@@ -35,18 +65,7 @@ end
 require("orgmode.config.defaults").org_capture_templates = {}
 
 require("orgmode").setup {
-  org_agenda_files = {
-    repo_file,
-    journal_dir .. package.config:sub(1, 1) .. "wishlist.org",
-    journal_dir .. package.config:sub(1, 1) .. "goals.org",
-    journal_dir .. package.config:sub(1, 1) .. "marks.org",
-    journal_dir .. package.config:sub(1, 1) .. "media.org",
-    journal_dir .. package.config:sub(1, 1) .. "inbox.org",
-    journal_dir .. package.config:sub(1, 1) .. "kcl.org",
-    journal_dir .. package.config:sub(1, 1) .. "hijri.org",
-    journal_dir .. package.config:sub(1, 1) .. "planner.org",
-    journal_dir .. package.config:sub(1, 1) .. "done.org",
-  },
+  org_agenda_files = unique_files(vim.tbl_map(org_file, org_agenda_file_names)),
   org_default_notes_file = repo_file,
   org_todo_keywords = { "TODO(t)", "PROG(p)", "WAIT(w)", "|", "DONE(d)", "KILL(k)" },
   org_todo_keyword_faces = {
@@ -88,17 +107,17 @@ require("orgmode").setup {
     m = {
       description = "Mark",
       template = "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%^{Description}%?",
-      target = journal_dir .. package.config:sub(1, 1) .. "marks.org",
+      target = org_file "marks.org",
     },
     t = {
       description = "Task",
       template = "* TODO %^{Title} %^{Tags}\n%?",
-      target = journal_dir .. package.config:sub(1, 1) .. "planner.org",
+      target = org_file "planner.org",
     },
     e = {
       description = "Event",
       template = "* %^{Title} %^{Tags}\n%?",
-      target = journal_dir .. package.config:sub(1, 1) .. "planner.org",
+      target = org_file "planner.org",
     },
   },
 }
