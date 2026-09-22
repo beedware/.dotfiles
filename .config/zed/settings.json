@@ -1,6 +1,6 @@
 {
     "snippet_sort_order": "top",
-    "restore_on_startup": "empty_tab",
+    "restore_on_startup": "launchpad",
     "default_open_behavior": "new_window",
     "lsp_results_location": "picker",
     "show_whitespaces": "trailing",
