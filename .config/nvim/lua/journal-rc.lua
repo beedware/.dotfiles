@@ -99,17 +99,17 @@ require("orgmode").setup {
     },
     m = {
       description = "Mark",
-      template = "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?",
+      template = "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?",
       target = org_file "marks.org",
     },
     t = {
       description = "Task",
-      template = "* TODO %^{Title} %^{Tags}\n%?",
+      template = "* TODO %^{Title} %^g\n%?",
       target = org_file "planner.org",
     },
     e = {
       description = "Event",
-      template = "* %^{Title} %^{Tags}\n%?",
+      template = "* %^{Title} %^g\n%?",
       target = org_file "planner.org",
     },
   },

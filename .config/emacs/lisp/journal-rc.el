@@ -49,13 +49,13 @@
             "* %?")
            ("m" "Mark" entry
             (file ,(beed/journal-file "marks.org"))
-            "* %^{Title} %^{Tags}\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
+            "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
            ("t" "Task" entry
             (file ,(beed/journal-file "planner.org"))
-            "* TODO %^{Title} %^{Tags}\n%?")
+            "* TODO %^{Title} %^g\n%?")
            ("e" "Event" entry
             (file ,(beed/journal-file "planner.org"))
-            "* %^{Title} %^{Tags}\n%?")))
+            "* %^{Title} %^g\n%?")))
 
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
         org-refile-use-outline-path 'file
