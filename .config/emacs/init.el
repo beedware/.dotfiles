@@ -45,11 +45,11 @@
 (require 'debugging-rc)
 
 ;; Languages
-; (require 'python-rc)
-; (require 'c-rc)
-; (require 'haskell-rc)
 (require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)
 (require 'org-rc)
 (require 'journal-rc)
+; (require 'python-rc)
+; (require 'c-rc)
+; (require 'haskell-rc)
