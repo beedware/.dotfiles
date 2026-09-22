@@ -21,12 +21,7 @@ local function unique_files(files)
   return result
 end
 
-local repo_file = org_file "repo.org"
-local inbox_file = org_file "inbox.org"
 local org_agenda_file_names = {
-  "repo.org",
-  "wants.org",
-  "marks.org",
   "inbox.org",
   "kcl.org",
   "hijri.org",
@@ -64,7 +59,7 @@ require("orgmode.config.defaults").org_capture_templates = {}
 
 require("orgmode").setup {
   org_agenda_files = unique_files(vim.tbl_map(org_file, org_agenda_file_names)),
-  org_default_notes_file = repo_file,
+  org_default_notes_file = org_file "repo.org",
   org_todo_keywords = { "TODO(t)", "PROG(p)", "WAIT(w)", "|", "DONE(d)", "KILL(k)" },
   org_todo_keyword_faces = {
     TODO = face_from_hl("DiagnosticError", { bold = true }),
@@ -93,12 +88,12 @@ require("orgmode").setup {
     i = {
       description = "Inbox",
       template = "* %?",
-      target = inbox_file,
+      target = org_file "inbox.org",
     },
     n = {
       description = "Note",
       template = "** %<%H%M%S> - %?",
-      target = repo_file,
+      target = org_file "repo.org",
       ---@diagnostic disable-next-line: missing-fields
       datetree = journal_datetree,
     },
