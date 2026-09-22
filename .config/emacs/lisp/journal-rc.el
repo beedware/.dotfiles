@@ -9,8 +9,6 @@
 
 (defconst beed/journal-agenda-file-names
   '("inbox.org"
-    "marks.org"
-    "repo.org"
     "kcl.org"
     "hijri.org"
     "planner.org"
