@@ -61,7 +61,17 @@
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
-        org-agenda-start-with-log-mode t))
+        org-agenda-start-with-log-mode t
+        org-agenda-custom-commands
+        '(("u" "Unscheduled TODOs"
+           ((todo ""
+                  ((org-agenda-overriding-header "Unscheduled TODOs")
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'scheduled 'regexp "\\[#C\\]"))))
+            (todo ""
+                  ((org-agenda-overriding-header "Low Priority [#C]")
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'scheduled 'notregexp "\\[#C\\]")))))))))
 
 (provide 'journal-rc)
 ;;; journal-rc.el ends here
