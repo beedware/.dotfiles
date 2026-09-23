@@ -14,6 +14,11 @@
     "planner.org"
     "done.org"))
 
+(defconst beed/journal-refile-file-names
+  '("inbox.org"
+    "planner.org"
+    "done.org"))
+
 (defun beed/org-journal-capture-target ()
   "Capture under today's heading in repo.org."
   (set-buffer (org-capture-target-buffer (beed/journal-file "repo.org")))
@@ -57,7 +62,8 @@
             (file ,(beed/journal-file "planner.org"))
             "* %^{Title} %^g\n%?")))
 
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
+  (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
+                              :maxlevel . 2))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
