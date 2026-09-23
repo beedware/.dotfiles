@@ -53,7 +53,7 @@
            ("i" "Inbox" entry
             (file ,(beed/journal-file "inbox.org"))
             "* %?"
-            :empty-lines-after 1)
+            :empty-lines-before 1)
            ("m" "Mark" entry
             (file ,(beed/journal-file "marks.org"))
             "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
