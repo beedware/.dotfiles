@@ -48,19 +48,24 @@
   (setq org-capture-templates
         `(("n" "Note" entry
             (function beed/org-journal-capture-target)
-            "** %<%H%M%S> - %?")
+            "** %<%H%M%S> - %?"
+            :empty-lines-before 1)
            ("i" "Inbox" entry
             (file ,(beed/journal-file "inbox.org"))
-            "* %?")
+            "* %?"
+            :empty-lines-before 1)
            ("m" "Mark" entry
             (file ,(beed/journal-file "marks.org"))
-            "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
+            "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
+            :empty-lines-before 1)
            ("t" "Task" entry
             (file ,(beed/journal-file "planner.org"))
-            "* TODO %^{Title} %^g\n%?")
+            "* TODO %^{Title} %^g\n%?"
+            :empty-lines-before 1)
            ("e" "Event" entry
             (file ,(beed/journal-file "planner.org"))
-            "* %^{Title} %^g\n%?")))
+            "* %^{Title} %^g\n%?"
+            :empty-lines-before 1)))
 
   (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
                               :maxlevel . 2))
