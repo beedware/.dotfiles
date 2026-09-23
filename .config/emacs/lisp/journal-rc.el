@@ -77,7 +77,12 @@
             (todo ""
                   ((org-agenda-overriding-header "Low Priority [#C]")
                    (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'scheduled 'notregexp "\\[#C\\]")))))))))
+                    '(org-agenda-skip-entry-if 'scheduled 'notregexp "\\[#C\\]"))))))
+          ("d" "TODOs with Deadlines"
+           todo ""
+           ((org-agenda-overriding-header "TODOs with Deadlines")
+            (org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'notdeadline)))))))
 
 (provide 'journal-rc)
 ;;; journal-rc.el ends here
