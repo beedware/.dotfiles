@@ -73,6 +73,7 @@
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
         org-agenda-start-with-log-mode t
+        org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-custom-commands
         '(("u" "Unscheduled TODOs"
            ((todo ""
