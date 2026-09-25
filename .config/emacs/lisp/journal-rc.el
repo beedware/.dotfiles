@@ -40,6 +40,10 @@
   :config
   (setq org-directory beed/journal-directory)
 
+  (setq org-blank-before-new-entry
+        '((heading . t)
+          (plain-list-item . auto)))
+
   (setq org-agenda-files
         (mapcar #'beed/journal-file beed/journal-agenda-file-names))
 
