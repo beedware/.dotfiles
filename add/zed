@@ -5,7 +5,7 @@ set -eu
 
 sudo xbps-install -Sy curl tar
 
-VERSION="1.19.2"
+VERSION="1.21.0"
 INSTALL_DIR="/opt"
 APP_DIR="${INSTALL_DIR}/zed.app"
 BIN_LINK="/usr/local/bin/zed"
@@ -14,11 +14,11 @@ APP_ID="dev.zed.Zed"
 case "$(uname -m)" in
     x86_64 | x86*)
         ARCH="x86_64"
-        CHECKSUM="c5acff2e52ac3c64890cce85250734cf7279c1de56d5926e4f4e1d4cf676359c"
+        CHECKSUM="b79a992e960ed4067cb2b50d66789ed8618eeb1780ed6a0f8f1e71dd80f74200"
         ;;
     aarch64 | arm64*)
         ARCH="aarch64"
-        CHECKSUM="6a7b9dac4c17b3901fda30d07e35f85f7eeb06bb96e1a348ff012aa2abed8af9"
+        CHECKSUM="69eff51b22203be7a4d0fd9df0864a8abd4d5183e8fb9aafa2af57f3cd42b9a3"
         ;;
     *)
         echo "Unsupported architecture: $(uname -m)"
