@@ -1,0 +1,30 @@
+#!/bin/sh
+set -eu
+
+# tags: #pkg
+
+sudo xbps-install -Sy curl avahi
+
+VERSION="26.8.0"
+APPIMAGE="WayVR-v${VERSION}-x86_64.AppImage"
+CHECKSUM="4b40719a860138cde4b97a5acbe5d5c300e9c7a186ab6bed423be8768e0c0794"
+INSTALL_DIR="/opt"
+BIN_LINK="/usr/local/bin/wayvr"
+URL="https://github.com/wayvr-org/wayvr/releases/download/v${VERSION}/${APPIMAGE}"
+TARGET_BIN="${INSTALL_DIR}/${APPIMAGE}"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+cd "$TMP_DIR"
+
+curl -fL -o "$APPIMAGE" "$URL"
+printf '%s  %s\n' "$CHECKSUM" "$APPIMAGE" | sha256sum --check
+
+sudo rm -f "$TARGET_BIN"
+sudo mv "$APPIMAGE" "$TARGET_BIN"
+sudo chmod +x "$TARGET_BIN"
+
+sudo ln -sfn "$TARGET_BIN" "$BIN_LINK"
+
+echo "WayVR installed: $BIN_LINK -> $TARGET_BIN"

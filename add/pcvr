@@ -5,29 +5,9 @@ set -eu
 
 command -v flatpak >/dev/null 2>&1 || { echo "flatpak is not installed. Run add/flathub first."; exit 1; }
 
-sudo xbps-install -Sy curl avahi
+add_root="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
-VERSION="26.8.0"
-APPIMAGE="WayVR-v${VERSION}-x86_64.AppImage"
-CHECKSUM="4b40719a860138cde4b97a5acbe5d5c300e9c7a186ab6bed423be8768e0c0794"
-INSTALL_DIR="/opt"
-BIN_LINK="/usr/local/bin/wayvr"
-URL="https://github.com/wayvr-org/wayvr/releases/download/v${VERSION}/${APPIMAGE}"
-TARGET_BIN="${INSTALL_DIR}/${APPIMAGE}"
-
-TMP_DIR="$(mktemp -d)"
-trap 'rm -rf "$TMP_DIR"' EXIT
-
-cd "$TMP_DIR"
-
-curl -fL -o "$APPIMAGE" "$URL"
-printf '%s  %s\n' "$CHECKSUM" "$APPIMAGE" | sha256sum --check
-
-sudo rm -f "$TARGET_BIN"
-sudo mv "$APPIMAGE" "$TARGET_BIN"
-sudo chmod +x "$TARGET_BIN"
-
-sudo ln -sfn "$TARGET_BIN" "$BIN_LINK"
+"$add_root/wayvr"
 
 flatpak install flathub io.github.wivrn.wivrn
 
@@ -37,7 +17,6 @@ sudo sv up avahi-daemon
 
 sudo usermod -aG plugdev "$USER"
 
-echo "WayVR installed: $BIN_LINK -> $TARGET_BIN"
 echo "For wired connection please do the following:"
 echo "> adb reverse tcp:9757 tcp:9757"
 echo "> adb shell am start -a android.intent.action.VIEW -d "wivrn+tcp://localhost" org.meumeu.wivrn"
