@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Proton VPN
-Exec=flatpak run com.protonvpn.www
-OnlyShowIn=i3;
