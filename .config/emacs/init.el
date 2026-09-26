@@ -86,6 +86,7 @@
               display-line-numbers-type 'relative)
 
 (global-display-line-numbers-mode 1)
+(global-hl-line-mode 1)
 
 (use-package project
   :ensure nil
@@ -98,7 +99,9 @@
                 vterm-mode-hook
                 treemacs-mode-hook
                 minibuffer-setup-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+  (add-hook mode (lambda ()
+                   (display-line-numbers-mode 0)
+                   (hl-line-mode 0))))
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
