@@ -3,11 +3,11 @@ set -eu
 
 # tags: #dev
 
-VERSION="3.44.7"
+VERSION="3.47.5"
 ARCHIVE="flutter_linux_${VERSION}-stable.tar.xz"
-CHECKSUM="a0edd646c159c0e816788c0e46a4f071199c1320495898f5a679599b583a05a4"
+CHECKSUM="2132e990f236f8d22e7c6314b29a191a95b10d7cbcfec9b4e2e303d996652cbb"
 INSTALL_DIR="${FLUTTER_HOME:-$HOME/.flutter}"
-URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.44.7-stable.tar.xz"
+URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/${ARCHIVE}"
 
 sudo xbps-install -Sy curl git unzip xz zip cmake ninja gtk+3-devel pkg-config
 
