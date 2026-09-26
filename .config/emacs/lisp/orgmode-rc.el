@@ -101,7 +101,9 @@
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
-        org-agenda-start-with-log-mode t
+        org-agenda-start-with-log-mode nil
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
         org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-custom-commands
         '(("u" "Unscheduled TODOs"
