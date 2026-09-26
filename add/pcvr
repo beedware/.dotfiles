@@ -7,9 +7,9 @@ command -v flatpak >/dev/null 2>&1 || { echo "flatpak is not installed. Run add/
 
 sudo xbps-install -Sy curl avahi
 
-VERSION="26.7.1"
+VERSION="26.8.0"
 APPIMAGE="WayVR-v${VERSION}-x86_64.AppImage"
-CHECKSUM="24389d73ca36c548472f3326ff94dd3e75d4fea701bd8ffd0841caee813e029b"
+CHECKSUM="4b40719a860138cde4b97a5acbe5d5c300e9c7a186ab6bed423be8768e0c0794"
 INSTALL_DIR="/opt"
 BIN_LINK="/usr/local/bin/wayvr"
 URL="https://github.com/wayvr-org/wayvr/releases/download/v${VERSION}/${APPIMAGE}"
