@@ -18,6 +18,9 @@
    '((file (styles basic partial-completion)))))
 
 (use-package consult
+  :custom
+  (xref-show-definitions-function #'consult-xref)
+  (xref-show-xrefs-function #'consult-xref)
   :bind (("C-s" . consult-line)
          ("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
