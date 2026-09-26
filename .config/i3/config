@@ -21,6 +21,8 @@ workspace 10 output DP-0 HDMI-A-0
 
 focus_wrapping workspace
 
+for_window [class="^Firefox$" title="^YouTube Music — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number 6
+
 set $chat_ws 7
 
 for_window [class="^Firefox$" title="^WhatsApp Web — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
