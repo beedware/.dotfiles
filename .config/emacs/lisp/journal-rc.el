@@ -19,7 +19,7 @@
     "planner.org"
     "done.org"))
 
-(defun beed/org-journal-capture-target ()
+(defun beed/org-capture-repo ()
   "Capture under today's heading in repo.org."
   (set-buffer (org-capture-target-buffer (beed/journal-file "repo.org")))
   (widen)
@@ -50,8 +50,8 @@
   (setq org-default-notes-file (beed/journal-file "repo.org"))
 
   (setq org-capture-templates
-        `(("n" "Note" entry
-            (function beed/org-journal-capture-target)
+        `(("r" "Repository" entry
+            (function beed/org-capture-repo)
             "** %<%H%M%S> - %?"
             :empty-lines-before 1)
            ("i" "Inbox" entry
