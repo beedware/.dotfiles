@@ -1,19 +1,17 @@
 #!/bin/sh
 
 dbus-update-activation-environment DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP 2>/dev/null
-[ -x "$HOME/.screenlayout/screens.sh" ] && "$HOME/.screenlayout/screens.sh"
-command -v xswacom >/dev/null 2>&1 && xswacom 0
-
 dex --autostart --environment i3
 
-pgrep -x pipewire >/dev/null || pipewire &
-pgrep -x dunst >/dev/null || dunst &
-pgrep -x mpd >/dev/null || mpd &
+[ -x "$HOME/.screenlayout/screens.sh" ] && "$HOME/.screenlayout/screens.sh"
 
 pgrep -x xfce-polkit >/dev/null || /usr/libexec/xfce-polkit &
-pgrep -x keepassxc >/dev/null || keepassxc &
 pgrep -x xss-lock >/dev/null || xss-lock --transfer-sleep-lock -- "$HOME/.config/rofi/modes/locker" --nofork &
+
 pgrep -x picom >/dev/null || picom -b
-pgrep -x espanso >/dev/null || espanso-x11 start --unmanaged
+pgrep -x dunst >/dev/null || dunst &
+pgrep -x mpd >/dev/null || mpd &
 pgrep -u "$USER" -f "emacs --daemon=default" >/dev/null || emacs --daemon=default &
-pgrep -x syncthing >/dev/null || gtk-launch syncthing-start &
+pgrep -x espanso-x11 >/dev/null || espanso-x11 start --unmanaged
+
+pgrep -x keepassxc >/dev/null || keepassxc &

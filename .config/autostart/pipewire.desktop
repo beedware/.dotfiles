@@ -2,4 +2,4 @@
 Type=Application
 Name=PipeWire
 Exec=pipewire
-OnlyShowIn=XFCE;
+OnlyShowIn=XFCE;i3;
