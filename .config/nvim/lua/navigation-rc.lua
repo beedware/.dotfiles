@@ -46,6 +46,7 @@ require("fzf-lua").setup {
     cwd_only = true,
   },
   lsp = {
+    path_shorten = 1,
     document_symbols = {
       symbol_style = 2,
       symbol_icons = {
