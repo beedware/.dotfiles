@@ -77,7 +77,7 @@ bindsym $mod+Shift+Left move container to workspace prev
 bindsym $mod+Shift+Right move container to workspace next
 
 bindsym $mod+e exec --no-startup-id $files
-bindsym $mod+n exec --no-startup-id emacsclient -c -s default
+bindsym $mod+n exec --no-startup-id emacsclient -c -a emacs
 
 bindsym $mod+Return exec --no-startup-id alacritty
 bindsym $mod+w exec --no-startup-id $browser
