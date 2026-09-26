@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=XFCE Polkit
+Exec=/usr/libexec/xfce-polkit
+OnlyShowIn=i3;

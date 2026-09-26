@@ -5,13 +5,4 @@ dex --autostart --environment i3
 
 [ -x "$HOME/.screenlayout/screens.sh" ] && "$HOME/.screenlayout/screens.sh"
 
-pgrep -x xfce-polkit >/dev/null || /usr/libexec/xfce-polkit &
 pgrep -x xss-lock >/dev/null || xss-lock --transfer-sleep-lock -- "$HOME/.config/rofi/modes/locker" --nofork &
-
-pgrep -x picom >/dev/null || picom -b
-pgrep -x dunst >/dev/null || dunst &
-pgrep -x mpd >/dev/null || mpd &
-pgrep -u "$USER" -f "emacs --daemon=default" >/dev/null || emacs --daemon=default &
-pgrep -x espanso-x11 >/dev/null || espanso-x11 start --unmanaged
-
-pgrep -x keepassxc >/dev/null || keepassxc &
