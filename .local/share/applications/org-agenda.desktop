@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Org Agenda
-Exec=emacsclient -a emacs -c -n -e '(org-agenda nil "a")'
+Exec=emacsclient -a emacs -c -e '(org-agenda nil "a")'
 Icon=emacs
 Type=Application
 Terminal=false
