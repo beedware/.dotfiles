@@ -15,7 +15,7 @@ case "$choice" in
         sudo xbps-install -Sy curl unzip zip
 
         INSTALLER="sdkman-init.sh"
-        CHECKSUM="b7bda3ce24f631d54d6b6b24f9ca32bc0a0e12dde12b2c3c73b1e28c5c36a364"
+        CHECKSUM="b6f4fb257b420c7291c35549ae714af6d5af290bb8d57c219918f1f3d3d3e052"
         URL="https://get.sdkman.io"
 
         TMP_DIR="$(mktemp -d)"
