@@ -5,9 +5,9 @@ set -eu
 
 sudo xbps-install -Sy curl
 
-VERSION="0.14.9.1"
+VERSION="0.18.1.1"
 APPIMAGE="helium-${VERSION}-x86_64.AppImage"
-CHECKSUM="72e42230684e3e313b8b1b998851a946e185f5275570d3d85174978636412ca4"
+CHECKSUM="d1e1b993dfbfee06e9f90e8a29cd58e87a475197b04fc0487506227c338569cb"
 INSTALL_DIR="/opt"
 BIN_LINK="/usr/local/bin/helium"
 URL="https://github.com/imputnet/helium-linux/releases/download/${VERSION}/${APPIMAGE}"
