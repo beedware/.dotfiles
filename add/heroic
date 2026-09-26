@@ -5,9 +5,9 @@ set -eu
 
 sudo xbps-install -Sy curl
 
-VERSION="2.22.1"
+VERSION="2.22.3"
 APPIMAGE="Heroic-${VERSION}-linux-x86_64.AppImage"
-CHECKSUM="e91e3171c8cb8a57acfcfc7f665e8c74c5a80cf088d5ea61a2af5e6bcc537762"
+CHECKSUM="39a702abf5d3e5d31b3d0d22bf0ed5646fb99d2fe2b572976c89c8743aee78c3"
 INSTALL_DIR="/opt"
 BIN_LINK="/usr/local/bin/heroic"
 URL="https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v${VERSION}/${APPIMAGE}"
