@@ -62,6 +62,10 @@
             (file ,(beed/journal-file "marks.org"))
             "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
             :empty-lines-before 1)
+           ("n" "Name" entry
+            (file ,(beed/journal-file "names.org"))
+            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t"
+            :empty-lines-before 1)
            ("t" "Task" entry
             (file ,(beed/journal-file "planner.org"))
             "* TODO %^{Title} %^g\n%?"
