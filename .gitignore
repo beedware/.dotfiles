@@ -30,3 +30,4 @@ __pycache__/
 .config/emacs/tramp
 .local/bin/ical2orgpy
 .config/emacs/projects.eld
+.local/bin/dotnet
