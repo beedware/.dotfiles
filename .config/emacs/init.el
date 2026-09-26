@@ -52,6 +52,7 @@
       ring-bell-function 'ignore
       set-mark-command-repeat-pop t
       large-file-warning-threshold nil
+      require-final-newline t
       vc-follow-symlinks t
       ad-redefinition-action 'accept
       global-auto-revert-non-file-buffers t
