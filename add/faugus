@@ -5,10 +5,10 @@ set -eu
 
 sudo xbps-install -Sy curl python3-gobject gtk4 libadwaita libmanette
 
-VERSION="2.1.0"
+VERSION="2.4.2"
 RELEASE="1"
 APPIMAGE="Faugus-${VERSION}-${RELEASE}-x86_64.AppImage"
-CHECKSUM="888df88c7b9c13bf83dec823556b7ee21784904384627e8fc6ba14628915a946"
+CHECKSUM="cff0ff05bf66dd934eab942eecf50b3a09a3d0be86186546132d687bc60c40b4"
 INSTALL_DIR="/opt"
 BIN_LINK="/usr/local/bin/faugus"
 URL="https://github.com/Faugus/faugus-launcher/releases/download/${VERSION}/${APPIMAGE}"
