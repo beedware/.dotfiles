@@ -1,42 +1,5 @@
 vim.g.mapleader = " "
 
-require("vim._core.ui2").enable {}
-vim.cmd.packadd "nvim.undotree"
-
-require "theme-rc"
-require "mini-rc"
-require "git-rc"
-require "filebrowser-rc"
-require "completion-rc"
-require "documentation-rc"
-require "navigation-rc"
-require "mason-rc"
-
--- Default languages
-require "lua-rc"
-require "vim-rc"
-require "query-rc"
-require "markdown-rc"
-require "yaml-rc"
-require "shell-rc"
-
--- All Paradigm Languages
-require "python-rc"
-require "c-rc"
-require "haskell-rc"
-require "prolog-rc"
-require "typst-rc"
-
--- Additional Languages
-require "gdscript-rc"
-require "web-rc"
--- require("flutter-rc")
--- require("tex-rc")
--- require("csharp-rc")
--- require("java-rc")
--- require("groovy-rc")
-
--- Options
 vim.o.spellfile = vim.fs.joinpath(vim.fn.stdpath "config", "spell", "en.utf-8.add")
 
 vim.o.list = true
@@ -114,7 +77,6 @@ if has_rg then
   end
 end
 
--- Commands
 local function need_rg(name)
   return function()
     vim.notify(name .. " requires ripgrep", vim.log.levels.WARN)
@@ -173,7 +135,6 @@ end, {
   desc = "Uninstall inactive vim.pack packages",
 })
 
--- Autocmds
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
   callback = function()
@@ -298,7 +259,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Mappings
 vim.keymap.set("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "Show diagnostics in location list" })
 vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, { desc = "Show all diagnostics in quickfix" })
 
@@ -340,3 +300,36 @@ vim.keymap.set("i", "<C-^>", function()
   end
   return vim.api.nvim_replace_termcodes("<C-o>:set arab<CR>", true, false, true)
 end, { expr = true, desc = "Toggle Arabic" })
+
+-- Modules
+require("vim._core.ui2").enable {}
+vim.cmd.packadd "nvim.undotree"
+
+require "theme-rc"
+require "mini-rc"
+require "git-rc"
+require "filebrowser-rc"
+require "completion-rc"
+require "documentation-rc"
+require "navigation-rc"
+require "mason-rc"
+require "lua-rc"
+require "vim-rc"
+require "query-rc"
+require "markdown-rc"
+require "yaml-rc"
+require "shell-rc"
+
+-- Languages
+require "python-rc"
+require "c-rc"
+require "haskell-rc"
+require "prolog-rc"
+require "typst-rc"
+require "gdscript-rc"
+require "web-rc"
+-- require("flutter-rc")
+-- require("tex-rc")
+-- require("csharp-rc")
+-- require("java-rc")
+-- require("groovy-rc")
