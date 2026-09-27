@@ -5,6 +5,32 @@ local fn = vim.fn
 opt_local.spell = true
 opt_local.spelllang = "en_gb"
 opt_local.colorcolumn = "80"
+opt_local.foldmethod = "expr"
+opt_local.foldexpr = "v:lua.typst_foldexpr(v:lnum)"
+opt_local.foldlevel = 99
+opt_local.foldtext = "v:lua.typst_foldtext()"
+
+function _G.typst_foldexpr(lnum)
+  if fn.getline(lnum):match "^=+%s+" then
+    return ">1"
+  end
+
+  for prev = lnum - 1, 1, -1 do
+    if fn.getline(prev):match "^=+%s+" then
+      return "1"
+    end
+  end
+
+  return "0"
+end
+
+function _G.typst_foldtext()
+  local marker, title = fn.getline(vim.v.foldstart):match "^(=+)%s+(.*%S)"
+  if not marker then
+    return vim.v.folddashes .. fn.getline(vim.v.foldstart)
+  end
+  return string.rep("  ", #marker - 1) .. marker .. " " .. title
+end
 
 local function opened_with_flag(flag)
   for _, arg in ipairs(vim.v.argv) do
