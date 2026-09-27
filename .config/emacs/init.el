@@ -56,7 +56,7 @@
       vc-follow-symlinks t
       ad-redefinition-action 'accept
       global-auto-revert-non-file-buffers t
-      global-hl-line-sticky-flag nil
+      global-hl-line-sticky-flag 'window
       bookmark-save-flag 1
       default-input-method "arabic"
       display-time-format "%H:%M"
