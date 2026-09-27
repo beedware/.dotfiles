@@ -10,6 +10,10 @@
 (beed/lsp-enable 'typst-ts-mode-hook
                  '(typst-ts-mode . ("tinymist")))
 
+(with-eval-after-load 'apheleia
+  (setf (alist-get 'prettypst apheleia-formatters)
+        '("prettypst" "--use-std-in" "--use-std-out")))
+
 (beed/formatter-add 'typst-ts-mode '(prettypst))
 
 (provide 'typst-rc)
