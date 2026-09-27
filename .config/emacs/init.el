@@ -56,6 +56,7 @@
       vc-follow-symlinks t
       ad-redefinition-action 'accept
       global-auto-revert-non-file-buffers t
+      global-hl-line-sticky-flag nil
       bookmark-save-flag 1
       default-input-method "arabic"
       display-time-format "%H:%M"
@@ -87,6 +88,17 @@
 
 (global-display-line-numbers-mode 1)
 
+(defun beed/enable-hl-line-mode ()
+  (unless (or (minibufferp)
+              (derived-mode-p 'comint-mode 'eshell-mode 'term-mode 'vterm-mode 'eat-mode))
+    (hl-line-mode 1)))
+
+(define-globalized-minor-mode beed/global-hl-line-mode
+  hl-line-mode
+  beed/enable-hl-line-mode)
+
+(beed/global-hl-line-mode 1)
+
 (use-package project
   :ensure nil
   :config
@@ -94,8 +106,10 @@
 
 (dolist (mode '(shell-mode-hook
                 eshell-mode-hook
+                comint-mode-hook
                 term-mode-hook
                 vterm-mode-hook
+                eat-mode-hook
                 treemacs-mode-hook
                 minibuffer-setup-hook))
   (add-hook mode (lambda ()
