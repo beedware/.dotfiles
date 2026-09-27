@@ -59,6 +59,7 @@
       global-hl-line-sticky-flag 'window
       bookmark-save-flag 1
       default-input-method "arabic"
+      display-line-numbers-width-start t
       display-time-format "%H:%M"
       split-height-threshold 0
       split-width-threshold nil
