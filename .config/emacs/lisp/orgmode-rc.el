@@ -42,7 +42,7 @@
          ("C-c l" . org-store-link))
   :config
   (setq org-ellipsis "..."
-        org-startup-folded 'overview
+        org-startup-folded 'content
         org-startup-indented t
         org-hide-leading-stars t
         org-adapt-indentation nil
