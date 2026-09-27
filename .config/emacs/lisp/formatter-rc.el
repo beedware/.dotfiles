@@ -11,5 +11,10 @@
   (with-eval-after-load 'apheleia
     (setf (alist-get mode apheleia-mode-alist) formatters)))
 
+(defun beed/formatter-define (formatter command)
+  "Define Apheleia FORMATTER with COMMAND."
+  (with-eval-after-load 'apheleia
+    (setf (alist-get formatter apheleia-formatters) command)))
+
 (provide 'formatter-rc)
 ;;; formatter-rc.el ends here

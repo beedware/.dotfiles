@@ -30,9 +30,8 @@
 (beed/lsp-enable 'LaTeX-mode-hook
                  '(LaTeX-mode . ("texlab")))
 
-(with-eval-after-load 'apheleia
-  (setf (alist-get 'tex-fmt apheleia-formatters)
-        '("tex-fmt" "--stdin" "--tabsize" (number-to-string tab-width))))
+(beed/formatter-define 'tex-fmt
+                       '("tex-fmt" "--stdin" "--tabsize" (number-to-string tab-width)))
 
 (beed/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
 
