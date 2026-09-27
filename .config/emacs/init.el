@@ -87,19 +87,6 @@
 
 (global-display-line-numbers-mode 1)
 
-(defun beed/turn-on-hl-line-mode ()
-  "Enable `hl-line-mode' outside terminal-style buffers."
-  (unless (or (minibufferp)
-              (derived-mode-p 'shell-mode 'eshell-mode 'term-mode 'vterm-mode
-                              'treemacs-mode))
-    (hl-line-mode 1)))
-
-(define-globalized-minor-mode beed/global-hl-line-mode
-  hl-line-mode
-  beed/turn-on-hl-line-mode)
-
-(beed/global-hl-line-mode 1)
-
 (use-package project
   :ensure nil
   :config
