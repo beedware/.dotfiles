@@ -88,16 +88,17 @@
 
 (global-display-line-numbers-mode 1)
 
-(defun beed/enable-hl-line-mode ()
+(defun beed/global-hl-line-highlight (original)
   (unless (or (minibufferp)
               (derived-mode-p 'comint-mode 'eshell-mode 'term-mode 'vterm-mode 'eat-mode))
-    (hl-line-mode 1)))
+    (funcall original))
+  (when (or (minibufferp)
+            (derived-mode-p 'comint-mode 'eshell-mode 'term-mode 'vterm-mode 'eat-mode))
+    (global-hl-line-unhighlight)))
 
-(define-globalized-minor-mode beed/global-hl-line-mode
-  hl-line-mode
-  beed/enable-hl-line-mode)
+(advice-add 'global-hl-line-highlight :around #'beed/global-hl-line-highlight)
 
-(beed/global-hl-line-mode 1)
+(global-hl-line-mode 1)
 
 (use-package project
   :ensure nil
@@ -113,6 +114,7 @@
                 treemacs-mode-hook
                 minibuffer-setup-hook))
   (add-hook mode (lambda ()
+                   (hl-line-mode -1)
                    (display-line-numbers-mode 0))))
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
