@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=easyeffects
-Exec=flatpak run com.github.wwmm.easyeffects --gapplication-service
-OnlyShowIn=XFCE;i3;

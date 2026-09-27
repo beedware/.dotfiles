@@ -24,7 +24,6 @@ sudo xbps-install -Sy \
 flatpak install -y flathub com.github.tchx84.Flatseal
 flatpak install -y flathub com.borgbase.Vorta
 flatpak install flathub org.libreoffice.LibreOffice
-flatpak install flathub com.github.wwmm.easyeffects
 flatpak run com.protonvpn.www
 
 "$add_root/firefox"
