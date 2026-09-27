@@ -12,7 +12,10 @@ end
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("TreesitterFileTypeStart", { clear = true }),
-  callback = function()
+  callback = function(args)
+    if vim.b[args.buf].bigfile then
+      return
+    end
     pcall(vim.treesitter.start)
   end,
 })

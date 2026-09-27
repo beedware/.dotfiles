@@ -29,10 +29,10 @@ vim.o.splitright = true
 vim.o.undofile = true
 vim.o.undodir = vim.fs.joinpath(vim.fn.stdpath "data", "undodir")
 
-vim.wo[0][0].foldmethod = "expr"
-vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldlevel = 99
-vim.o.foldtext = "v:folddashes.substitute(getline(v:foldstart),'/\\*\\|\\*/\\|{{{\\d\\=','','g')"
+vim.o.foldtext = "v:folddashes . substitute(getline(v:foldstart), '/\\*\\|\\*/\\|{{{\\d\\=', '', 'g')"
 
 vim.o.updatetime = 250
 
@@ -231,7 +231,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
       vim.log.levels.WARN,
       { title = "BigFile" }
     )
-    vim.opt_local.foldmethod = "manual"
+    vim.wo.foldmethod = "manual"
     vim.opt_local.swapfile = false
     vim.opt_local.undofile = false
     vim.opt_local.spell = false
