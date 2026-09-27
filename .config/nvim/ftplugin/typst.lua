@@ -29,7 +29,7 @@ function _G.typst_foldtext()
   if not marker then
     return vim.v.folddashes .. fn.getline(vim.v.foldstart)
   end
-  return string.rep("  ", #marker - 1) .. marker .. " " .. title
+  return marker .. " " .. title
 end
 
 local function opened_with_flag(flag)
