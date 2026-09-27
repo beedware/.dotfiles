@@ -15,7 +15,7 @@
   :ensure nil
   :defer nil
   :custom
-  (whitespace-style '(face tabs tab-mark nbsp nbsp-mark))
+  (whitespace-style '(tab-mark nbsp-mark))
   :config
   (global-whitespace-mode 1))
 
