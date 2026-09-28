@@ -74,13 +74,6 @@ vim.pack.add {
   "https://codeberg.org/mfussenegger/nvim-dap-python",
 }
 
-local function python_executable(venv)
-  if vim.fn.has "win32" == 1 then
-    return vim.fs.joinpath(venv, "Scripts", "python.exe")
-  end
-  return vim.fs.joinpath(venv, "bin", "python")
-end
-
 require("dap-python").setup(
-  python_executable(vim.fs.joinpath(vim.fn.stdpath "data", "mason", "packages", "debugpy", "venv"))
+  vim.fs.joinpath(vim.fn.stdpath "data", "mason", "packages", "debugpy", "venv", "bin", "python")
 )

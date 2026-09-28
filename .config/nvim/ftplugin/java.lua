@@ -51,11 +51,7 @@ extend_bundles(vim.fs.joinpath(mason_packages, "java-test", "extension", "server
 })
 
 local launcher = vim.fn.glob(vim.fs.joinpath(mason_packages, "jdtls", "plugins", "org.eclipse.equinox.launcher_*.jar"))
-local config_dir = vim.fs.joinpath(
-  mason_packages,
-  "jdtls",
-  vim.fn.has "mac" == 1 and "config_mac" or vim.fn.has "win32" == 1 and "config_win" or "config_linux"
-)
+local config_dir = vim.fs.joinpath(mason_packages, "jdtls", "config_linux")
 local lombok_jar = vim.fs.joinpath(mason_packages, "jdtls", "lombok.jar")
 
 if launcher == "" then
