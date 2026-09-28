@@ -76,5 +76,27 @@
   (beed/set-trailing-space-marker-face)
   (add-hook 'enable-theme-functions #'beed/set-trailing-space-marker-face))
 
+(use-package doom-modeline
+  :defer nil
+  :init
+  (setq doom-modeline-icon nil
+        doom-modeline-major-mode-icon nil
+        doom-modeline-major-mode-color-icon nil
+        doom-modeline-buffer-state-icon nil
+        doom-modeline-buffer-modification-icon nil
+        doom-modeline-lsp-icon nil
+        doom-modeline-time-icon nil
+        doom-modeline-time-live-icon nil
+        doom-modeline-time-analogue-clock nil
+        doom-modeline-vcs-icon nil
+        doom-modeline-check-icon nil
+        doom-modeline-persp-icon nil
+        doom-modeline-modal-icon nil
+        doom-modeline-modal-modern-icon nil
+        doom-modeline-unicode-fallback nil
+        doom-modeline-unicode-number nil)
+  :config
+  (doom-modeline-mode 1))
+
 (provide 'ui-rc)
 ;;; ui-rc.el ends here
