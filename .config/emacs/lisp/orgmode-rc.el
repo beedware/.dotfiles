@@ -11,8 +11,7 @@
   '("inbox.org"
     "kcl.org"
     "hijri.org"
-    "planner.org"
-    "done.org"))
+    "planner.org"))
 
 (defconst beed/journal-refile-file-names
   '("inbox.org"
@@ -111,6 +110,7 @@
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-deadline-warning-days 0
+        org-agenda-inhibit-startup t
         org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-custom-commands
         '(("u" "Unscheduled TODOs"
