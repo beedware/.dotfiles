@@ -9,18 +9,18 @@
 
 (defconst beed/journal-agenda-file-names
   '("inbox.org"
-    "kcl.org"
+    "kings.org"
     "hijri.org"
-    "planner.org"))
+    "sched.org"))
 
 (defconst beed/journal-refile-file-names
   '("inbox.org"
-    "planner.org"
-    "done.org"))
+    "sched.org"
+    "trail.org"))
 
-(defun beed/org-capture-repo ()
-  "Capture under today's heading in repo.org."
-  (set-buffer (org-capture-target-buffer (beed/journal-file "repo.org")))
+(defun beed/org-capture-folio ()
+  "Capture under today's heading in folio.org."
+  (set-buffer (org-capture-target-buffer (beed/journal-file "folio.org")))
   (widen)
   (let ((heading (format "* %s" (format-time-string "%Y%m%d"))))
     (goto-char (point-max))
@@ -67,11 +67,11 @@
   (setq org-agenda-files
         (mapcar #'beed/journal-file beed/journal-agenda-file-names))
 
-  (setq org-default-notes-file (beed/journal-file "repo.org"))
+  (setq org-default-notes-file (beed/journal-file "folio.org"))
 
   (setq org-capture-templates
-        `(("r" "Repository" entry
-           (function beed/org-capture-repo)
+        `(("f" "Folio" entry
+           (function beed/org-capture-folio)
            "** %<%H%M%S> - %?"
            :empty-lines-before 1)
           ("i" "Inbox" entry
@@ -87,11 +87,11 @@
            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t"
            :empty-lines-before 1)
           ("t" "Task" entry
-           (file ,(beed/journal-file "planner.org"))
+           (file ,(beed/journal-file "sched.org"))
            "* TODO %^{Title} %^g\n%?"
            :empty-lines-before 1)
           ("e" "Event" entry
-           (file ,(beed/journal-file "planner.org"))
+           (file ,(beed/journal-file "sched.org"))
            "* %^{Title} %^g\n%?"
            :empty-lines-before 1)))
 
