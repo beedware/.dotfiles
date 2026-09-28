@@ -110,9 +110,9 @@
         org-agenda-inhibit-startup t
         org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-custom-commands
-        '(("u" "Unscheduled TODOs"
+        '(("u" "Unscheduled Tasks"
            ((todo ""
-                  ((org-agenda-overriding-header "Unscheduled TODOs")
+                  ((org-agenda-overriding-header "Unscheduled Tasks")
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'scheduled 'regexp "\\[#C\\]"))))
             (todo ""
@@ -121,7 +121,7 @@
                     '(org-agenda-skip-entry-if 'scheduled 'notregexp "\\[#C\\]"))))))
           ("d" "TODOs with Deadlines"
            todo ""
-           ((org-agenda-overriding-header "TODOs with Deadlines")
+           ((org-agenda-overriding-header "Tasks with Deadlines")
             (org-agenda-skip-function
              '(org-agenda-skip-entry-if 'notdeadline)))))))
 
