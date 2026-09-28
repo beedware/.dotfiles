@@ -110,6 +110,7 @@
         org-agenda-start-with-log-mode nil
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
+        org-deadline-warning-days 0
         org-agenda-skip-deadline-prewarning-if-scheduled t
         org-agenda-custom-commands
         '(("u" "Unscheduled TODOs"
