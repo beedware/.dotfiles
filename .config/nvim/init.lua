@@ -313,6 +313,7 @@ require "completion-rc"
 require "documentation-rc"
 require "navigation-rc"
 require "mason-rc"
+
 require "lua-rc"
 require "vim-rc"
 require "query-rc"

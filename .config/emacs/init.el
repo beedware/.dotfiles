@@ -132,7 +132,6 @@
   (load custom-file t))
 
 ;; Modules
-
 (require 'ui-rc)
 (require 'completion-rc)
 (require 'snippets-rc)
@@ -148,7 +147,6 @@
 (require 'orgmode-rc)
 
 ;; Languages
-
 (require 'typst-rc)
 (require 'tex-rc)
 (require 'markdown-rc)
