@@ -101,6 +101,12 @@
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
+        org-agenda-prefix-format '((agenda . " %i %?-12t% s")
+                                   (todo . " %i")
+                                   (tags . " %i")
+                                   (search . " %i"))
+        org-agenda-scheduled-leaders '("" "")
+        org-agenda-deadline-leaders '("" "" "")
         org-agenda-start-with-log-mode nil
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
