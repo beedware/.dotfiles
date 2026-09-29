@@ -118,6 +118,7 @@
                    (hl-line-mode -1)
                    (display-line-numbers-mode 0))))
 
+(setq delete-trailing-lines nil)
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 (defun beed/arabic-input-method-title ()
