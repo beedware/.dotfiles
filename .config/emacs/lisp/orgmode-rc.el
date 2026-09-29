@@ -60,10 +60,6 @@
 
   (setq org-directory beed/journal-directory)
 
-  (setq org-blank-before-new-entry
-        '((heading . t)
-          (plain-list-item . auto)))
-
   (setq org-agenda-files
         (mapcar #'beed/journal-file beed/journal-agenda-file-names))
 
@@ -72,28 +68,22 @@
   (setq org-capture-templates
         `(("f" "Folio" entry
            (function beed/org-capture-folio)
-           "** %<%H%M%S> - %?"
-           :empty-lines-before 1)
+           "** %<%H%M%S> - %?")
           ("i" "Inbox" entry
            (file ,(beed/journal-file "inbox.org"))
-           "* %?"
-           :empty-lines-before 1)
+           "* %?")
           ("m" "Mark" entry
            (file ,(beed/journal-file "marks.org"))
-           "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
-           :empty-lines-before 1)
+           "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
           ("n" "Name" entry
            (file ,(beed/journal-file "names.org"))
-           "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t"
-           :empty-lines-before 1)
+           "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t")
           ("t" "Task" entry
            (file ,(beed/journal-file "sched.org"))
-           "* TODO %^{Title} %^g\n%?"
-           :empty-lines-before 1)
+           "* TODO %^{Title} %^g\n%?")
           ("e" "Event" entry
            (file ,(beed/journal-file "sched.org"))
-           "* %^{Title} %^g\n%?"
-           :empty-lines-before 1)))
+           "* %^{Title} %^g\n%?")))
 
   (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
                               :maxlevel . 2))
