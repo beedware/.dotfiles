@@ -73,10 +73,14 @@
            :empty-lines-before 0)
           ("t" "Task" entry
            (file ,(beed/journal-file "sched.org"))
-           "* TODO %^{Title} %^g\n%?")
+           "* TODO %^{Title} %^g\n%?"
+           :prepend t
+           :empty-lines-before 0)
           ("e" "Event" entry
            (file ,(beed/journal-file "sched.org"))
-           "* %^{Title} %^g\n%?")))
+           "* %^{Title} %^g\n%?"
+           :prepend t
+           :empty-lines-before 0)))
 
   (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
                               :maxlevel . 2))
