@@ -18,21 +18,6 @@
     "sched.org"
     "trail.org"))
 
-(defun beed/org-capture-folio ()
-  "Capture under today's heading in folio.org."
-  (set-buffer (org-capture-target-buffer (beed/journal-file "folio.org")))
-  (widen)
-  (let ((heading (format "* %s" (format-time-string "%Y%m%d"))))
-    (goto-char (point-max))
-    (if (re-search-backward (format "^%s$" (regexp-quote heading)) nil t)
-        (beginning-of-line)
-      (goto-char (point-max))
-      (unless (bolp)
-        (insert "\n"))
-      (insert heading "\n")
-      (forward-line -1))
-    (point)))
-
 (use-package org
   :ensure nil
   :mode ("\\.org\\'" . org-mode)
@@ -67,11 +52,15 @@
 
   (setq org-capture-templates
         `(("f" "Folio" entry
-           (function beed/org-capture-folio)
-           "** %<%H%M%S> - %?")
+           (file ,(beed/journal-file "folio.org"))
+           "* %<%Y%m%d/%H%M%S> - %?"
+           :prepend t
+           :empty-lines-before 0)
           ("i" "Inbox" entry
            (file ,(beed/journal-file "inbox.org"))
-           "* %?")
+           "* %?"
+           :prepend t
+           :empty-lines-before 0)
           ("m" "Mark" entry
            (file ,(beed/journal-file "marks.org"))
            "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
