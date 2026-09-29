@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+if command -v pipx >/dev/null 2>&1; then
+    pipx upgrade-all
+else
+    echo "pipx is not installed; skipping pipx tools."
+fi
+
+if command -v uv >/dev/null 2>&1; then
+    uv tool upgrade --all
+else
+    echo "uv is not installed; skipping uv tools."
+fi

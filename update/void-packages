@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+
+update_repo() {
+    repo="$1"
+    if [ ! -d "$repo/.git" ]; then
+        echo "$repo is not a git checkout; skipping."
+        return
+    fi
+
+    printf 'Updating %s\n' "$repo"
+    git -C "$repo" pull --ff-only
+}
+
+if [ -d "$HOME/Projects/beedware/void-packages/.git" ]; then
+    update_repo "$HOME/Projects/beedware/void-packages"
+    git -C "$HOME/Projects/beedware/void-packages" fetch upstream
+    "$HOME/Projects/beedware/void-packages/xbps-src" bootstrap-update
+else
+    echo "$HOME/Projects/beedware/void-packages is not installed; skipping."
+fi
+
+update_repo "$HOME/Projects/void-linux/void-packages"

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if ! command -v flutter >/dev/null 2>&1; then
+    echo "flutter is not installed; skipping."
+    exit 0
+fi
+
+flutter upgrade
+flutter precache
