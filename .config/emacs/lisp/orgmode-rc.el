@@ -67,6 +67,10 @@
           ("n" "Name" entry
            (file ,(beed/journal-file "names.org"))
            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t")
+          ("d" "Device" item
+           (file+headline ,(beed/journal-file "names.org") "Devices")
+           "- %^{Name} : %^{Description}"
+           :empty-lines-before 0)
           ("t" "Task" entry
            (file ,(beed/journal-file "sched.org"))
            "* TODO %^{Title} %^g\n%?")
