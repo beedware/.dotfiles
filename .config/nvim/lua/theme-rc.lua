@@ -87,6 +87,13 @@ require("lualine").setup {
           done = "",
           separator = " ",
         },
+        fmt = function(status)
+          if status == "" then
+            return status
+          end
+
+          return "(" .. status .. ")"
+        end,
       },
       { "diagnostics", padding = { left = 0, right = 1 } },
       { file_info, padding = { left = 1, right = 0 } },
