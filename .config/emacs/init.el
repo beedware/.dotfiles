@@ -89,27 +89,13 @@
 
 (global-display-line-numbers-mode 1)
 
-(defun beed/no-hl-line-buffer-p ()
-  (or (minibufferp)
-      (derived-mode-p 'comint-mode 'shell-mode 'eshell-mode 'term-mode 'vterm-mode 'eat-mode)))
-
-(defun beed/global-hl-line-highlight (original)
-  (if (with-current-buffer (window-buffer (selected-window))
-        (beed/no-hl-line-buffer-p))
-      (global-hl-line-unhighlight)
-    (funcall original)))
-
-(defun beed/hl-line-highlight (original)
-  (unless (beed/no-hl-line-buffer-p)
-    (funcall original)))
-
-(advice-add 'global-hl-line-highlight :around #'beed/global-hl-line-highlight)
-(advice-add 'hl-line-highlight :around #'beed/hl-line-highlight)
-
 (global-hl-line-mode 1)
 
+(defun beed/empty-hl-line-range ()
+  (cons (point) (point)))
+
 (defun beed/disable-hl-line ()
-  (setq-local hl-line-range-function #'ignore)
+  (setq-local hl-line-range-function #'beed/empty-hl-line-range)
   (hl-line-mode -1)
   (global-hl-line-unhighlight))
 
