@@ -43,9 +43,31 @@ local function branch_with_dirty(branch)
   return " *" .. branch
 end
 
+local colors = require("modus-themes.colors").setup()
+local lualine_grey = {
+  a = { bg = colors.bg_status_line_active, fg = colors.fg_status_line_active, gui = "bold" },
+  b = { bg = colors.bg_status_line_active, fg = colors.fg_status_line_active, gui = "bold" },
+  c = { bg = colors.bg_status_line_active, fg = colors.fg_status_line_active },
+}
+
+local lualine_theme = {
+  normal = lualine_grey,
+  insert = lualine_grey,
+  visual = lualine_grey,
+  replace = lualine_grey,
+  command = lualine_grey,
+  terminal = lualine_grey,
+  inactive = {
+    a = { bg = colors.bg_status_line_inactive, fg = colors.fg_status_line_inactive, gui = "bold" },
+    b = { bg = colors.bg_status_line_inactive, fg = colors.fg_status_line_inactive, gui = "bold" },
+    c = { bg = colors.bg_status_line_inactive, fg = colors.fg_status_line_inactive },
+  },
+}
+
 require("lualine").setup {
   options = {
     icons_enabled = false,
+    theme = lualine_theme,
     component_separators = "",
     section_separators = "",
   },
