@@ -499,7 +499,7 @@ def toggle_emacs() -> None:
 
 def restart_emacs_daemon() -> None:
     subprocess.run(["killall", "emacs"], check=False)
-    subprocess.run(["emacs", "--daemon=default"], check=True)
+    subprocess.run(["emacs", "--daemon"], check=True)
     print("Emacs default daemon restarted")
 
 
