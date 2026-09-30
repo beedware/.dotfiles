@@ -57,6 +57,7 @@ require("lualine").setup {
     component_separators = "",
     section_separators = "",
     refresh = {
+      statusline = 1000,
       events = {
         "WinEnter",
         "BufEnter",
@@ -74,20 +75,21 @@ require("lualine").setup {
   },
   sections = {
     lualine_a = { "mode" },
-    lualine_b = {},
+    lualine_b = {
+      { "branch", fmt = branch_with_dirty, padding = { left = 0 } },
+    },
     lualine_c = { "filename" },
     lualine_x = {
-      { "branch", fmt = branch_with_dirty },
       {
         "lsp_status",
         symbols = {
-          spinner = {},
+          spinner = { "-", "\\", "|", "/" },
           done = "",
           separator = " ",
         },
       },
       { "diagnostics", padding = { left = 0, right = 1 } },
-      file_info,
+      { file_info, padding = { left = 1, right = 0 } },
     },
     lualine_y = { "location" },
     lualine_z = {
