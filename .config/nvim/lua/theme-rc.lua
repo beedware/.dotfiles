@@ -43,6 +43,14 @@ local function branch_with_dirty(branch)
   return " *" .. branch
 end
 
+local function file_info()
+  local encoding = vim.bo.fileencoding ~= "" and vim.bo.fileencoding or vim.o.encoding
+  local fileformat = vim.bo.fileformat
+  local filetype = vim.bo.filetype ~= "" and vim.bo.filetype or "no ft"
+
+  return table.concat({ encoding, fileformat, filetype }, ":")
+end
+
 require("lualine").setup {
   options = {
     icons_enabled = false,
@@ -73,19 +81,20 @@ require("lualine").setup {
       {
         "lsp_status",
         symbols = {
-          spinner = { "-", "\\", "|", "/" },
+          spinner = {},
           done = "",
           separator = " ",
         },
       },
-      { "diagnostics", padding = { left = 0, right = 1} },
+      { "diagnostics", padding = { left = 0, right = 1 } },
+      file_info,
     },
     lualine_y = { "location" },
     lualine_z = {
       {
         "progress",
         fmt = function(progress)
-          local value, suffix = progress:match("^%s*(%d+)(.*)$")
+          local value, suffix = progress:match "^%s*(%d+)(.*)$"
           if value then
             return string.format("%02d", value) .. suffix
           end
