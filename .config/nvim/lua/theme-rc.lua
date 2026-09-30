@@ -74,7 +74,7 @@ require("lualine").setup {
   sections = {
     lualine_a = { "mode" },
     lualine_b = {},
-    lualine_c = { "filename" },
+    lualine_c = { { "filename", padding = { left = 0, right = 1} } },
     lualine_x = {
       { "branch", fmt = branch_with_dirty },
       {
