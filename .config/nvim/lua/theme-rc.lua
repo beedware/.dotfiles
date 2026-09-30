@@ -102,7 +102,7 @@ require("lualine").setup {
       },
       { "diagnostics", padding = { left = 0, right = 1} },
     },
-    lualine_y = { "progress" },
+    lualine_y = { { "progress", padding = { left = 1, right = 0} } },
     lualine_z = { "location" },
   },
 }
