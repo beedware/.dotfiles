@@ -85,6 +85,7 @@
   (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
                               :maxlevel . 2))
         org-refile-use-outline-path 'file
+        org-reverse-note-order t
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
         org-agenda-span 3
