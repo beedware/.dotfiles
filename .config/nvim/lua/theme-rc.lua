@@ -70,6 +70,21 @@ require("lualine").setup {
     theme = lualine_theme,
     component_separators = "",
     section_separators = "",
+    refresh = {
+      events = {
+        "WinEnter",
+        "BufEnter",
+        "BufWritePost",
+        "SessionLoadPost",
+        "FileChangedShellPost",
+        "VimResized",
+        "Filetype",
+        "CursorMoved",
+        "CursorMovedI",
+        "ModeChanged",
+        "DiagnosticChanged",
+      },
+    },
   },
   sections = {
     lualine_a = { "mode" },
