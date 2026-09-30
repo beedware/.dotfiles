@@ -102,7 +102,19 @@ require("lualine").setup {
       },
       { "diagnostics", padding = { left = 0, right = 1} },
     },
-    lualine_y = { { "progress", padding = { left = 1, right = 0} } },
-    lualine_z = { "location" },
+    lualine_y = { { "location" , padding = { left = 1, right = 0} } },
+    lualine_z = {
+      {
+        "progress",
+        fmt = function(progress)
+          local value, suffix = progress:match("^%s*(%d+)(.*)$")
+          if value then
+            return string.format("%02d", value) .. suffix
+          end
+
+          return progress
+        end,
+      },
+    },
   },
 }
