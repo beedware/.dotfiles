@@ -190,11 +190,20 @@ user_pref("full-screen-api.warning.timeout", 0);
 user_pref("browser.urlbar.trending.featureGate", false);
 
 /** NEW TAB PAGE ***/
+user_pref("browser.newtabpage.activity-stream.showSearch", true);
+user_pref("browser.newtabpage.activity-stream.showWeather", false);
+user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
+user_pref("browser.newtabpage.activity-stream.topSitesRows", 1);
 user_pref("browser.newtabpage.activity-stream.default.sites", "");
 user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
+user_pref("browser.newtabpage.activity-stream.section.highlights.rows", 1);
 user_pref("browser.newtabpage.activity-stream.showSponsored", false);
 user_pref("browser.newtabpage.activity-stream.showSponsoredCheckboxes", false);
+user_pref("browser.newtabpage.activity-stream.unifiedAds.tiles.enabled", false);
+user_pref("browser.newtabpage.activity-stream.unifiedAds.spocs.enabled", false);
+user_pref("browser.newtabpage.activity-stream.logowordmark.alwaysVisible", true);
 
 /** DOWNLOADS ***/
 user_pref("browser.download.manager.addToRecentDocs", false);
