@@ -172,6 +172,7 @@ user_pref("browser.profiles.enabled", true);
 /** THEME ADJUSTMENTS ***/
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.compactmode.show", true);
+user_pref("browser.uidensity", 1);
 user_pref("browser.privateWindowSeparation.enabled", false); // WINDOWS
 
 /** AI ***/
@@ -221,6 +222,8 @@ user_pref("layout.word_select.eat_space_to_next_word", false);
 user_pref("identity.fxaccounts.enabled", false);
 
 /** SIDEBAR ***/
+user_pref("sidebar.revamp", true);
+user_pref("sidebar.verticalTabs", true);
 user_pref("sidebar.revamp.round-content-area", false);
 
 /** SEARCH SETTINGS ***/
