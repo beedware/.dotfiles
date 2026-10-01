@@ -9,3 +9,5 @@ for profile_dir in "$HOME/.mozilla/firefox"/*/; do
   [ -d "$profile_dir" ] || continue
   ln -sfn "$HOME/.dotfiles/.mozilla/firefox/user.js" "$profile_dir/user.js"
 done
+
+echo "Update Firefox search settings at about:preferences#search: disable all search engines except DuckDuckGo, add Startpage by visiting Startpage then right-clicking the URL bar and choosing Add as Search Engine, and leave Bookmarks, Tabs, History, and Actions unchanged."
