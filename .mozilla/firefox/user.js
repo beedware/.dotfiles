@@ -210,6 +210,9 @@ user_pref("identity.fxaccounts.enabled", false);
 user_pref("sidebar.revamp.round-content-area", false);
 
 /** SEARCH SETTINGS ***/
+user_pref("browser.search.defaultenginename", "DuckDuckGo");
+user_pref("browser.search.order.1", "DuckDuckGo");
+user_pref("browser.search.privateDefault", "DuckDuckGo");
 user_pref("browser.urlbar.showSearchTerms.enabled", true);
 user_pref("browser.search.separatePrivateDefault", false);
 user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
