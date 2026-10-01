@@ -41,7 +41,9 @@ __pycache__
 
 add
 rem
-configs
+
+# Local/private configs that should not be stowed or tracked publicly.
+^/configs
 .mozilla
 .voidlinux
 
