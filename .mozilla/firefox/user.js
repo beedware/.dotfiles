@@ -74,9 +74,6 @@ user_pref("browser.privatebrowsing.resetPBM.enabled", true);
 /** SEARCH / URL BAR ***/
 user_pref("browser.urlbar.trimHttps", true);
 user_pref("browser.urlbar.untrimOnUserInteraction.featureGate", true);
-user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
-user_pref("browser.search.suggest.enabled", false);
-user_pref("browser.urlbar.quicksuggest.enabled", false);
 user_pref("browser.urlbar.groupLabels.enabled", false);
 user_pref("browser.formfill.enable", false);
 user_pref("network.IDN_show_punycode", true);
@@ -134,8 +131,8 @@ user_pref("toolkit.telemetry.firstShutdownPing.enabled", false);
 user_pref("toolkit.telemetry.coverage.opt-out", true);
 user_pref("toolkit.coverage.opt-out", true);
 user_pref("toolkit.coverage.endpoint.base", "");
-user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
+user_pref("browser.newtabpage.activity-stream.telemetry.privatePing.enabled", false);
 user_pref("datareporting.usage.uploadEnabled", false);
 
 /** EXPERIMENTS ***/
@@ -192,25 +189,6 @@ user_pref("full-screen-api.transition-duration.enter", "0 0");
 user_pref("full-screen-api.transition-duration.leave", "0 0");
 user_pref("full-screen-api.warning.timeout", 0);
 
-/** URL BAR ***/
-user_pref("browser.urlbar.trending.featureGate", false);
-
-/** NEW TAB PAGE ***/
-user_pref("browser.newtabpage.activity-stream.showSearch", true);
-user_pref("browser.newtabpage.activity-stream.showWeather", false);
-user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
-user_pref("browser.newtabpage.activity-stream.topSitesRows", 1);
-user_pref("browser.newtabpage.activity-stream.default.sites", "");
-user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
-user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
-user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
-user_pref("browser.newtabpage.activity-stream.section.highlights.rows", 1);
-user_pref("browser.newtabpage.activity-stream.showSponsored", false);
-user_pref("browser.newtabpage.activity-stream.showSponsoredCheckboxes", false);
-user_pref("browser.newtabpage.activity-stream.unifiedAds.tiles.enabled", false);
-user_pref("browser.newtabpage.activity-stream.unifiedAds.spocs.enabled", false);
-user_pref("browser.newtabpage.activity-stream.logowordmark.alwaysVisible", true);
-
 /** DOWNLOADS ***/
 user_pref("browser.download.manager.addToRecentDocs", false);
 
@@ -229,15 +207,14 @@ user_pref("identity.fxaccounts.enabled", false);
 /** SIDEBAR ***/
 user_pref("sidebar.revamp", true);
 user_pref("sidebar.verticalTabs", true);
-user_pref("sidebar.revamp.round-content-area", false);
 
 /** SEARCH SETTINGS ***/
 user_pref("browser.search.defaultenginename", "DuckDuckGo");
 user_pref("browser.search.order.1", "DuckDuckGo");
 user_pref("browser.search.privateDefault", "DuckDuckGo");
 user_pref("browser.urlbar.showSearchTerms.enabled", true);
-user_pref("browser.search.separatePrivateDefault", false);
-user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
+user_pref("browser.search.separatePrivateDefault.enabled", false);
+user_pref("browser.search.separatePrivateDefault.featureGate", false);
 
 /** SEARCH ENGINE SUGGESTIONS ***/
 user_pref("browser.search.suggest.enabled", false);
