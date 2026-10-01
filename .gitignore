@@ -31,3 +31,4 @@ __pycache__/
 .local/bin/ical2orgpy
 .config/emacs/projects.eld
 .local/bin/dotnet
+.local/share/applications/userapp-Firefox-*.desktop
