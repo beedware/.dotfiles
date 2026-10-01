@@ -5,7 +5,7 @@ set -eu
 
 sudo xbps-install -Sy firefox speech-dispatcher
 
-for profile_dir in "$HOME/.config/mozilla/firefox"/*/; do
+for profile_dir in "$HOME/.mozilla/firefox"/*/; do
   [ -d "$profile_dir" ] || continue
   ln -sfn "$HOME/.dotfiles/.mozilla/firefox/user.js" "$profile_dir/user.js"
 done
