@@ -6,6 +6,7 @@ set -eu
 add_root="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 command -v cargo >/dev/null 2>&1 || { echo "cargo is not installed. Run add/rust first."; exit 1; }
+command -v pipx >/dev/null 2>&1 || { echo "pipx is not installed. Run add/python first."; exit 1; }
 
 sudo xbps-install -Sy \
     base-devel \
@@ -20,6 +21,8 @@ sudo xbps-install -Sy \
     tree-sitter-cli \
     unzip \
     xz
+
+pipx install ical2orgpy
 
 "$add_root/tex"
 "$add_root/typst"
