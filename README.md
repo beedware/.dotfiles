@@ -102,9 +102,69 @@ cd ~/.dotfiles
 stow .
 ```
 
+### Install Script Dependencies
+
+Install the package managers and language tools required by later `add/`
+scripts:
+
+```bash
+add/node
+add/rust
+add/python
+add/flathub
+```
+
+`add/flathub` reboots when it finishes. After `add/rust`, open a new shell or
+make sure `~/.cargo/bin` is on `PATH` before running scripts that require
+`cargo`.
+
+Dependency tree for the bundled scripts:
+
+```text
+add/cli
+|-- requires: npm from add/node
+|-- add/pde
+|   |-- add/shell
+|   |-- add/nvim
+|   |   `-- add/rust
+|   |-- add/node
+|   |-- add/haskell
+|   `-- add/codeberg
+|-- add/mpd
+|-- add/void-packages
+|   `-- needs GitHub SSH for git@github.com clone
+|-- add/power
+`-- add/ai
+    `-- requires: npm from add/node
+
+add/gui
+|-- requires: flatpak/flathub from add/flathub
+|-- add/firefox
+|-- add/espanso
+|   `-- requires: cargo from add/rust
+|-- add/emacs
+|   |-- requires: cargo from add/rust
+|   |-- requires: pipx from add/python
+|   |-- add/tex
+|   |   `-- requires: cargo from add/rust
+|   `-- add/typst
+|       `-- requires: cargo from add/rust
+`-- add/printers
+
+add/gaming
+|-- requires: flatpak/flathub from add/flathub
+|-- add/heroic
+`-- add/faugus
+
+add/pcvr
+|-- requires: flatpak/flathub from add/flathub
+`-- add/wayvr
+```
+
 ### Install Applications
 
-Install the terminal and graphical applicatons:
+Install the terminal and graphical applications after the dependency providers
+above:
 
 ```bash
 add/cli
@@ -114,7 +174,7 @@ add/i3wm
 
 This installs the general tools needed for common CLI workflows, development
 and productivity. This does not install gaming related packages. To install
-those please do:
+those, first make sure `add/flathub` has been run, then do:
 
 ```bash
 add/gaming
@@ -122,11 +182,17 @@ add/gaming
 
 ### Install Standalone Components
 
-Each script owns the dependencies for the matching config or tool. Run only
-what the machine needs. They are found in `add`.
+Each script owns most dependencies for the matching config or tool, but scripts
+that use another package manager must be run after that package manager is
+installed. Run only what the machine needs. They are found in `add`.
 
 `add/i3wm` assumes `add/xfce4` has already been run. It only installs the
 i3-specific pieces on top of the XFCE/Xorg/PipeWire base.
+
+Scripts that can be run independently after the base setup include `add/docker`,
+`add/qemu-kvm`, `add/dotnet`, `add/flutter`, `add/java`, `add/godot`,
+`add/postgresql`, `add/prolog`, `add/nix`, `add/zed`, `add/helium`, `add/vial`,
+`add/mpd`, `add/power`, and `add/printers`.
 
 ## Optional Scripts
 
