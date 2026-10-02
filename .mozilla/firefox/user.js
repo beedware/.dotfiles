@@ -171,6 +171,11 @@ user_pref("browser.startup.page", 0);
 user_pref("browser.startup.homepage", "about:blank");
 user_pref("browser.newtabpage.enabled", false);
 
+/** STARTUP ***/
+user_pref("browser.sessionstore.resume_from_crash", false);
+user_pref("browser.sessionstore.resume_session_once", false);
+user_pref("browser.startup.page", 1);
+
 /** THEME ADJUSTMENTS ***/
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.compactmode.show", true);
