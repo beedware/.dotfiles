@@ -94,7 +94,12 @@ command -v flutter >/dev/null 2>&1 && source <(flutter bash-completion 2>/dev/nu
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 PROMPT_COMMAND='history -a; history -c; history -r'
 PS1='\[\e[92m\]\u@\h\[\e[0m\]:\[\e[96m\]\w\[\e[0m\]\n\[\e[93m\]${VIRTUAL_ENV:+($(basename "$VIRTUAL_ENV")) }\[\e[0m\]> '
-[[ $PS1 &&
-  ! ${BASH_COMPLETION_VERSINFO:-} &&
-  -f /usr/share/bash-completion/bash_completion ]] &&
-    . /usr/share/bash-completion/bash_completion
+if [[ $PS1 && -z ${BASH_COMPLETION_VERSINFO:-} ]]; then
+  if [[ -r /usr/share/bash-completion/bash_completion ]]; then
+    source /usr/share/bash-completion/bash_completion
+  elif [[ -r /etc/bash_completion ]]; then
+    source /etc/bash_completion
+  elif command -v bash-completion >/dev/null 2>&1; then
+    :
+  fi
+fi
