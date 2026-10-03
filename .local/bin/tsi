@@ -48,6 +48,9 @@ CONFIG = LauncherConfig(
         DirectorySource(
             base_dir=Path("~/Compendium"), depth=1, key_prefix="compendium/"
         ),
+        DirectorySource(
+            base_dir=Path("~/Compendium/Notebook"), depth=1, key_prefix="compendium/Nootbook/"
+        ),
         DirectorySource(base_dir=Path("~"), depth=1, key_prefix="home/"),
     ),
     default_target=Path("~"),
