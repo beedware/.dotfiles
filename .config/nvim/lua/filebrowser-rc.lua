@@ -7,11 +7,15 @@ require("oil").setup {
   view_options = {
     show_hidden = true,
   },
+  keymaps = {
+    ["<C-v>"] = { "actions.select", opts = { vertical = true } },
+    ["<C-s>"] = { "actions.select", opts = { horizontal = true } },
+  },
   columns = { "permissions", "size", "mtime" },
 }
 
 vim.keymap.set("n", "-", function()
-    require("oil").open()
+  require("oil").open()
 end, { desc = "Open file explorer" })
 
 vim.api.nvim_create_autocmd("VimEnter", {
