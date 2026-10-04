@@ -22,6 +22,7 @@
               ("w" . pdf-view-fit-width-to-window))
   :custom
   (pdf-view-display-size 'fit-page)
+  (pdf-view-midnight-colors '("#ffffff" . "#000000"))
   (pdf-view-resize-factor 1.1)
   :config
   (pdf-tools-install :no-query))
