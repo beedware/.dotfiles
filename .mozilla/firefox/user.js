@@ -1,4 +1,5 @@
 /** GENERAL ***/
+user_pref("general.autoScroll", true);
 user_pref("gfx.content.skia-font-cache-size", 32);
 
 /** GFX ***/
