@@ -136,6 +136,7 @@
 (require 'snippets-rc)
 (require 'inbuffer-completion-rc)
 (require 'filebrowser-rc)
+(require 'pdf-rc)
 (require 'git-rc)
 
 (require 'treesitter-rc)
