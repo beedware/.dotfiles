@@ -7,7 +7,7 @@ require("oil").setup {
   view_options = {
     show_hidden = true,
   },
-  columns = {},
+  columns = { "permissions", "size", "mtime" },
 }
 
 vim.keymap.set("n", "<leader>.", function()
