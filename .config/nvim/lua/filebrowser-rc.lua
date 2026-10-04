@@ -10,13 +10,9 @@ require("oil").setup {
   columns = { "permissions", "size", "mtime" },
 }
 
-vim.keymap.set("n", "<leader>.", function()
-  if vim.bo.filetype == "oil" then
-    require("oil").close()
-  else
+vim.keymap.set("n", "-", function()
     require("oil").open()
-  end
-end, { desc = "Toggle file explorer" })
+end, { desc = "Open file explorer" })
 
 vim.api.nvim_create_autocmd("VimEnter", {
   group = vim.api.nvim_create_augroup("OilOpenOnStart", { clear = true }),
