@@ -116,6 +116,19 @@
 (defvar beed/org-agenda-live-timer nil
   "Timer used for live Org Agenda refresh.")
 
+(defun beed/org-agenda-live--refresh ()
+  (when-let* ((buf (get-buffer org-agenda-buffer-name)))
+    (with-current-buffer buf
+      (when (derived-mode-p 'org-agenda-mode)
+        (org-agenda-redo)))))
+
+(defun beed/org-agenda-live--schedule ()
+  (setq beed/org-agenda-live-timer
+        (run-at-time (max 1 (- 60 (nth 0 (decode-time)))) nil
+                     (lambda ()
+                       (beed/org-agenda-live--refresh)
+                       (beed/org-agenda-live--schedule)))))
+
 (defun beed/org-agenda-live ()
   "Toggle live Org Agenda refresh."
   (interactive)
@@ -124,13 +137,8 @@
         (cancel-timer beed/org-agenda-live-timer)
         (setq beed/org-agenda-live-timer nil)
         (message "Org Agenda live refresh disabled"))
-    (setq beed/org-agenda-live-timer
-          (run-at-time nil 60
-                       (lambda ()
-                         (when-let* ((buf (get-buffer org-agenda-buffer-name)))
-                           (with-current-buffer buf
-                             (when (derived-mode-p 'org-agenda-mode)
-                               (org-agenda-redo)))))))
+    (beed/org-agenda-live--refresh)
+    (beed/org-agenda-live--schedule)
     (message "Org Agenda live refresh enabled")))
 
 (provide 'orgmode-rc)
