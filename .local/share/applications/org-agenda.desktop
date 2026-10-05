@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Org Agenda
-Exec=emacsclient -a emacs -c -e '(progn (unless beed/org-agenda-live-timer (beed/org-agenda-live)) (org-agenda nil "a"))'
+Exec=emacsclient -a emacs -c -e "(progn (org-agenda nil \"a\") (when (and (fboundp (quote beed/org-agenda-live)) (not (bound-and-true-p beed/org-agenda-live-timer))) (beed/org-agenda-live)))"
 Icon=emacs
 Type=Application
 Terminal=false

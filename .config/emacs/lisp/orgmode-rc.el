@@ -117,7 +117,8 @@
   "Timer used for live Org Agenda refresh.")
 
 (defun beed/org-agenda-live--refresh ()
-  (when-let* ((buf (get-buffer org-agenda-buffer-name)))
+  (when-let* ((buf (and (boundp 'org-agenda-buffer-name)
+                        (get-buffer org-agenda-buffer-name))))
     (with-current-buffer buf
       (when (derived-mode-p 'org-agenda-mode)
         (org-agenda-redo)))))
