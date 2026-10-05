@@ -46,24 +46,32 @@
         (overlay-put overlay 'face 'beed/trailing-space-marker)
         (overlay-put overlay 'evaporate t)))))
 
+(defun beed/trailing-space-mode--update-buffer ()
+  (if (or (minibufferp)
+          (derived-mode-p 'shell-mode 'eshell-mode 'term-mode 'vterm-mode))
+      (progn
+        (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
+        (remove-overlays (point-min) (point-max) 'beed/trailing-space t))
+    (add-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots nil t)
+    (beed/show-trailing-spaces-as-dots)))
+
 (define-minor-mode beed/trailing-space-mode
   "Display trailing spaces as middle dots."
   :lighter nil
+  :global t
   (if beed/trailing-space-mode
       (progn
-        (add-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots nil t)
-        (beed/show-trailing-spaces-as-dots))
-    (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
-    (remove-overlays (point-min) (point-max) 'beed/trailing-space t)))
+        (add-hook 'after-change-major-mode-hook #'beed/trailing-space-mode--update-buffer)
+        (dolist (buffer (buffer-list))
+          (with-current-buffer buffer
+            (beed/trailing-space-mode--update-buffer))))
+    (remove-hook 'after-change-major-mode-hook #'beed/trailing-space-mode--update-buffer)
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
+        (remove-overlays (point-min) (point-max) 'beed/trailing-space t)))))
 
-(define-globalized-minor-mode beed/global-trailing-space-mode
-  beed/trailing-space-mode
-  (lambda ()
-    (unless (or (minibufferp)
-                (derived-mode-p 'shell-mode 'eshell-mode 'term-mode 'vterm-mode))
-      (beed/trailing-space-mode 1))))
-
-(beed/global-trailing-space-mode 1)
+(beed/trailing-space-mode 1)
 
 (use-package modus-themes
   :demand t
