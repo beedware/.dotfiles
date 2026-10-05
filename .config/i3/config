@@ -86,13 +86,14 @@ bindsym $mod+Shift+w exec --no-startup-id ~/.config/rofi/modes/marks
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/modes/locker
 
 bindsym $mod+Shift+x exec --no-startup-id ~/.config/rofi/modes/powermenu
-bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/modes/killmenu
+bindsym $mod+Shift+c exec --no-startup-id xkill
 
 bindsym $mod+c kill
 bindsym --release button2 kill
 bindsym button3 floating toggle
 
 bindsym $mod+space exec --no-startup-id rofi -show drun
+bindsym $mod+Shift+space exec --no-startup-id ~/.config/rofi/modes/killmenu
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
