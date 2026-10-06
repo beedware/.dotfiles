@@ -24,7 +24,7 @@ for MOUNT in /mnt/ssd /mnt/nvme /; do
     [ -n "$USAGE" ] || continue
 
     if [ -n "$DISK" ]; then
-        DISK="$DISK.$USAGE"
+        DISK="$DISK:$USAGE"
     else
         DISK="$USAGE"
     fi
@@ -37,4 +37,4 @@ CPU=$(awk -v avg="$LOAD" -v cores="$CORES" 'BEGIN { printf "%02d", (avg / cores)
 
 [ -n "$DISK" ] && [ -n "$RAM" ] && [ -n "$CPU" ] || exit 0
 
-format_output "$DISK:$RAM:$CPU"
+format_output "$CPU.$RAM.$DISK"
