@@ -6,10 +6,13 @@ LAYOUT_2="ara"
 CURRENT_LAYOUT=$(setxkbmap -query | grep layout | awk '{print $2}')
 
 if [ "$CURRENT_LAYOUT" = "$LAYOUT_1" ]; then
-    setxkbmap "$LAYOUT_2"
+    NEW_LAYOUT="$LAYOUT_2"
 else
-    setxkbmap "$LAYOUT_1"
+    NEW_LAYOUT="$LAYOUT_1"
 fi
+
+setxkbmap "$NEW_LAYOUT"
+notify-send "Keyboard layout" "Switched to $NEW_LAYOUT"
 
 pkill -SIGRTMIN+10 dwmblocks
 pkill -SIGRTMIN+10 i3blocks
