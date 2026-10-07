@@ -15,6 +15,10 @@ __pycache__/
 .screenlayout/screens.sh
 .config/opencode/opencode.jsonc
 .local/bin/prettypst
+.local/bin/cs
+.local/bin/mill
+.local/bin/scala-cli
+.local/bin/.scala-cli.aux
 .local/bin/tex-fmt
 .local/share/icons/hicolor/icon-theme.cache
 .local/bin/poomer

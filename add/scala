@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+
+# tags: #dev
+
+sudo xbps-install -Sy \
+    curl \
+    gzip \
+    openjdk25
+
+INSTALL_DIR="$HOME/.local/bin"
+CS="$INSTALL_DIR/cs"
+VERSION="2.1.26"
+BIN="cs-x86_64-pc-linux-static"
+CHECKSUM="21021ff6689637bd0fce276c91171aabe67c70c72a3c805e6daddbc9ca58f6c4"
+URL="https://github.com/coursier/coursier/releases/download/v${VERSION}/${BIN}.gz"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+mkdir -p "$INSTALL_DIR"
+
+cd "$TMP_DIR"
+
+curl -fL -o "${BIN}.gz" "$URL"
+printf '%s  %s\n' "$CHECKSUM" "${BIN}.gz" | sha256sum --check
+gzip -d "${BIN}.gz"
+mv "$BIN" "$CS"
+chmod +x "$CS"
+
+"$CS" install \
+    mill \
+    scala-cli \
+    --install-dir "$INSTALL_DIR"
+
+printf 'Coursier installed: %s\n' "$CS"
+printf 'Scala tools installed in: %s\n' "$INSTALL_DIR"
