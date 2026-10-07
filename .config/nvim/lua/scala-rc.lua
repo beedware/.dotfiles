@@ -1,3 +1,4 @@
+local quality = require "quality-rc"
 local treesitter = require "treesitter-rc"
 
 vim.pack.add {
@@ -6,6 +7,11 @@ vim.pack.add {
 }
 
 treesitter.add { "scala" }
+
+quality.formatters {
+  scala = { "scalafmt" },
+  sbt = { "scalafmt" },
+}
 
 local metals_config = require("metals").bare_config()
 metals_config.init_options.statusBarProvider = "off"

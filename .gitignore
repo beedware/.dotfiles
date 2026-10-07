@@ -17,6 +17,7 @@ __pycache__/
 .local/bin/prettypst
 .local/bin/cs
 .local/bin/mill
+.local/bin/scalafmt
 .local/bin/scala-cli
 .local/bin/.scala-cli.aux
 .local/bin/tex-fmt
