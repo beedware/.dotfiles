@@ -5,8 +5,6 @@ vim.pack.add {
   "https://github.com/scalameta/nvim-metals",
 }
 
-vim.opt_global.shortmess:remove "F"
-
 treesitter.add { "scala" }
 
 local metals_config = require("metals").bare_config()
