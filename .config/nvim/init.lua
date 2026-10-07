@@ -325,11 +325,11 @@ require "shell-rc"
 require "python-rc"
 require "c-rc"
 require "haskell-rc"
-require "scala-rc"
 require "prolog-rc"
 require "typst-rc"
 require "gdscript-rc"
 require "web-rc"
+require "scala-rc"
 -- require("flutter-rc")
 -- require("tex-rc")
 -- require("csharp-rc")
