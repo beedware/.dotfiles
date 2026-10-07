@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+# tags: #dev
+
+INSTALL_DIR="$HOME/.local/bin"
+MILL_VERSION="2.0.0-M2"
+MILL_CHECKSUM="2dbc9b2f014ed1aac049a63c58c513997fe474ee586152bb7fd4c13db7c26f26"
+MILL="$INSTALL_DIR/mill"
+MILL_URL="https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${MILL_VERSION}/mill-dist-${MILL_VERSION}-mill.sh"
+TMP_DIR="$(mktemp -d)"
+
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+mkdir -p "$INSTALL_DIR"
+
+cd "$TMP_DIR"
+
+curl -fL -o mill "$MILL_URL"
+printf '%s  %s\n' "$MILL_CHECKSUM" mill | sha256sum --check
+chmod +x mill
+mv mill "$MILL"
+
+test "$("$MILL" version)" = "$MILL_VERSION"

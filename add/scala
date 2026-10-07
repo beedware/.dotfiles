@@ -30,10 +30,11 @@ mv "$BIN" "$CS"
 chmod +x "$CS"
 
 "$CS" install \
-    mill \
     scalafmt \
     scala-cli \
     --install-dir "$INSTALL_DIR"
+
+"$(dirname "$0")/mill"
 
 printf 'Coursier installed: %s\n' "$CS"
 printf 'Scala tools installed in: %s\n' "$INSTALL_DIR"
