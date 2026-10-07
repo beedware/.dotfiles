@@ -1,11 +1,11 @@
 separator=false
 
-[net_speed]
-command=~/.config/i3blocks/blocklets/net_speed
-interval=5
-
 [sys]
 command=~/.config/i3blocks/blocklets/sys
+interval=5
+
+[net_speed]
+command=~/.config/i3blocks/blocklets/net_speed
 interval=5
 
 [battery]
