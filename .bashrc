@@ -28,7 +28,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export GOPATH="$HOME/.go"
 [ -d "$SDKMAN_DIR/candidates/java/current" ] \
   && export JAVA_HOME="$SDKMAN_DIR/candidates/java/current" \
-  || export JAVA_HOME="/usr/lib/jvm/default"
+  || export JAVA_HOME="/usr/lib/jvm/default-jdk"
 
 [ -d "$SDKMAN_DIR/candidates/maven/current" ] \
   && export MAVEN_HOME="$SDKMAN_DIR/candidates/maven/current" \
