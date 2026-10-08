@@ -40,7 +40,7 @@ HASKELL_DEBUGGER_CHECKSUM="435e1cfa12e346dde41904b1dd3bdb5ee79b01dfe54b0b35191ac
 
 INSTALL_DIR="$HOME/.ghcup/bin"
 TARGET_BIN="$INSTALL_DIR/ghcup"
-CABAL_BIN_DIR="$HOME/.cabal/bin"
+CABAL_BIN_DIR="$HOME/.local/share/cabal/bin"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
@@ -71,11 +71,14 @@ install_tool() {
     printf '%s  %s\n' "$checksum" "$tarball" | sha256sum --check
     rm -rf "$source_dir"
     tar -xzf "$tarball" -C "$TMP_DIR"
-    cabal install "$source_dir" \
-        --builddir="$TMP_DIR/build-$name" \
-        --installdir="$CABAL_BIN_DIR" \
-        --install-method=copy \
-        --overwrite-policy=always
+    (
+        cd "$source_dir"
+        cabal install . \
+            --builddir="$TMP_DIR/build-$name" \
+            --installdir="$CABAL_BIN_DIR" \
+            --install-method=copy \
+            --overwrite-policy=always
+    )
 }
 
 remove_link() {

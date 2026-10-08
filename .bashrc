@@ -9,7 +9,7 @@ export DOTNET_ROOT_X64="$HOME/.dotnet"
 export SDKMAN_DIR="$HOME/.sdkman"
 
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.local/share/cabal/bin:$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.volta/bin:$PATH"
 export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.cache/scalacli/local-repo/bin/scala-cli:$PATH"
