@@ -2,7 +2,6 @@ local quality = require "quality-rc"
 local treesitter = require "treesitter-rc"
 
 vim.pack.add {
-  "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/scalameta/nvim-metals",
 }
 
