@@ -329,93 +329,6 @@ def is_git_url(value: str) -> bool:
     return bool(GIT_URL_RE.match(value))
 
 
-def is_bare_git_input(value: str) -> bool:
-    return value.startswith("bare=")
-
-
-def bare_git_url(value: str) -> str | None:
-    if not is_bare_git_input(value):
-        return None
-    url = value[len("bare=") :].strip()
-    return url or None
-
-
-def ensure_bare_clone(bare_url: str, bare_dir: Path) -> None:
-    if bare_dir.is_dir():
-        return
-    bare_dir.parent.mkdir(parents=True, exist_ok=True)
-    run(["git", "clone", "--bare", bare_url, str(bare_dir)])
-
-
-def default_branch_name(bare_dir: Path) -> str:
-    result = subprocess.run(
-        ["git", f"--git-dir={bare_dir}", "symbolic-ref", "refs/remotes/origin/HEAD"],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode != 0:
-        return "main"
-
-    ref = result.stdout.strip()
-    prefix = "refs/remotes/origin/"
-    if ref.startswith(prefix):
-        branch = ref[len(prefix) :]
-        if branch:
-            return branch
-    return "main"
-
-
-def ensure_default_branch_worktree(bare_dir: Path, repo_root: Path) -> Path:
-    branch = default_branch_name(bare_dir)
-    worktree_dir = repo_root / branch
-
-    if worktree_dir.is_dir():
-        return worktree_dir
-
-    try:
-        run(
-            [
-                "git",
-                f"--git-dir={bare_dir}",
-                "worktree",
-                "add",
-                str(worktree_dir),
-                branch,
-            ]
-        )
-    except subprocess.CalledProcessError:
-        run(
-            [
-                "git",
-                f"--git-dir={bare_dir}",
-                "worktree",
-                "add",
-                str(worktree_dir),
-                "-b",
-                branch,
-                f"origin/{branch}",
-            ]
-        )
-
-    return worktree_dir
-
-
-def handle_bare_git_input(value: str) -> bool:
-    bare_url = bare_git_url(value)
-    if bare_url is None:
-        return True
-
-    clean = clean_repo_path(bare_url)
-    repo_root = CONFIG.src_dir / f"{clean}.git"
-    bare_dir = repo_root / ".git"
-
-    ensure_bare_clone(bare_url, bare_dir)
-    ensure_default_branch_worktree(bare_dir, repo_root)
-    ensure_session(normalize_session_name(clean), repo_root)
-    return True
-
-
 def clean_repo_path(url: str) -> str:
     cleaned = url
     for pattern, replacement in REPO_CLEAN_PATTERNS:
@@ -512,10 +425,6 @@ def main() -> None:
 
         tmp_dir.mkdir(parents=True, exist_ok=True)
         ensure_session(normalize_session_name(value), tmp_dir)
-        return
-
-    if is_bare_git_input(value):
-        handle_bare_git_input(value)
         return
 
     if is_git_url(value):
