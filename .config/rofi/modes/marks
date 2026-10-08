@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -131,6 +132,30 @@ def copy_wayland(text: str) -> None:
     subprocess.run(["wl-copy"], input=text, text=True, check=True)
 
 
+def read_wayland_clipboard() -> str | None:
+    if shutil.which("wl-paste") is None:
+        die("Error: wayland session detected but wl-paste is not installed")
+
+    clipboard = subprocess.run(
+        ["wl-paste", "--no-newline"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if clipboard.returncode != 0 or not clipboard.stdout:
+        return None
+
+    return clipboard.stdout
+
+
+def paste_wayland() -> None:
+    if shutil.which("wtype") is None:
+        die("Error: wayland session detected but wtype is not installed")
+
+    subprocess.run(["wtype", "-M", "ctrl", "v", "-m", "ctrl"], check=True)
+
+
 def copy_x11(text: str) -> None:
     if shutil.which("xclip") is not None:
         subprocess.run(
@@ -147,6 +172,43 @@ def copy_x11(text: str) -> None:
     die("Error: x11 session detected but neither xclip nor xsel is installed")
 
 
+def read_x11_clipboard() -> str | None:
+    if shutil.which("xclip") is not None:
+        clipboard = subprocess.run(
+            ["xclip", "-selection", "clipboard", "-out"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        if clipboard.returncode != 0 or not clipboard.stdout:
+            return None
+
+        return clipboard.stdout
+
+    if shutil.which("xsel") is not None:
+        clipboard = subprocess.run(
+            ["xsel", "--clipboard", "--output"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        if clipboard.returncode != 0 or not clipboard.stdout:
+            return None
+
+        return clipboard.stdout
+
+    die("Error: x11 session detected but neither xclip nor xsel is installed")
+
+
+def paste_x11() -> None:
+    if shutil.which("xdotool") is None:
+        die("Error: x11 session detected but xdotool is not installed")
+
+    subprocess.run(["xdotool", "key", "--clearmodifiers", "ctrl+v"], check=True)
+
+
 def copy_url(url: str) -> None:
     session_type: str = os.environ.get("XDG_SESSION_TYPE", "")
 
@@ -159,6 +221,44 @@ def copy_url(url: str) -> None:
         return
 
     die(f"Error: unsupported or unknown session type: {session_type or 'unset'}")
+
+
+def read_clipboard() -> str | None:
+    session_type: str = os.environ.get("XDG_SESSION_TYPE", "")
+
+    if session_type == "wayland":
+        return read_wayland_clipboard()
+
+    if session_type == "x11":
+        return read_x11_clipboard()
+
+    die(f"Error: unsupported or unknown session type: {session_type or 'unset'}")
+
+
+def paste_clipboard() -> None:
+    session_type: str = os.environ.get("XDG_SESSION_TYPE", "")
+
+    if session_type == "wayland":
+        paste_wayland()
+        return
+
+    if session_type == "x11":
+        paste_x11()
+        return
+
+    die(f"Error: unsupported or unknown session type: {session_type or 'unset'}")
+
+
+def paste_url(url: str) -> None:
+    previous_clipboard: str | None = read_clipboard()
+
+    copy_url(url)
+    try:
+        time.sleep(0.05)
+        paste_clipboard()
+    finally:
+        if previous_clipboard is not None:
+            copy_url(previous_clipboard)
 
 
 def main() -> None:
@@ -174,7 +274,7 @@ def main() -> None:
     if mark is None:
         return
 
-    copy_url(mark.url)
+    paste_url(mark.url)
 
 
 if __name__ == "__main__":
