@@ -109,8 +109,9 @@ scripts:
 
 ```bash
 add/node
-add/rust
 add/python
+add/haskell
+add/rust
 add/flathub
 ```
 

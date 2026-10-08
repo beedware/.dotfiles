@@ -15,5 +15,4 @@ sudo xbps-install -Sy \
 "$add_root/shell"
 "$add_root/nvim"
 "$add_root/node"
-"$add_root/haskell"
 "$add_root/codeberg"
