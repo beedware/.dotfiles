@@ -22,6 +22,7 @@ __pycache__/
 .local/bin/.scala-cli.aux
 .local/bin/tex-fmt
 .local/share/icons/hicolor/icon-theme.cache
+.local/share/icons/Papirus-Dark-Fixed/
 .local/bin/poomer
 .local/bin/flutter
 .local/bin/dart
