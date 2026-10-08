@@ -44,6 +44,7 @@ CABAL_BIN_DIR="$HOME/.cabal/bin"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
+export TMPDIR="$TMP_DIR"
 
 cd "$TMP_DIR"
 
@@ -57,24 +58,27 @@ chmod +x "$TARGET_BIN"
 
 export PATH="$CABAL_BIN_DIR:$HOME/.ghcup/bin:$PATH"
 
-install_hackage_exe() {
+install_tool() {
     name="$1"
     version="$2"
     checksum="$3"
-    tarball="$name-$version.tar.gz"
-    url="https://hackage.haskell.org/package/$name-$version/$tarball"
+    tarball_name="$name-$version.tar.gz"
+    source_dir="$TMP_DIR/$name-$version"
+    tarball="$TMP_DIR/$tarball_name"
+    url="https://hackage.haskell.org/package/$name-$version/$tarball_name"
 
     curl -fL -o "$tarball" "$url"
     printf '%s  %s\n' "$checksum" "$tarball" | sha256sum --check
-    rm -rf "$name-$version"
-    tar -xzf "$tarball"
-    cabal install "$name-$version" \
+    rm -rf "$source_dir"
+    tar -xzf "$tarball" -C "$TMP_DIR"
+    cabal install "$source_dir" \
+        --builddir="$TMP_DIR/build-$name" \
         --installdir="$CABAL_BIN_DIR" \
         --install-method=copy \
         --overwrite-policy=always
 }
 
-remove_local_cabal_link() {
+remove_link() {
     bin="$1"
     link="$HOME/.local/bin/$bin"
 
@@ -92,15 +96,15 @@ ghcup install stack "$STACK_VERSION"
 ghcup set stack "$STACK_VERSION"
 cabal update
 
-install_hackage_exe alex "$ALEX_VERSION" "$ALEX_CHECKSUM"
-install_hackage_exe hoogle "$HOOGLE_VERSION" "$HOOGLE_CHECKSUM"
-install_hackage_exe fast-tags "$FAST_TAGS_VERSION" "$FAST_TAGS_CHECKSUM"
-install_hackage_exe haskell-debugger "$HASKELL_DEBUGGER_VERSION" "$HASKELL_DEBUGGER_CHECKSUM"
+install_tool alex "$ALEX_VERSION" "$ALEX_CHECKSUM"
+install_tool hoogle "$HOOGLE_VERSION" "$HOOGLE_CHECKSUM"
+install_tool fast-tags "$FAST_TAGS_VERSION" "$FAST_TAGS_CHECKSUM"
+install_tool haskell-debugger "$HASKELL_DEBUGGER_VERSION" "$HASKELL_DEBUGGER_CHECKSUM"
 
-remove_local_cabal_link alex
-remove_local_cabal_link fast-tags
-remove_local_cabal_link hdb
-remove_local_cabal_link hoogle
+remove_link alex
+remove_link fast-tags
+remove_link hdb
+remove_link hoogle
 
 echo "GHCup installed: $TARGET_BIN"
 echo "Haskell tools installed in: $CABAL_BIN_DIR"
