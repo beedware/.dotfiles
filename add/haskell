@@ -4,8 +4,10 @@ set -eu
 # tags: #dev
 
 sudo xbps-install -Sy \
+    binutils \
     curl \
     gcc \
+    glibc-devel \
     gmp-devel \
     libffi-devel \
     make \
@@ -13,34 +15,72 @@ sudo xbps-install -Sy \
     ncurses-libtinfo-devel \
     ncurses-libtinfo-libs \
     perl \
+    pkg-config \
+    tar \
     xz \
     zlib-devel
 
-VERSION="0.2.6.2"
-BIN="x86_64-linux-ghcup-${VERSION}"
-CHECKSUM="9ed5da5449b48043a0d17e767c05d2ef585e25a639bb934329496c6d2fad9cf8"
+GHCUP_VERSION="0.2.6.2"
+GHCUP_BIN="x86_64-linux-ghcup-${GHCUP_VERSION}"
+GHCUP_CHECKSUM="9ed5da5449b48043a0d17e767c05d2ef585e25a639bb934329496c6d2fad9cf8"
+GHCUP_URL="https://downloads.haskell.org/~ghcup/${GHCUP_VERSION}/${GHCUP_BIN}"
+
+GHC_VERSION="9.14.1"
+CABAL_VERSION="3.16.1.0"
+STACK_VERSION="3.7.1"
+
+ALEX_VERSION="3.5.4.2"
+ALEX_CHECKSUM="df481dc960e2c59a30395f7335031fd4ef8773b8a42894a4f2320e00ff474418"
+HOOGLE_VERSION="5.0.19.0"
+HOOGLE_CHECKSUM="a37d3d785935868b9d7e73e1e826fbb25303bd4b16ffa5ea7ae469b0ef091b17"
+FAST_TAGS_VERSION="2.0.3"
+FAST_TAGS_CHECKSUM="074314eac4cf0854a09041aa34a960bcbe8c5918d802d6678c5620400f78e672"
+HASKELL_DEBUGGER_VERSION="0.14.0.0"
+HASKELL_DEBUGGER_CHECKSUM="435e1cfa12e346dde41904b1dd3bdb5ee79b01dfe54b0b35191acca93358fb59"
+
 INSTALL_DIR="$HOME/.ghcup/bin"
 TARGET_BIN="$INSTALL_DIR/ghcup"
-URL="https://downloads.haskell.org/~ghcup/${VERSION}/${BIN}"
 
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 cd "$TMP_DIR"
 
-curl -fL -o "$BIN" "$URL"
-printf '%s  %s\n' "$CHECKSUM" "$BIN" | sha256sum --check
+curl -fL -o "$GHCUP_BIN" "$GHCUP_URL"
+printf '%s  %s\n' "$GHCUP_CHECKSUM" "$GHCUP_BIN" | sha256sum --check
 
 mkdir -p "$INSTALL_DIR"
 rm -f "$TARGET_BIN"
-mv "$BIN" "$TARGET_BIN"
+mv "$GHCUP_BIN" "$TARGET_BIN"
 chmod +x "$TARGET_BIN"
 
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
-ghcup install ghc --set recommended
-ghcup install cabal latest
-ghcup install stack latest
+install_hackage_exe() {
+    name="$1"
+    version="$2"
+    checksum="$3"
+    tarball="$name-$version.tar.gz"
+    url="https://hackage.haskell.org/package/$name-$version/$tarball"
+
+    curl -fL -o "$tarball" "$url"
+    printf '%s  %s\n' "$checksum" "$tarball" | sha256sum --check
+    rm -rf "$name-$version"
+    tar -xzf "$tarball"
+    cabal install "$name-$version" --overwrite-policy=always
+}
+
+ghcup install ghc --set "$GHC_VERSION"
+ghcup install cabal "$CABAL_VERSION"
+ghcup set cabal "$CABAL_VERSION"
+ghcup install stack "$STACK_VERSION"
+ghcup set stack "$STACK_VERSION"
 cabal update
 
+install_hackage_exe alex "$ALEX_VERSION" "$ALEX_CHECKSUM"
+install_hackage_exe hoogle "$HOOGLE_VERSION" "$HOOGLE_CHECKSUM"
+install_hackage_exe fast-tags "$FAST_TAGS_VERSION" "$FAST_TAGS_CHECKSUM"
+install_hackage_exe haskell-debugger "$HASKELL_DEBUGGER_VERSION" "$HASKELL_DEBUGGER_CHECKSUM"
+
 echo "GHCup installed: $TARGET_BIN"
+echo "Haskell tools installed in: $HOME/.cabal/bin"

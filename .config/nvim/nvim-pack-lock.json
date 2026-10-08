@@ -36,6 +36,11 @@
       "rev": "070a5d7b985546cc57e1fc61e5bc507fecac6045",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "haskell-tools.nvim": {
+      "rev": "851c4fbe24213615e29fed441208b9c96ec0ff1a",
+      "src": "https://github.com/MrcJkb/haskell-tools.nvim",
+      "version": "'v11.0.0'"
+    },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
       "src": "https://github.com/folke/lazydev.nvim"

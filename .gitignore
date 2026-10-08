@@ -37,3 +37,7 @@ __pycache__/
 .config/emacs/projects.eld
 .local/bin/dotnet
 .local/share/applications/userapp-Firefox-*.desktop
+.local/bin/alex
+.local/bin/fast-tags
+.local/bin/hdb
+.local/bin/hoogle
