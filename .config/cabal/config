@@ -1,0 +1,5 @@
+repository hackage.haskell.org
+  url: https://hackage.haskell.org/
+
+install-method: copy
+installdir: $prefix/bin
