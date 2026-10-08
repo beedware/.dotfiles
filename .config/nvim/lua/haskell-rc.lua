@@ -4,24 +4,29 @@ local treesitter = require "treesitter-rc"
 
 local dap_ok = pcall(require, "debugging-rc")
 
-local function hoogle_item_text(item)
-  if type(item) == "string" then
-    return item
-  end
-  return item.item or item.self or item.docs or item.url or vim.inspect(item)
-end
-
-local function hoogle_search(query)
-  if query == nil or query == "" then
-    query = vim.fn.expand "<cword>"
-  end
-  if query == "" then
-    query = vim.fn.input "Hoogle: "
-  end
-  if query == "" then
+local function refresh_codelens(bufnr)
+  if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
 
+  vim.api.nvim_buf_call(bufnr, function()
+    vim.lsp.codelens.enable(true, { bufnr = bufnr })
+  end)
+
+  vim.defer_fn(function()
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      vim.cmd "redraw"
+    end
+  end, 100)
+end
+
+local function hoogle_search(query)
+  query = query or ""
+  query = query ~= "" and query or vim.fn.expand "<cword>"
+  query = query ~= "" and query or vim.fn.input "Hoogle: "
+  if query == "" then
+    return
+  end
   if vim.fn.executable "hoogle" ~= 1 then
     vim.notify("Hoogle requires the hoogle executable", vim.log.levels.WARN)
     return
@@ -42,15 +47,17 @@ local function hoogle_search(query)
       end
 
       local lines = vim.tbl_map(function(item)
-        local text = hoogle_item_text(item):gsub("\n", " ")
-        return item.url and (text .. "\t" .. item.url) or text
+        local text = type(item) == "string" and item or item.item or item.self or item.docs or item.url or vim.inspect(item)
+        local url = type(item) == "table" and item.url
+        text = text:gsub("\n", " ")
+        return url and (text .. "\t" .. url) or text
       end, entries)
 
       require("fzf-lua").fzf_exec(lines, {
         prompt = "Hoogle> ",
         actions = {
           ["default"] = function(selected)
-            local url = selected[1] and selected[1]:match("\t(https?://%S+)$")
+            local url = selected[1] and selected[1]:match "\t(https?://%S+)$"
             if url then
               vim.fn.jobstart({ "xdg-open", url }, { detach = true })
             end
@@ -67,45 +74,36 @@ local function hoogle_search(query)
   end)
 end
 
-local function refresh_codelens(bufnr)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-  vim.api.nvim_buf_call(bufnr, function()
-    vim.lsp.codelens.enable(true, { bufnr = bufnr })
-  end)
-  vim.defer_fn(function()
-    if vim.api.nvim_buf_is_valid(bufnr) then
-      vim.cmd "redraw"
-    end
-  end, 100)
-end
-
 vim.g.haskell_tools = {
   hls = {
     on_attach = function(_, bufnr, ht)
-      local opts = { buffer = bufnr }
+      local function map(lhs, rhs, desc)
+        vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+      end
+
       vim.schedule(function()
         if vim.api.nvim_buf_is_valid(bufnr) then
-          vim.keymap.set("n", "gd", function()
+          map("gd", function()
             vim.cmd.Haskell { "definition" }
-          end, vim.tbl_extend("force", opts, { desc = "Haskell definition" }))
+          end, "Haskell definition")
         end
       end)
-      vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, vim.tbl_extend("force", opts, { desc = "Run code lens" }))
-      vim.keymap.set("n", "<leader>cL", function()
+
+      map("<leader>cl", vim.lsp.codelens.run, "Run code lens")
+      map("<leader>cL", function()
         refresh_codelens(bufnr)
-      end, vim.tbl_extend("force", opts, { desc = "Refresh code lenses" }))
-      vim.keymap.set("n", "<leader>hs", hoogle_search, vim.tbl_extend("force", opts, { desc = "Hoogle search" }))
-      vim.keymap.set("n", "<leader>ha", ht.lsp.buf_eval_all, vim.tbl_extend("force", opts, { desc = "Haskell eval all" }))
-      vim.keymap.set("n", "<leader>hh", function()
+      end, "Refresh code lenses")
+      map("<leader>hs", hoogle_search, "Hoogle search")
+      map("<leader>ha", ht.lsp.buf_eval_all, "Haskell eval all")
+      map("<leader>hh", function()
         vim.cmd.Haskell { "hover" }
-      end, vim.tbl_extend("force", opts, { desc = "Haskell hover actions" }))
-      vim.keymap.set("n", "<leader>rp", ht.repl.toggle, vim.tbl_extend("force", opts, { desc = "Haskell REPL package" }))
-      vim.keymap.set("n", "<leader>rf", function()
+      end, "Haskell hover actions")
+      map("<leader>rp", ht.repl.toggle, "Haskell REPL package")
+      map("<leader>rf", function()
         ht.repl.toggle(vim.api.nvim_buf_get_name(0))
-      end, vim.tbl_extend("force", opts, { desc = "Haskell REPL file" }))
-      vim.keymap.set("n", "<leader>rq", ht.repl.quit, vim.tbl_extend("force", opts, { desc = "Haskell REPL quit" }))
+      end, "Haskell REPL file")
+      map("<leader>rq", ht.repl.quit, "Haskell REPL quit")
+
       vim.defer_fn(function()
         refresh_codelens(bufnr)
       end, 250)
@@ -123,21 +121,11 @@ vim.pack.add {
   },
 }
 
-mason.add {
-  "haskell-language-server",
-  "fourmolu",
-  "hlint",
-}
-
+mason.add { "haskell-language-server", "fourmolu", "hlint" }
 treesitter.add { "haskell" }
 
-quality.formatters {
-  haskell = { "fourmolu" },
-}
-
-quality.linters {
-  haskell = { "hlint" },
-}
+quality.formatters { haskell = { "fourmolu" } }
+quality.linters { haskell = { "hlint" } }
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
   group = vim.api.nvim_create_augroup("HaskellCodeLensRefresh", { clear = true }),
