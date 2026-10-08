@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Emacs Daemon
-Exec=emacs --daemon
+Exec=bash -c 'source ~/.bashrc; exec emacs --daemon'
 OnlyShowIn=XFCE;i3;

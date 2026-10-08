@@ -1,8 +1,3 @@
-[[ $- != *i* ]] && return
-
-export EDITOR=nvim
-export MANPAGER='nvim +Man!'
-
 export BUN_INSTALL="$HOME/.bun"
 export DOTNET_ROOT="$HOME/.dotnet"
 export DOTNET_ROOT_X64="$HOME/.dotnet"
@@ -18,6 +13,11 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.dotnet:$PATH"
 export PATH="$HOME/.dotnet/tools:$PATH"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+[[ $- != *i* ]] && return
+
+export EDITOR=nvim
+export MANPAGER='nvim +Man!'
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
