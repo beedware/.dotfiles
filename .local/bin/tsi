@@ -154,6 +154,7 @@ def fzf_select(
     bottom: bool = False,
     full_screen: bool = False,
     bordered: bool = False,
+    query: str = "",
 ) -> str:
     cmd: list[str] = [
         "fzf",
@@ -169,6 +170,9 @@ def fzf_select(
 
     if bordered:
         cmd.append("--border=top")
+
+    if query:
+        cmd.extend(["--query", query])
 
     p: Popen[str] = subprocess.Popen(
         cmd,
@@ -216,14 +220,52 @@ def ensure_session(name: str, directory: Path) -> None:
         run(["tmux", "attach-session", "-t", target_name])
 
 
+def select_item(
+    items: list[str],
+    query: str | None,
+    bottom: bool,
+    full_screen: bool,
+    bordered: bool,
+) -> str:
+    if query is None:
+        return fzf_select(items, bottom, full_screen, bordered)
+
+    exact_matches: list[str] = [item for item in items if item == query]
+    if len(exact_matches) == 1:
+        return exact_matches[0]
+
+    folded_query: str = query.casefold()
+    matches: list[str] = [item for item in items if folded_query in item.casefold()]
+
+    if not matches:
+        print(f"No match for {query!r}", file=sys.stderr)
+        return ""
+
+    if len(matches) == 1:
+        return matches[0]
+
+    return fzf_select(matches, bottom, full_screen, bordered, query=query)
+
+
 def main() -> None:
     args = sys.argv[1:]
     bottom: bool = "--bottom" in args
     full_screen: bool = "--full-screen" in args
     bordered: bool = "--bordered" in args
+    query_args: list[str] = [arg for arg in args if not arg.startswith("--")]
+
+    if len(query_args) > 1:
+        print("Usage: tsi [--bottom] [--full-screen] [--bordered] [query]", file=sys.stderr)
+        sys.exit(2)
 
     items, mapping = get_all_items(CONFIG)
-    selected: str = fzf_select(items, bottom, full_screen, bordered)
+    selected: str = select_item(
+        items,
+        query_args[0] if query_args else None,
+        bottom,
+        full_screen,
+        bordered,
+    )
 
     if not selected:
         return
