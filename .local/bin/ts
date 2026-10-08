@@ -476,7 +476,22 @@ def normalize_session_name(value: str) -> str:
 
 def main() -> None:
     ensure_src_dir(CONFIG.src_dir)
-    value = prompt_input(CONFIG.prompt).strip()
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--full-screen", action="store_true")
+    parser.add_argument("--full-screen-bordered", action="store_true")
+    parser.add_argument("-q", "--query")
+    parser.add_argument("name", nargs="?")
+    args = parser.parse_args()
+
+    if args.query is not None and args.name is not None:
+        print(
+            "Usage: ts [--full-screen] [--full-screen-bordered] [-q query] [name]",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+    query_value = args.query if args.query is not None else args.name
+    value = query_value.strip() if query_value is not None else prompt_input(CONFIG.prompt).strip()
 
     if value == CONFIG.exit_signal:
         return
