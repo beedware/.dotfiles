@@ -185,6 +185,18 @@ def fzf_select(
     return stdout.strip()
 
 
+def fzf_filter(items: list[str], query: str) -> list[str]:
+    p: Popen[str] = subprocess.Popen(
+        ["fzf", "--filter", query],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+    stdout, _ = p.communicate("\n".join(items))
+    return stdout.splitlines()
+
+
 def normalize_session_name(name: str) -> str:
     return name.replace(".", "_")
 
@@ -230,12 +242,7 @@ def select_item(
     if query is None:
         return fzf_select(items, bottom, full_screen, bordered)
 
-    exact_matches: list[str] = [item for item in items if item == query]
-    if len(exact_matches) == 1:
-        return exact_matches[0]
-
-    folded_query: str = query.casefold()
-    matches: list[str] = [item for item in items if folded_query in item.casefold()]
+    matches: list[str] = fzf_filter(items, query)
 
     if not matches:
         print(f"No match for {query!r}", file=sys.stderr)
