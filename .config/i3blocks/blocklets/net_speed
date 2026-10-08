@@ -1,18 +1,5 @@
 #!/bin/sh
 
-DIVIDER_FILE="$HOME/.config/i3blocks/divider"
-if [ -r "$DIVIDER_FILE" ]; then
-    IFS= read -r DIVIDER < "$DIVIDER_FILE"
-fi
-
-format_output() {
-    if [ -n "$DIVIDER" ]; then
-        printf '%s %s\n' "$DIVIDER" "$1"
-    else
-        printf '%s\n' "$1"
-    fi
-}
-
 format_rate() {
     awk -v bytes="$1" 'BEGIN {
         if (bytes >= 1073741824) {
@@ -46,7 +33,7 @@ fi
 printf '%s %s %s\n' "$NOW" "$RX" "$TX" > "$STATE_FILE"
 
 if [ -z "$PREV_NOW" ] || [ -z "$PREV_RX" ] || [ -z "$PREV_TX" ]; then
-    format_output "0B:0B"
+    printf '%s\n' "0B:0B"
     exit 0
 fi
 
@@ -58,4 +45,4 @@ UP=$(((TX - PREV_TX) / ELAPSED))
 [ "$DOWN" -ge 0 ] || DOWN=0
 [ "$UP" -ge 0 ] || UP=0
 
-format_output "$(format_rate "$DOWN"):$(format_rate "$UP")"
+printf '%s\n' "$(format_rate "$DOWN"):$(format_rate "$UP")"
