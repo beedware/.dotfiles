@@ -1,6 +1,5 @@
 imports:
   - "_islamic_phrases.yml"
-  - "_latex_snips.yml"
   - "_emoticon_emoji.yml"
 
 
