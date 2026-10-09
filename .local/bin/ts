@@ -439,29 +439,32 @@ def handle_share_path(value: str) -> str | None:
             return current_value
 
 
-def normalize_session_name(value: str) -> str:
-    return value.replace(".", "_")
+def handle_tmp(value: str) -> None:
+    tmp_dir = tmp_target_dir(value)
+    if tmp_dir is None:
+        return
+
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    ensure_session(normalize_session_name(value), tmp_dir)
 
 
-def main() -> None:
-    ensure_src_dir(CONFIG.src_dir)
-    parser = argparse.ArgumentParser(add_help=False)
-    parser.add_argument("--full-screen", action="store_true")
-    parser.add_argument("--full-screen-bordered", action="store_true")
-    parser.add_argument("-q", "--query")
-    parser.add_argument("name", nargs="?")
-    args = parser.parse_args()
+def handle_git_url(value: str, bare: bool = False) -> None:
+    clean = clean_repo_path(value)
+    repo_dir = CONFIG.src_dir / clean
 
-    if args.query is not None and args.name is not None:
-        print(
-            "Usage: ts [--full-screen] [--full-screen-bordered] [-q query] [name]",
-            file=sys.stderr,
-        )
-        sys.exit(2)
+    if bare:
+        bare_git_dir = repo_dir / ".git"
+        if not bare_git_dir.is_dir():
+            repo_dir.mkdir(parents=True, exist_ok=True)
+            run(["git", "clone", "--bare", value, str(bare_git_dir)])
+    elif not (repo_dir / ".git").is_dir():
+        repo_dir.parent.mkdir(parents=True, exist_ok=True)
+        run(["git", "clone", value, str(repo_dir)])
 
-    query_value = args.query if args.query is not None else args.name
-    value = query_value.strip() if query_value is not None else prompt_input(CONFIG.prompt).strip()
+    ensure_session(normalize_session_name(clean), repo_dir)
 
+
+def handle_default(value: str) -> None:
     if value == CONFIG.exit_signal:
         return
 
@@ -475,29 +478,57 @@ def main() -> None:
         value = share_result
 
     if is_tmp_path(value):
-        tmp_dir = tmp_target_dir(value)
-        if tmp_dir is None:
-            return
-
-        tmp_dir.mkdir(parents=True, exist_ok=True)
-        ensure_session(normalize_session_name(value), tmp_dir)
+        handle_tmp(value)
         return
 
     if is_git_url(value):
-        clean = clean_repo_path(value)
-        repo_dir = CONFIG.src_dir / clean
-
-        if not (repo_dir / ".git").is_dir():
-            repo_dir.parent.mkdir(parents=True, exist_ok=True)
-            run(["git", "clone", value, str(repo_dir)])
-
-        ensure_session(normalize_session_name(clean), repo_dir)
+        handle_git_url(value)
         return
 
     session_name = normalize_session_name(value)
     cwd = Path.cwd()
 
     ensure_session(session_name, cwd)
+
+
+def normalize_session_name(value: str) -> str:
+    return value.replace(".", "_")
+
+
+def main() -> None:
+    ensure_src_dir(CONFIG.src_dir)
+    if len(sys.argv) > 1 and sys.argv[1] == "tmp":
+        parser = argparse.ArgumentParser(prog="ts tmp")
+        parser.add_argument("name")
+        args = parser.parse_args(sys.argv[2:])
+        handle_tmp(f"tmp/{args.name.strip('/')}")
+        return
+
+    if len(sys.argv) > 1 and sys.argv[1] == "git":
+        parser = argparse.ArgumentParser(prog="ts git")
+        parser.add_argument("--bare", action="store_true")
+        parser.add_argument("url")
+        args = parser.parse_args(sys.argv[2:])
+        handle_git_url(args.url, args.bare)
+        return
+
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--full-screen", action="store_true")
+    parser.add_argument("--full-screen-bordered", action="store_true")
+    parser.add_argument("-q", "--query")
+    parser.add_argument("name", nargs="?")
+    args = parser.parse_args()
+
+    if args.query is not None and args.name is not None:
+        print(
+            "Usage: ts [--full-screen] [--full-screen-bordered] [-q query] [name] | ts tmp name | ts git [--bare] url",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+    query_value = args.query if args.query is not None else args.name
+    value = query_value.strip() if query_value is not None else prompt_input(CONFIG.prompt).strip()
+    handle_default(value)
 
 
 if __name__ == "__main__":
