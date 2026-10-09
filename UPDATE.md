@@ -47,7 +47,6 @@ For each item, check the upstream release, edit the pinned values in the listed 
 | [ ]  | Heroic      | `add/heroic`  | `VERSION`, SHA256            | `Heroic-Games-Launcher/HeroicGamesLauncher` | `sh ~/.dotfiles/add/heroic`                       |
 | [ ]  | .NET SDK    | `add/dotnet`  | `VERSION`, SHA512            | Microsoft builds                            | `sh ~/.dotfiles/add/dotnet`                       |
 | [ ]  | Flutter SDK | `add/flutter` | `VERSION`, SHA256            | Google storage                              | `sh ~/.dotfiles/add/flutter`                      |
-| [ ]  | Espanso     | `add/espanso` | `VERSION`, SHA256            | `espanso/espanso`                           | `sh ~/.dotfiles/add/espanso --x11` or `--wayland` |
 | [ ]  | GHCup       | `add/haskell` | `VERSION`, SHA256            | GHCup releases                              | `sh ~/.dotfiles/add/haskell`                      |
 | [ ]  | SDKMAN      | `add/java`    | installer checksum           | `https://get.sdkman.io`                     | rerun Java setup if needed                        |
 

@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Espanso
-Exec=espanso-x11 start --unmanaged
-OnlyShowIn=XFCE;i3;

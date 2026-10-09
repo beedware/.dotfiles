@@ -27,6 +27,5 @@ flatpak install flathub org.libreoffice.LibreOffice
 flatpak run com.protonvpn.www
 
 "$add_root/firefox"
-"$add_root/espanso"
 "$add_root/emacs"
 "$add_root/printers"

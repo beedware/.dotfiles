@@ -141,8 +141,6 @@ add/cli
 add/gui
 |-- requires: flatpak/flathub from add/flathub
 |-- add/firefox
-|-- add/espanso
-|   `-- requires: cargo from add/rust
 |-- add/emacs
 |   |-- requires: cargo from add/rust
 |   |-- requires: pipx from add/python
