@@ -7,6 +7,12 @@
   "Return FILE inside `beed/journal-directory'."
   (expand-file-name file beed/journal-directory))
 
+(defun beed/format-marks ()
+  "Sort and format marks.org."
+  (let ((default-directory beed/journal-directory))
+    (call-process (expand-file-name "~/Compendium/Journal/.scripts/format")
+                  nil nil nil "-s" "marks.org")))
+
 (defconst beed/journal-agenda-file-names
   '("inbox.org"
     "kings.org"
@@ -63,7 +69,8 @@
            :empty-lines-before 0)
           ("m" "Mark" entry
            (file ,(beed/journal-file "marks.org"))
-           "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?")
+           "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
+           :after-finalize beed/format-marks)
           ("n" "Name" entry
            (file ,(beed/journal-file "names.org"))
            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t")
