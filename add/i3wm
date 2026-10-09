@@ -19,6 +19,7 @@ sudo xbps-install -Sy \
     picom \
     playerctl \
     rofi \
+    rofi-emoji \
     setxkbmap \
     acpi \
     jq \
