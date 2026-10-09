@@ -96,6 +96,7 @@
         org-outline-path-complete-in-steps nil
         org-agenda-window-setup 'current-window
         org-agenda-span 3
+        org-agenda-use-time-grid nil
         org-agenda-scheduled-leaders '("" "")
         org-agenda-deadline-leaders '("" "" "")
         org-agenda-start-with-log-mode nil
