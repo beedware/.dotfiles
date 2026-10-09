@@ -1,26 +1,6 @@
 matches:
-- trigger: ';shrug.t'
+- trigger: ':shrug:'
   replace: "¯\\_(ツ)_/¯"
-- trigger: ';smirk.t'
-  replace: "¬‿¬"
-- trigger: ';angry.t'
-  replace: "ಠ_ಠ"
-- trigger: ';tableflip.t'
-  replace: "(╯°□°）╯︵ ┻━┻"
-- trigger: ';unflip.t'
-  replace: "┬─┬ ノ( ゜-゜ノ)"
-- trigger: ';hug.t'
-  replace: "(づ｡◕‿‿◕｡)づ"
-- trigger: ';meh.t'
-  replace: "¯\\(°_o)/¯"
-- trigger: ';think.t'
-  replace: "(¬_¬)"
-- trigger: ';derp.t'
-  replace: "◉_◉"
-- trigger: ';wow.t'
-  replace: "⊙_☉"
-- trigger: ';love.t'
-  replace: "(♥‿♥)"
 - trigger: ':grinning:'
   replace: "\U0001F600"
 - trigger: ':smiley:'
