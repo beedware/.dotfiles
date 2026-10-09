@@ -150,14 +150,16 @@ def read_wayland_clipboard() -> str | None:
     clipboard = subprocess.run(
         ["wl-paste", "--no-newline"],
         capture_output=True,
-        text=True,
         check=False,
     )
 
     if clipboard.returncode != 0 or not clipboard.stdout:
         return None
 
-    return clipboard.stdout
+    try:
+        return clipboard.stdout.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def paste_wayland() -> None:
@@ -188,27 +190,31 @@ def read_x11_clipboard() -> str | None:
         clipboard = subprocess.run(
             ["xclip", "-selection", "clipboard", "-out"],
             capture_output=True,
-            text=True,
             check=False,
         )
 
         if clipboard.returncode != 0 or not clipboard.stdout:
             return None
 
-        return clipboard.stdout
+        try:
+            return clipboard.stdout.decode("utf-8")
+        except UnicodeDecodeError:
+            return None
 
     if shutil.which("xsel") is not None:
         clipboard = subprocess.run(
             ["xsel", "--clipboard", "--output"],
             capture_output=True,
-            text=True,
             check=False,
         )
 
         if clipboard.returncode != 0 or not clipboard.stdout:
             return None
 
-        return clipboard.stdout
+        try:
+            return clipboard.stdout.decode("utf-8")
+        except UnicodeDecodeError:
+            return None
 
     die("Error: x11 session detected but neither xclip nor xsel is installed")
 
