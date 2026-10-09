@@ -18,6 +18,12 @@ class Mark:
     tags: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class Options:
+    marks_file: Path
+    copy_only: bool
+
+
 Marks = tuple[Mark, ...]
 
 
@@ -30,26 +36,31 @@ def die(message: str) -> None:
 
 
 def usage() -> str:
-    return f"Usage: {Path(sys.argv[0]).name} [marks_file]"
+    return f"Usage: {Path(sys.argv[0]).name} [-c|--copy] [marks_file]"
 
 
-def get_marks_file(args: list[str]) -> Path:
-    if len(args) > 1:
-        die("Error: too many arguments")
+def get_options(args: list[str]) -> Options:
+    copy_only = False
+    marks_file: Path | None = None
 
-    if not args:
-        return ACCESS_FILE
+    for arg in args:
+        if arg in ("-h", "--help"):
+            print(usage())
+            raise SystemExit(0)
 
-    arg = args[0]
+        if arg in ("-c", "--copy"):
+            copy_only = True
+            continue
 
-    if arg in ("-h", "--help"):
-        print(usage())
-        raise SystemExit(0)
+        if arg.startswith("-"):
+            die(f"Error: unknown option: {arg}")
 
-    if arg.startswith("-"):
-        die(f"Error: unknown option: {arg}")
+        if marks_file is not None:
+            die("Error: too many arguments")
 
-    return Path(arg).expanduser()
+        marks_file = Path(arg).expanduser()
+
+    return Options(marks_file or ACCESS_FILE, copy_only)
 
 
 def parse_heading(line: str) -> tuple[str, tuple[str, ...]] | None:
@@ -95,7 +106,7 @@ def get_marks(text: str) -> Marks:
 
         url = parse_url(line)
 
-        if title and url:
+        if title and url and "archive" not in tags:
             marks.append(Mark(title, url, tags))
 
     return tuple(marks)
@@ -262,7 +273,8 @@ def paste_url(url: str) -> None:
 
 
 def main() -> None:
-    marks_file: Path = get_marks_file(sys.argv[1:])
+    options: Options = get_options(sys.argv[1:])
+    marks_file: Path = options.marks_file
 
     if not marks_file.is_file():
         die(f"Error: marks file not found: {marks_file}")
@@ -272,6 +284,10 @@ def main() -> None:
     mark: Mark | None = select_mark(marks)
 
     if mark is None:
+        return
+
+    if options.copy_only:
+        copy_url(mark.url)
         return
 
     paste_url(mark.url)
