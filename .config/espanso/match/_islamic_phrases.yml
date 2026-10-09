@@ -1,106 +1,71 @@
 matches:
   - trigger: ";ar.sa"
     replace: "السلام عليكم"
-
   - trigger: ";ar.pbuh"
     replace: "صلى الله عليه وسلم"
-
   - trigger: ";ar.akb"
     replace: "الله اعلم"
-
   - trigger: ";ar.wa"
     replace: "وعليكم السلام ورحمة الله وبركاته"
-
   - trigger: ";ar.lwa"
     replace: "وعليكم السلام ورحمة الله وبركاته"
-
   - trigger: ";ar.ia"
     replace: "ان شاء الله"
-
   - trigger: ";ar.jzk"
     replace: "جزاك الله خيرا"
-
   - trigger: ";ar.barik"
     replace: "اللهم بارك"
-
   - trigger: ";ar.alhamd"
     replace: "الحمد لله"
-
   - trigger: ";ar.astag"
     replace: "استغفر الله"
-
   - trigger: ";ar.subhan"
     replace: "سبحان الله"
-
   - trigger: ";en.sa"
     replace: "Peace be upon you"
-
   - trigger: ";en.pbuh"
     replace: "Peace and blessings be upon him"
-
   - trigger: ";en.akb"
     replace: "Allah knows best"
-
   - trigger: ";en.lsa"
     replace: "Peace be upon you and the mercy and blessings of Allah"
-
   - trigger: ";en.wa"
     replace: "And upon you be peace and the mercy and blessings of Allah"
-
   - trigger: ";en.lwa"
     replace: "And upon you be peace and the mercy and blessings of Allah"
-
   - trigger: ";en.ia"
     replace: "If Allah wills"
-
   - trigger: ";en.jzk"
     replace: "May Allah reward you with goodness"
-
   - trigger: ";en.barik"
     replace: "O Allah, bless it"
-
   - trigger: ";en.alhamd"
     replace: "All praise is due to Allah"
-
   - trigger: ";en.astag"
     replace: "I seek forgiveness from Allah"
-
   - trigger: ";en.subhan"
     replace: "Glory be to Allah"
-
   - trigger: ";tr.sa"
     replace: "As-salamu alaykum"
-
   - trigger: ";tr.pbuh"
     replace: "Sallallahu alayhi wa sallam"
-
   - trigger: ";tr.akb"
     replace: "Allahu a‘lam"
-
   - trigger: ";tr.lsa"
     replace: "As-salamu alaykum wa rahmatullahi wa barakatuh"
-
   - trigger: ";tr.wa"
     replace: "Wa alaykum as-salam wa rahmatullahi wa barakatuh"
-
   - trigger: ";tr.lwa"
     replace: "Wa alaykumu as-salam wa rahmatullahi wa barakatuh"
-
   - trigger: ";tr.ia"
     replace: "In shaa Allah"
-
   - trigger: ";tr.jzk"
     replace: "Jazak Allahu khayran"
-
   - trigger: ";tr.barik"
     replace: "Allahumma barik"
-
   - trigger: ";tr.alhamd"
     replace: "Alhamdulillah"
-
   - trigger: ";tr.astag"
     replace: "Astaghfirullah"
-
   - trigger: ";tr.subhan"
     replace: "Subhan Allah"
-
