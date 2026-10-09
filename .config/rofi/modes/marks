@@ -21,7 +21,7 @@ class Mark:
 @dataclass(frozen=True)
 class Options:
     marks_file: Path
-    copy_only: bool
+    paste: bool
 
 
 Marks = tuple[Mark, ...]
@@ -36,11 +36,11 @@ def die(message: str) -> None:
 
 
 def usage() -> str:
-    return f"Usage: {Path(sys.argv[0]).name} [-c|--copy] [marks_file]"
+    return f"Usage: {Path(sys.argv[0]).name} [-p|--paste] [marks_file]"
 
 
 def get_options(args: list[str]) -> Options:
-    copy_only = False
+    paste = False
     marks_file: Path | None = None
 
     for arg in args:
@@ -48,8 +48,8 @@ def get_options(args: list[str]) -> Options:
             print(usage())
             raise SystemExit(0)
 
-        if arg in ("-c", "--copy"):
-            copy_only = True
+        if arg in ("-p", "--paste"):
+            paste = True
             continue
 
         if arg.startswith("-"):
@@ -60,7 +60,7 @@ def get_options(args: list[str]) -> Options:
 
         marks_file = Path(arg).expanduser()
 
-    return Options(marks_file or ACCESS_FILE, copy_only)
+    return Options(marks_file or ACCESS_FILE, paste)
 
 
 def parse_heading(line: str) -> tuple[str, tuple[str, ...]] | None:
@@ -114,9 +114,9 @@ def get_marks(text: str) -> Marks:
 
 def select_mark(marks: Marks) -> Mark | None:
     marks_by_title: dict[str, Mark] = {
-        mark.title: mark for mark in marks
+        format_mark(mark): mark for mark in marks
     }
-    titles: str = "\n".join(mark.title for mark in marks)
+    titles: str = "\n".join(format_mark(mark) for mark in marks)
     rofi = subprocess.run(
         ["rofi", "-dmenu", "-i", "-p", "Marks"],
         input=titles,
@@ -134,6 +134,17 @@ def select_mark(marks: Marks) -> Mark | None:
         return None
 
     return marks_by_title.get(choice)
+
+
+def format_mark(mark: Mark) -> str:
+    if not mark.tags:
+        return mark.title
+
+    return f"{mark.title}  {format_tags(mark.tags)}"
+
+
+def format_tags(tags: tuple[str, ...]) -> str:
+    return f":{':'.join(tags)}:"
 
 
 def copy_wayland(text: str) -> None:
@@ -292,11 +303,11 @@ def main() -> None:
     if mark is None:
         return
 
-    if options.copy_only:
-        copy_url(mark.url)
+    if options.paste:
+        paste_url(mark.url)
         return
 
-    paste_url(mark.url)
+    copy_url(mark.url)
 
 
 if __name__ == "__main__":
