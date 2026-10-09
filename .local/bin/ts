@@ -37,6 +37,10 @@ REPO_CLEAN_PATTERNS: Sequence[tuple[str, str]] = (
     (r"^https?://[^/]+/", ""),
     (r"(\.git)?$", ""),
 )
+CTRL_A = 1
+CTRL_B = 2
+CTRL_E = 5
+CTRL_F = 6
 
 
 def is_esc(ch: int) -> bool:
@@ -51,6 +55,22 @@ def move_right(pos: int, buf_len: int) -> int:
     return min(buf_len, pos + 1)
 
 
+def move_word_left(buf: list[str], pos: int) -> int:
+    while pos > 0 and buf[pos - 1].isspace():
+        pos -= 1
+    while pos > 0 and not buf[pos - 1].isspace():
+        pos -= 1
+    return pos
+
+
+def move_word_right(buf: list[str], pos: int) -> int:
+    while pos < len(buf) and not buf[pos].isspace():
+        pos += 1
+    while pos < len(buf) and buf[pos].isspace():
+        pos += 1
+    return pos
+
+
 def backspace(buf: list[str], pos: int) -> int:
     if pos > 0:
         del buf[pos - 1]
@@ -62,6 +82,12 @@ def delete(buf: list[str], pos: int) -> int:
     if pos < len(buf):
         del buf[pos]
     return pos
+
+
+def delete_word_left(buf: list[str], pos: int) -> int:
+    start = move_word_left(buf, pos)
+    del buf[start:pos]
+    return start
 
 
 def insert_char(buf: list[str], pos: int, ch: int) -> int:
@@ -124,11 +150,17 @@ def handle_key(
     if ch in (10, 13):
         return buf, pos, True
 
-    if ch == curses.KEY_LEFT:
+    if ch in (curses.KEY_LEFT, CTRL_B):
         return buf, move_left(pos), False
 
-    if ch == curses.KEY_RIGHT:
+    if ch in (curses.KEY_RIGHT, CTRL_F):
         return buf, move_right(pos, len(buf)), False
+
+    if ch == CTRL_A:
+        return buf, 0, False
+
+    if ch == CTRL_E:
+        return buf, len(buf), False
 
     if ch in (curses.KEY_BACKSPACE, 127):
         return buf, backspace(buf, pos), False
@@ -161,7 +193,21 @@ def curses_loop(
     while True:
         ch = stdscr.getch()
 
-        buf, pos, done = handle_key(ch, buf, pos)
+        if ch == 27:
+            stdscr.nodelay(True)
+            next_ch = stdscr.getch()
+            stdscr.nodelay(False)
+
+            if next_ch in (ord("b"), ord("B")):
+                buf, pos, done = buf, move_word_left(buf, pos), False
+            elif next_ch in (ord("f"), ord("F")):
+                buf, pos, done = buf, move_word_right(buf, pos), False
+            elif next_ch in (curses.KEY_BACKSPACE, 127, 8):
+                buf, pos, done = buf, delete_word_left(buf, pos), False
+            else:
+                buf, pos, done = buf, pos, True
+        else:
+            buf, pos, done = handle_key(ch, buf, pos)
 
         render_line(stdscr, prompt, buf, pos, error_message, bordered)
 
@@ -259,16 +305,26 @@ def line_input(
                     pos = len(buf)
                 elif seq == "[3~":
                     pos = delete(buf, pos)
+                elif seq in ("b", "B"):
+                    pos = move_word_left(buf, pos)
+                elif seq in ("f", "F"):
+                    pos = move_word_right(buf, pos)
+                elif seq in ("\x7f", "\b"):
+                    pos = delete_word_left(buf, pos)
 
                 redraw()
                 continue
 
             if ch in ("\x7f", "\b"):
                 pos = backspace(buf, pos)
-            elif ch == "\x01":
+            elif ch == chr(CTRL_A):
                 pos = 0
-            elif ch == "\x05":
+            elif ch == chr(CTRL_E):
                 pos = len(buf)
+            elif ch == chr(CTRL_B):
+                pos = move_left(pos)
+            elif ch == chr(CTRL_F):
+                pos = move_right(pos, len(buf))
             else:
                 pos = insert_char(buf, pos, ord(ch))
 
