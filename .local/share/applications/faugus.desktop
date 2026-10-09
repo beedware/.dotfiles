@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Faugus
+GenericName=Game Launcher
 Exec=faugus %f
 Icon=faugus
 Type=Application

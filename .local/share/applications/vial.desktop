@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Vial
+GenericName=Keyboard Configurator
 Exec=vial
 Icon=vial
 Type=Application

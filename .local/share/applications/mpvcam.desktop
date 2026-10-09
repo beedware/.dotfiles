@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=mpvcam
+GenericName=Camera Viewer
 Exec=/home/beed/.local/bin/mpvcam
 Icon=camera
 Type=Application

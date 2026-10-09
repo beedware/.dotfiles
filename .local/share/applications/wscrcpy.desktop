@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=wscrcpy
+GenericName=Android Screen Mirror
 Exec=/home/beed/.dotfiles/.local/bin/wscrcpy -y
 Icon=scrcpy
 Type=Application

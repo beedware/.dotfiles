@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=nwg-look
+GenericName=GTK Settings
 Exec=nwg-look
 Icon=nwg-look
 Type=Application

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Heroic Games Launcher
+GenericName=Game Launcher
 Exec=heroic
 Icon=heroic
 Type=Application

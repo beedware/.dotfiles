@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Libresprite
+GenericName=Pixel Art Editor
 Exec=libresprite
 Icon=libresprite
 Type=Application

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Floatitty
+GenericName=Terminal Emulator
 Exec=alacritty --class floatitty
 Icon=Alacritty
 Type=Application

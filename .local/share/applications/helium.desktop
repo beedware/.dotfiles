@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Helium
+GenericName=Web Browser
 Exec=helium
 Type=Application
 Icon=helium
