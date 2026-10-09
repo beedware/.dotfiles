@@ -41,6 +41,7 @@ CTRL_A = 1
 CTRL_B = 2
 CTRL_E = 5
 CTRL_F = 6
+BARE_GIT_PREFIX = "bare="
 
 
 def is_esc(ch: int) -> bool:
@@ -385,6 +386,10 @@ def is_git_url(value: str) -> bool:
     return bool(GIT_URL_RE.match(value))
 
 
+def is_bare_git_url(value: str) -> bool:
+    return value.startswith(BARE_GIT_PREFIX) and is_git_url(value[len(BARE_GIT_PREFIX) :])
+
+
 def clean_repo_path(url: str) -> str:
     cleaned = url
     for pattern, replacement in REPO_CLEAN_PATTERNS:
@@ -479,6 +484,10 @@ def handle_default(value: str) -> None:
 
     if is_tmp_path(value):
         handle_tmp(value)
+        return
+
+    if is_bare_git_url(value):
+        handle_git_url(value[len(BARE_GIT_PREFIX) :], bare=True)
         return
 
     if is_git_url(value):
