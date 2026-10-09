@@ -82,13 +82,13 @@ def is_tag_text(text: str) -> bool:
     return text.startswith(":") and text.endswith(":") and len(text) > 2
 
 
-def parse_url(line: str) -> str | None:
+def parse_replace(line: str) -> str | None:
     line = line.strip()
 
-    if not line.startswith(":URL:"):
+    if not line.startswith(":REPLACE:"):
         return None
 
-    return line.removeprefix(":URL:").strip()
+    return line.removeprefix(":REPLACE:").strip()
 
 
 def get_marks(text: str) -> Marks:
@@ -104,7 +104,7 @@ def get_marks(text: str) -> Marks:
             title, tags = heading
             continue
 
-        url = parse_url(line)
+        url = parse_replace(line)
 
         if title and url and "archive" not in tags:
             marks.append(Mark(title, url, tags))

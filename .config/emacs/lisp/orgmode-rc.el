@@ -69,7 +69,7 @@
            :empty-lines-before 0)
           ("m" "Mark" entry
            (file ,(beed/journal-file "marks.org"))
-           "* %^{Title} %^g\n:PROPERTIES:\n:URL: %^{URL}\n:END:\n\n%?"
+           "* %^{Title} %^g\n:PROPERTIES:\n:REPLACE: %^{REPLACE}\n:END:\n\n%?"
            :after-finalize beed/format-marks)
           ("n" "Name" entry
            (file ,(beed/journal-file "names.org"))
