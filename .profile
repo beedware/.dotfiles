@@ -20,29 +20,29 @@ else
   export MAVEN_HOME="/usr/share/maven"
 fi
 
-path_prepend() {
+prepend_path() {
   case ":$PATH:" in
     *":$1:"*) ;;
     *) PATH="$1:$PATH" ;;
   esac
 }
 
-path_prepend "$HOME/.local/share/nvim/mason/bin"
-path_prepend "$HOME/.local/share/cabal/bin"
-path_prepend "$HOME/.ghcup/bin"
-path_prepend "$HOME/.volta/bin"
-path_prepend "$GOPATH/bin"
-path_prepend "$HOME/.cache/scalacli/local-repo/bin/scala-cli"
-path_prepend "$HOME/.local/share/coursier/bin"
-path_prepend "$HOME/.local/bin"
-path_prepend "$HOME/.local/share/flatpak/exports/bin"
-path_prepend "/var/lib/flatpak/exports/bin"
-path_prepend "/usr/games"
-path_prepend "/usr/local/go/bin"
-path_prepend "$DOTNET_ROOT"
-path_prepend "$DOTNET_ROOT/tools"
-path_prepend "$BUN_INSTALL/bin"
+prepend_path "$HOME/.local/share/nvim/mason/bin"
+prepend_path "$HOME/.local/share/cabal/bin"
+prepend_path "$HOME/.ghcup/bin"
+prepend_path "$HOME/.volta/bin"
+prepend_path "$GOPATH/bin"
+prepend_path "$HOME/.cache/scalacli/local-repo/bin/scala-cli"
+prepend_path "$HOME/.local/share/coursier/bin"
+prepend_path "$HOME/.local/bin"
+prepend_path "$HOME/.local/share/flatpak/exports/bin"
+prepend_path "/var/lib/flatpak/exports/bin"
+prepend_path "/usr/games"
+prepend_path "/usr/local/go/bin"
+prepend_path "$DOTNET_ROOT"
+prepend_path "$DOTNET_ROOT/tools"
+prepend_path "$BUN_INSTALL/bin"
 
 export PATH
 
-unset -f path_prepend
+unset -f prepend_path
