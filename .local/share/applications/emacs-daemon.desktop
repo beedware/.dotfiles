@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Emacs (Daemon)
 GenericName=Text Editor
-Exec=emacs --daemon
+Exec=bash -lc 'exec emacs --daemon'
 Icon=emacs
 Type=Application
 Terminal=false
