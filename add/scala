@@ -3,6 +3,8 @@ set -eu
 
 # tags: #dev
 
+add_root="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
 sudo xbps-install -Sy \
     curl \
     gzip \
@@ -34,7 +36,7 @@ chmod +x "$CS"
     scala-cli \
     --install-dir "$INSTALL_DIR"
 
-"$(dirname "$0")/mill"
+"$add_root/mill"
 
 printf 'Coursier installed: %s\n' "$CS"
 printf 'Scala tools installed in: %s\n' "$INSTALL_DIR"
