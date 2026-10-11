@@ -99,7 +99,20 @@ SSH:
 
 ```bash
 cd ~/.dotfiles
-stow --no-folding .
+stow .
+```
+
+The repo includes `.stowrc`, so `stow .` runs with `--no-folding`. This keeps
+directories like `~/.config/nvim` and `~/.local/bin` as real directories and
+only symlinks the files inside them.
+
+On a fresh system, Stow may stop if a target file already exists. The common
+one is `~/.bashrc`, which Void creates by default. If that happens, move the
+existing file out of the way and rerun Stow:
+
+```bash
+mv ~/.bashrc ~/.bashrc.bak
+stow .
 ```
 
 ### Install Script Dependencies
