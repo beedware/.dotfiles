@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Chat
 GenericName=Instant Messenger
-Exec=/home/beed/.dotfiles/.local/bin/opener chat
+Exec=opener chat
 Type=Application
 Icon=internet-chat
 Terminal=false

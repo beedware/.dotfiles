@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Email
 GenericName=Email Client
-Exec=/home/beed/.dotfiles/.local/bin/opener email
+Exec=opener email
 Type=Application
 Icon=email
 Terminal=false
