@@ -39,3 +39,4 @@ scripts.
 - [`docs/system.md`](./docs/system.md): generic system setup notes
 - [`docs/troubleshooting.md`](./docs/troubleshooting.md): common desktop fixes
 - [`docs/laptop.md`](./docs/laptop.md): laptop-specific notes
+- [`docs/update.md`](./docs/update.md): system update checklist
