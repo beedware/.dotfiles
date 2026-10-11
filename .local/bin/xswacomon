@@ -95,6 +95,7 @@ TABLET_CONFIGS: tuple[TabletConfig, ...] = (
 
 
 ScreenTarget = int | str
+ALL_MONITORS = "all"
 
 
 def run_xsetwacom(
@@ -116,7 +117,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "target",
         nargs="?",
-        help="monitor id to map to, or a relative direction: left, right",
+        help="monitor id to map to, 'all', or a direction: left, right",
     )
     parser.add_argument(
         "--list-screens",
@@ -137,13 +138,15 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def parse_target(target: str) -> ScreenTarget:
-    if target in ("left", "right"):
+    if target in ("left", "right", ALL_MONITORS):
         return target
 
     try:
         return int(target)
     except ValueError as error:
-        raise ValueError("target must be a monitor id, 'left', or 'right'") from error
+        raise ValueError(
+            "target must be a monitor id, 'all', 'left', or 'right'"
+        ) from error
 
 
 def parse_tablet_component(line: str) -> TabletComponent | None:
@@ -287,7 +290,7 @@ def apply_keybinds(components: list[TabletComponent], config: TabletConfig) -> N
 
 
 def configure_tablet_area(
-    screen: Screen, components: list[TabletComponent], config: TabletConfig
+    screen: Screen | None, components: list[TabletComponent], config: TabletConfig
 ) -> None:
     for component_type in config.area_components:
         component = component_by_type(components, component_type)
@@ -299,10 +302,15 @@ def configure_tablet_area(
             continue
 
         area_x = int(area[0])
-        area_y = int(area_x * (screen.resolution.height / screen.resolution.width))
+        area_y = int(area[1])
+        output = "desktop"
+
+        if screen:
+            area_y = int(area_x * (screen.resolution.height / screen.resolution.width))
+            output = screen.output_spec
 
         run_xsetwacom("set", component.id, "Area", "0", "0", str(area_x), str(area_y))
-        run_xsetwacom("set", component.id, "MapToOutput", screen.output_spec)
+        run_xsetwacom("set", component.id, "MapToOutput", output)
 
 
 def configured_tablets(
@@ -319,6 +327,8 @@ def print_screens(screens: list[Screen]) -> None:
     for screen in sorted_screens(screens):
         primary = " primary" if screen.is_primary else ""
         print(f"{screen.id}: {screen.name} {screen.output_spec}{primary}")
+
+    print(f"{ALL_MONITORS}: All monitors")
 
 
 def print_tablets(tablets: list[tuple[TabletConfig, list[TabletComponent]]]) -> None:
@@ -337,6 +347,9 @@ def select_screen(
     screens: list[Screen],
     tablets: list[tuple[TabletConfig, list[TabletComponent]]],
 ) -> Screen | None:
+    if target == ALL_MONITORS:
+        return None
+
     if isinstance(target, int):
         return find_screen_by_id(screens, target)
 
@@ -378,8 +391,9 @@ def main() -> int:
 
     screens = list_screens()
     screen = select_screen(target, screens, tablets)
+    is_all_monitors = target == ALL_MONITORS
 
-    if not screen:
+    if not screen and not is_all_monitors:
         print(f"Could not find screen for target: {args.target}", file=sys.stderr)
         return 1
 
