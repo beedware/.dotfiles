@@ -250,7 +250,9 @@ def component_by_type(
 
 
 def get_default_area(component: TabletComponent) -> list[str]:
-    return run_xsetwacom("get", component.id, "Area", capture_output=True).stdout.split()
+    return run_xsetwacom(
+        "get", component.id, "Area", capture_output=True
+    ).stdout.split()
 
 
 def get_mapped_output(component: TabletComponent) -> str:
