@@ -1,382 +1,393 @@
 #!/usr/bin/env python3
+import argparse
+import shlex
 import subprocess
 import sys
+from dataclasses import dataclass
 from enum import Enum
 
 
-class ComponentTypes(Enum):
+class ComponentType(Enum):
     ERASER = "ERASER"
     STYLUS = "STYLUS"
     PAD = "PAD"
 
 
+@dataclass(frozen=True)
 class TabletComponent:
-    def __init__(self, name: str, id: str, component_type: str) -> None:
-        self.__id: str = id
-        self.__name: str = name
-        self.__type: str = component_type
-
-    def get_id(self) -> str:
-        return self.__id
-
-    def get_name(self) -> str:
-        return self.__name
-
-    def get_type(self) -> str:
-        return self.__type
+    name: str
+    id: str
+    component_type: str
 
 
-class Devices:
-    def __init__(self) -> None:
-        self.__devices_str: str = subprocess.run(
-            ["xsetwacom", "list"], capture_output=True, check=False
-        ).stdout.decode("utf-8")
-        self.__devices = self.__parse_devices()
-
-    def __parse_devices(self) -> list[TabletComponent]:
-        lines = self.__devices_str.splitlines()
-        devices = [
-            self.__create_tablet_component(line)
-            for line in lines
-            if self.__is_valid_line(line)
-        ]
-        return devices
-
-    def __is_valid_line(self, line: str) -> bool:
-        return len(line.split("\t")) >= 3
-
-    def __create_tablet_component(self, line: str) -> TabletComponent:
-        info = self.__extract_info(line)
-        return TabletComponent(
-            name=info["name"], component_type=info["type"], id=info["id"]
-        )
-
-    def __extract_info(self, line: str) -> dict[str, str]:
-        info_parts: list[str] = line.split("\t")
-        id_offset: int = len("id: ")
-        type_offset: int = len("type: ")
-
-        return {
-            "name": info_parts[0].strip(),
-            "id": info_parts[1].strip()[id_offset:],
-            "type": info_parts[2].strip()[type_offset:],
-        }
-
-    def get_components(self, id: str) -> list[TabletComponent]:
-        return [device for device in self.__devices if id in device.get_name()]
-
-
+@dataclass(frozen=True)
 class Resolution:
-    def __init__(self, width: int, height: int) -> None:
-        self.__width: int = width
-        self.__height: int = height
-
-    def get_width(self) -> int:
-        return self.__width
-
-    def get_height(self) -> int:
-        return self.__height
-
-    def __str__(self) -> str:
-        return f"<Resolution width={self.__width}, height={self.__height}>"
+    width: int
+    height: int
 
 
+@dataclass(frozen=True)
 class Position:
-    def __init__(self, x: int, y: int) -> None:
-        self.__x: int = x
-        self.__y: int = y
-
-    def get_x(self) -> int:
-        return self.__x
-
-    def get_y(self) -> int:
-        return self.__y
-
-    def __str__(self) -> str:
-        return f"<Position x={self.__x}, y={self.__y}>"
+    x: int
+    y: int
 
 
+@dataclass(frozen=True)
 class Screen:
-    def __init__(
-        self,
-        id: int,
-        name: str,
-        status: str,
-        resolution: Resolution,
-        position: Position,
-    ) -> None:
-        self.__id: int = id
-        self.__name: str = name
-        self.__is_primary: bool = "*" in status
-        self.__resolution: Resolution = resolution
-        self.__position: Position = position
+    id: int
+    name: str
+    is_primary: bool
+    resolution: Resolution
+    position: Position
 
-    def get_id(self) -> int:
-        return self.__id
-
-    def get_name(self) -> str:
-        return self.__name
-
-    def is_primary(self) -> bool:
-        return self.__is_primary
-
-    def get_resolution(self) -> Resolution:
-        return self.__resolution
-
-    def get_position(self) -> Position:
-        return self.__position
-
-    def get_output_spec(self) -> str:
-        return f"{self.__resolution.get_width()}x{self.__resolution.get_height()}+{self.__position.get_x()}+{self.__position.get_y()}"
-
-    def __str__(self) -> str:
-        return f"<Screen: id={self.__id}, name={self.__name}, is_primary={self.__is_primary}, resolution={self.__resolution}, position={self.__position}>"
-
-
-class Screens:
-    """
-    Monitors: 3
-     0: +*eDP 1920/344x1080/194+0+0  eDp
-     1: +HDMI-1 2560/597x1440/336+1920+0  HDMI-1
-     2: +DP-1 3840/698x2160/392+4480+0  DP-1
-    https://forums.linuxmint.com/viewtopic.php?t=393492
-    """
-
-    def __init__(self) -> None:
-        self.__screens: list[Screen] = self.__generate_screens()
-
-    def __generate_xrandr_output(self) -> list[str]:
-        command = "xrandr --listactivemonitors"
-        return subprocess.run(
-            command.split(), capture_output=True, text=True, check=False
-        ).stdout.splitlines()
-
-    def __generate_screens(self) -> list[Screen]:
-        xrandr_output: list[str] = self.__generate_xrandr_output()
-        screens: list[Screen] = []
-        screen_lines: list[str] = xrandr_output[1:]
-        for line in screen_lines:
-            screen_parts: list[str] = line.strip().split()
-            id: int = int(screen_parts[0].split(":")[0])
-            name: str = screen_parts[-1]
-            status: str = screen_parts[1]
-            resolution_width: int = int(screen_parts[2].split("/")[0])
-            resolution_height: int = int(screen_parts[2].split("/")[1].split("x")[-1])
-            position_x: int = int(screen_parts[2].split("+")[-2])
-            position_y: int = int(screen_parts[2].split("+")[-1])
-            screens.append(
-                Screen(
-                    id=id,
-                    name=name,
-                    status=status,
-                    resolution=Resolution(
-                        width=resolution_width, height=resolution_height
-                    ),
-                    position=Position(x=position_x, y=position_y),
-                )
-            )
-
-        return screens
-
-    def get_num_of_monitors(self) -> int:
-        return len(self.__screens)
-
-    def get_primary(self) -> Screen | None:
-        for screen in self.__screens:
-            if screen.is_primary():
-                return screen
-
-    def get_screens(self) -> list[Screen]:
-        return self.__screens
-
-    def get_screen(self, id: int) -> Screen | None:
-        for screen in self.__screens:
-            if screen.get_id() == id:
-                return screen
-
-    def get_screen_by_output(self, output: str) -> Screen | None:
-        for screen in self.__screens:
-            if output in [screen.get_name(), screen.get_output_spec()]:
-                return screen
-
-    def get_relative_screen(self, current: Screen, direction: str) -> Screen:
-        screens = sorted(
-            self.__screens,
-            key=lambda screen: (
-                screen.get_position().get_x(),
-                screen.get_position().get_y(),
-                screen.get_id(),
-            ),
-        )
-        current_index = screens.index(current)
-        next_index = current_index + (-1 if direction == "left" else 1)
-        if next_index < 0 or next_index >= len(screens):
-            return current
-
-        return screens[next_index]
-
-
-class Keybind:
-    def __init__(self, key: str, binding: str):
-        self.__key: str = key
-        self.__binding: str = binding
-
-    def set_keybind(self, component: TabletComponent):
-        cmd: str = (
-            f"xsetwacom set {component.get_id()} Button {self.__key} {self.__binding}"
-        )
-
-        subprocess.run(cmd, shell=True, check=False)
-
-
-class Tablet:
-    def __init__(
-        self,
-        name: str,
-        components: list[TabletComponent],
-        area_components: list[ComponentTypes],
-        keybinds: dict[ComponentTypes, list[Keybind]] | None = None,
-    ) -> None:
-        self.__name: str = name
-        self.__components: list[TabletComponent] = components
-        self.__keybinds = keybinds or {}
-        self.__area_components: list[ComponentTypes] = area_components
-
-    def __generate_default_area(self, component: TabletComponent) -> list[str]:
-        command: str = f"xsetwacom get {component.get_id()} Area"
+    @property
+    def output_spec(self) -> str:
         return (
-            subprocess.run(command.split(), capture_output=True, text=True, check=False)
-            .stdout.strip()
-            .split()
+            f"{self.resolution.width}x{self.resolution.height}"
+            f"+{self.position.x}+{self.position.y}"
         )
 
-    def __get_mapped_output(self, component: TabletComponent) -> str:
-        return subprocess.run(
-            ["xsetwacom", "get", component.get_id(), "MapToOutput"],
-            capture_output=True,
-            text=True,
-            check=False,
-        ).stdout.strip()
 
-    def get_name(self) -> str:
-        return self.__name
+@dataclass(frozen=True)
+class Keybind:
+    key: str
+    binding: str
 
-    def get_component_from_type(self, component_type: str) -> TabletComponent | None:
-        for component in self.__components:
-            if component.get_type() == component_type:
-                return component
-
-    def get_components(self):
-        for components in self.__components:
-            print(components.get_id())
-
-    def get_mapped_screen(self, screens: Screens) -> Screen | None:
-        for component_type in self.__area_components:
-            component: TabletComponent | None = self.get_component_from_type(
-                component_type.name
-            )
-            if not component:
-                continue
-
-            screen = screens.get_screen_by_output(self.__get_mapped_output(component))
-            if screen:
-                return screen
-
-    def configure_screen(self, screen: Screen) -> None:
-        for component_type in self.__area_components:
-            component: TabletComponent | None = self.get_component_from_type(
-                component_type.name
-            )
-            if not component:
-                return
-            areas: list[str] = self.__generate_default_area(component)[2:]
-            area_x: int = int(areas[0])
-            area_y: int = int(
-                int(areas[0])
-                * (
-                    screen.get_resolution().get_height()
-                    / screen.get_resolution().get_width()
-                )
-            )
-
-            area_cmd: str = (
-                f"xsetwacom set {component.get_id()} Area 0 0 {area_x} {area_y}"
-            )
-            screen_cmd: str = (
-                f"xsetwacom set {component.get_id()} MapToOutput {screen.get_output_spec()}"
-            )
-            subprocess.run(area_cmd, shell=True, check=False)
-            subprocess.run(screen_cmd, shell=True, check=False)
-
-    def set_keybinds(self) -> None:
-        for component_type in self.__keybinds:
-            for keybind in self.__keybinds[component_type]:
-                component: TabletComponent | None = self.get_component_from_type(
-                    component_type.name
-                )
-                if not component:
-                    return
-                keybind.set_keybind(component)
+    def apply(self, component: TabletComponent) -> None:
+        run_xsetwacom(
+            "set",
+            component.id,
+            "Button",
+            self.key,
+            *shlex.split(self.binding),
+        )
 
 
-def main() -> None:
-    if len(sys.argv) != 2:
-        print("This script requires at least 1 argument to be passed\n")
-        print("Example use:")
-        print("=============")
-        print("./xswacomon [SCREEN_ID|left|right]")
-        return
-    devices: Devices = Devices()
-    screens: Screens = Screens()
-    huion_id: str = "HID 256:006e"
-    wacom_id: str = "Wacom One pen tablet small"
-    huion_components: list[TabletComponent] = devices.get_components(huion_id)
-    wacom_components: list[TabletComponent] = devices.get_components(wacom_id)
-    huion: Tablet = Tablet(
-        "Huion",
-        huion_components,
-        area_components=[ComponentTypes.STYLUS],
+@dataclass(frozen=True)
+class TabletConfig:
+    name: str
+    device_match: str
+    area_components: tuple[ComponentType, ...]
+    keybinds: dict[ComponentType, tuple[Keybind, ...]]
+
+
+TABLET_CONFIGS: tuple[TabletConfig, ...] = (
+    TabletConfig(
+        name="Huion",
+        device_match="HID 256:006e",
+        area_components=(ComponentType.STYLUS,),
         keybinds={
-            ComponentTypes.PAD: [
+            ComponentType.PAD: (
                 Keybind(key="1", binding="key Super_L Alt_L 1"),
                 Keybind(key="2", binding="key Super_L Alt_L 4"),
                 Keybind(key="15", binding="key Super_L Alt_L 1"),
                 Keybind(key="16", binding="key Super_L Alt_L 1"),
-            ]
+            )
         },
-    )
-    wacom: Tablet = Tablet(
+    ),
+    TabletConfig(
         name="Wacom One",
-        components=wacom_components,
-        area_components=[ComponentTypes.ERASER, ComponentTypes.STYLUS],
-        keybinds={ComponentTypes.STYLUS: [Keybind(key="2", binding="+2")]},
+        device_match="Wacom One pen tablet small",
+        area_components=(ComponentType.ERASER, ComponentType.STYLUS),
+        keybinds={ComponentType.STYLUS: (Keybind(key="2", binding="+2"),)},
+    ),
+)
+
+
+ScreenTarget = int | str
+
+
+def run_xsetwacom(
+    *args: str, capture_output: bool = False
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["xsetwacom", *args],
+        capture_output=capture_output,
+        text=True,
+        check=False,
     )
-    tablets: list[Tablet] = [huion, wacom]
-    screen_arg: str = sys.argv[1]
-    if screen_arg in ["left", "right"]:
-        current_screen: Screen | None = None
-        for tablet in tablets:
-            current_screen = tablet.get_mapped_screen(screens)
-            if current_screen:
-                break
 
-        if not current_screen:
-            print("Could not determine current xsetwacom output")
-            return
 
-        screen: Screen | None = screens.get_relative_screen(current_screen, screen_arg)
-    else:
-        screen_id: int = int(screen_arg)
-        screen = screens.get_screen(screen_id)
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="xswacomon",
+        description="Map configured drawing tablets to an active monitor.",
+    )
+    parser.add_argument(
+        "target",
+        nargs="?",
+        help="monitor id to map to, or a relative direction: left, right",
+    )
+    parser.add_argument(
+        "--list-screens",
+        action="store_true",
+        help="show active monitors from xrandr and exit",
+    )
+    parser.add_argument(
+        "--list-tablets",
+        action="store_true",
+        help="show matching configured tablet devices from xsetwacom and exit",
+    )
+    parser.add_argument(
+        "--no-keybinds",
+        action="store_true",
+        help="map tablet areas without applying button bindings",
+    )
+    return parser
 
-    if not screen:
-        print(f"Could not find screen for argument: {screen_arg}")
+
+def parse_target(target: str) -> ScreenTarget:
+    if target in ("left", "right"):
+        return target
+
+    try:
+        return int(target)
+    except ValueError as error:
+        raise ValueError("target must be a monitor id, 'left', or 'right'") from error
+
+
+def parse_tablet_component(line: str) -> TabletComponent | None:
+    parts = line.split("\t")
+    if len(parts) < 3:
+        return None
+
+    return TabletComponent(
+        name=parts[0].strip(),
+        id=parts[1].strip().removeprefix("id: "),
+        component_type=parts[2].strip().removeprefix("type: "),
+    )
+
+
+def list_tablet_components() -> list[TabletComponent]:
+    output = run_xsetwacom("list", capture_output=True).stdout
+    return [
+        component
+        for line in output.splitlines()
+        if (component := parse_tablet_component(line)) is not None
+    ]
+
+
+def components_for_tablet(
+    components: list[TabletComponent], config: TabletConfig
+) -> list[TabletComponent]:
+    return [
+        component for component in components if config.device_match in component.name
+    ]
+
+
+def parse_screen(line: str) -> Screen:
+    parts = line.strip().split()
+    screen_id = int(parts[0].removesuffix(":"))
+    status = parts[1]
+    geometry = parts[2]
+
+    resolution_part = geometry.split("+")[0]
+    width = int(resolution_part.split("/")[0])
+    height = int(resolution_part.split("/")[1].split("x")[-1])
+    position_x = int(geometry.split("+")[-2])
+    position_y = int(geometry.split("+")[-1])
+
+    return Screen(
+        id=screen_id,
+        name=parts[-1],
+        is_primary="*" in status,
+        resolution=Resolution(width=width, height=height),
+        position=Position(x=position_x, y=position_y),
+    )
+
+
+def list_screens() -> list[Screen]:
+    output = subprocess.run(
+        ["xrandr", "--listactivemonitors"],
+        capture_output=True,
+        text=True,
+        check=False,
+    ).stdout.splitlines()
+
+    return [parse_screen(line) for line in output[1:]]
+
+
+def find_screen_by_id(screens: list[Screen], screen_id: int) -> Screen | None:
+    return next((screen for screen in screens if screen.id == screen_id), None)
+
+
+def find_screen_by_output(screens: list[Screen], output: str) -> Screen | None:
+    return next(
+        (screen for screen in screens if output in (screen.name, screen.output_spec)),
+        None,
+    )
+
+
+def sorted_screens(screens: list[Screen]) -> list[Screen]:
+    return sorted(
+        screens,
+        key=lambda screen: (screen.position.x, screen.position.y, screen.id),
+    )
+
+
+def relative_screen(screens: list[Screen], current: Screen, direction: str) -> Screen:
+    ordered_screens = sorted_screens(screens)
+    current_index = ordered_screens.index(current)
+    next_index = current_index + (-1 if direction == "left" else 1)
+
+    if next_index < 0 or next_index >= len(ordered_screens):
+        return current
+
+    return ordered_screens[next_index]
+
+
+def component_by_type(
+    components: list[TabletComponent], component_type: ComponentType
+) -> TabletComponent | None:
+    return next(
+        (
+            component
+            for component in components
+            if component.component_type == component_type.value
+        ),
+        None,
+    )
+
+
+def get_default_area(component: TabletComponent) -> list[str]:
+    return run_xsetwacom("get", component.id, "Area", capture_output=True).stdout.split()
+
+
+def get_mapped_output(component: TabletComponent) -> str:
+    return run_xsetwacom(
+        "get", component.id, "MapToOutput", capture_output=True
+    ).stdout.strip()
+
+
+def mapped_screen(
+    screens: list[Screen], components: list[TabletComponent], config: TabletConfig
+) -> Screen | None:
+    for component_type in config.area_components:
+        component = component_by_type(components, component_type)
+        if not component:
+            continue
+
+        screen = find_screen_by_output(screens, get_mapped_output(component))
+        if screen:
+            return screen
+
+    return None
+
+
+def apply_keybinds(components: list[TabletComponent], config: TabletConfig) -> None:
+    for component_type, keybinds in config.keybinds.items():
+        component = component_by_type(components, component_type)
+        if not component:
+            continue
+
+        for keybind in keybinds:
+            keybind.apply(component)
+
+
+def configure_tablet_area(
+    screen: Screen, components: list[TabletComponent], config: TabletConfig
+) -> None:
+    for component_type in config.area_components:
+        component = component_by_type(components, component_type)
+        if not component:
+            continue
+
+        area = get_default_area(component)[2:]
+        if len(area) < 2:
+            continue
+
+        area_x = int(area[0])
+        area_y = int(area_x * (screen.resolution.height / screen.resolution.width))
+
+        run_xsetwacom("set", component.id, "Area", "0", "0", str(area_x), str(area_y))
+        run_xsetwacom("set", component.id, "MapToOutput", screen.output_spec)
+
+
+def configured_tablets(
+    components: list[TabletComponent],
+) -> list[tuple[TabletConfig, list[TabletComponent]]]:
+    return [
+        (config, tablet_components)
+        for config in TABLET_CONFIGS
+        if (tablet_components := components_for_tablet(components, config))
+    ]
+
+
+def print_screens(screens: list[Screen]) -> None:
+    for screen in sorted_screens(screens):
+        primary = " primary" if screen.is_primary else ""
+        print(f"{screen.id}: {screen.name} {screen.output_spec}{primary}")
+
+
+def print_tablets(tablets: list[tuple[TabletConfig, list[TabletComponent]]]) -> None:
+    if not tablets:
+        print("No configured tablets found")
         return
 
-    for tablet in tablets:
-        tablet.set_keybinds()
-        tablet.configure_screen(screen)
+    for config, components in tablets:
+        print(f"{config.name}:")
+        for component in components:
+            print(f"  {component.id}: {component.component_type} - {component.name}")
+
+
+def select_screen(
+    target: ScreenTarget,
+    screens: list[Screen],
+    tablets: list[tuple[TabletConfig, list[TabletComponent]]],
+) -> Screen | None:
+    if isinstance(target, int):
+        return find_screen_by_id(screens, target)
+
+    for config, components in tablets:
+        current_screen = mapped_screen(screens, components, config)
+        if current_screen:
+            return relative_screen(screens, current_screen, target)
+
+    print("Could not determine current xsetwacom output", file=sys.stderr)
+    return None
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+
+    if args.list_tablets:
+        print_tablets(configured_tablets(list_tablet_components()))
+        return 0
+
+    if args.list_screens:
+        screens = list_screens()
+        print_screens(screens)
+        return 0
+
+    if not args.target:
+        parser.error("target is required unless using --list-screens or --list-tablets")
+
+    try:
+        target = parse_target(args.target)
+    except ValueError as error:
+        parser.error(str(error))
+
+    components = list_tablet_components()
+    tablets = configured_tablets(components)
+    if not tablets:
+        print("No configured tablets found", file=sys.stderr)
+        return 1
+
+    screens = list_screens()
+    screen = select_screen(target, screens, tablets)
+
+    if not screen:
+        print(f"Could not find screen for target: {args.target}", file=sys.stderr)
+        return 1
+
+    for config, tablet_components in tablets:
+        if not args.no_keybinds:
+            apply_keybinds(tablet_components, config)
+        configure_tablet_area(screen, tablet_components, config)
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
