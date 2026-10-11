@@ -36,4 +36,6 @@ scripts.
 - [`docs/partitioning.md`](./docs/partitioning.md): disk layout and formatting
 - [`docs/fresh-install.md`](./docs/fresh-install.md): end-to-end install flow
 - [`docs/scripts.md`](./docs/scripts.md): `add/` script dependency reference
+- [`docs/system.md`](./docs/system.md): generic system setup notes
+- [`docs/troubleshooting.md`](./docs/troubleshooting.md): common desktop fixes
 - [`docs/laptop.md`](./docs/laptop.md): laptop-specific notes
