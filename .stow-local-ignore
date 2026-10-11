@@ -23,6 +23,7 @@ _darcs
 
 ^/README.*
 ^/INSTALL.*
+^/docs
 ^/TODO.*
 ^/LICENSE.*
 ^/COPYING

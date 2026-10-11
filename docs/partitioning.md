@@ -1,4 +1,7 @@
-These steps cover using `cfdisk` (or `fdisk` if you're brave) to create the partitions before installing Void Linux.
+# Partitioning
+
+These steps cover using `cfdisk` or `fdisk` to create partitions before
+installing Void Linux.
 
 List disks first so you do not partition the wrong device:
 
@@ -21,11 +24,11 @@ Inside `cfdisk`:
 - Swap partition: `Linux swap`
 - Root partition: `Linux filesystem`
 
-Formatting the partitions, or via void-installer:
+Formatting the partitions, or via `void-installer`:
 
 ```bash
-mkfs.vfat -F 32 /dev/[BOOT_EFI] # VFAT (EXFAT)
-mkswap /dev/[SWAP]              # SWAP
-mkfs.ext4 /dev/[ROOT]           # EXT4
+mkfs.vfat -F 32 /dev/[BOOT_EFI]
+mkswap /dev/[SWAP]
+mkfs.ext4 /dev/[ROOT]
 swapon /dev/[SWAP]
 ```
