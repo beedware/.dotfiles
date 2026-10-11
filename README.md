@@ -25,6 +25,9 @@ mv ~/.bashrc ~/.bashrc.bak
 stow .
 ```
 
+`.bashrc.root` is the shell config intended for the root user. See
+[`docs/system.md`](./docs/system.md) for the install note.
+
 ## Fresh Install
 
 Use [`docs/fresh-install.md`](./docs/fresh-install.md) for a full Void install

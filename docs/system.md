@@ -2,6 +2,15 @@
 
 Generic Linux system notes that are useful after the base desktop is installed.
 
+## Root Bashrc
+
+`.bashrc.root` is the Bash config intended for the root user. It is ignored by
+Stow, so install it explicitly when root should use it:
+
+```bash
+sudo cp ~/.dotfiles/.bashrc.root /root/.bashrc
+```
+
 ## GRUB OS Prober
 
 If GRUB needs to detect other installed operating systems, enable OS probing and
