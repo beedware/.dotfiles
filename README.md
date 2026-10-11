@@ -99,7 +99,7 @@ SSH:
 
 ```bash
 cd ~/.dotfiles
-stow .
+stow --no-folding .
 ```
 
 ### Install Script Dependencies
