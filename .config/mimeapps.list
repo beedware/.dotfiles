@@ -15,6 +15,7 @@ text/html=firefox.desktop
 inode/directory=thunar.desktop
 application/vnd.powdertoy.save=powdertoy-uk.co.powdertoy.tpt.desktop
 x-scheme-handler/ptsave=powdertoy-uk.co.powdertoy.tpt.desktop
+application/octet-stream=libresprite.desktop
 
 [Added Associations]
 text/html=firefox.desktop;
@@ -32,3 +33,4 @@ image/heif=nsxiv.desktop;
 application/zip=xarchiver.desktop;
 audio/mpeg=mpv.desktop;
 image/gif=mpv.desktop;nsxiv.desktop;
+application/octet-stream=libresprite.desktop;

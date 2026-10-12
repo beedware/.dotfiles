@@ -37,6 +37,33 @@ sudo unlink /var/service/elogind
 If `unlink` reports that the path is not a symlink, inspect it before removing
 anything.
 
+## Default Application MIME Error
+
+If setting a default application fails with an error like:
+
+```text
+Failed to set default application for "<file>".
+Failed to create file "../.dotfiles/.config/mimeapps.list.XXXXXX": No such file or directory.
+```
+
+The live file may be a relative symlink from `~/.config/mimeapps.list` into the
+dotfiles repo. Some GUI tools fail when creating a temporary file beside that
+relative symlink target.
+
+Ensure the dotfiles config directory exists, then replace the symlink with an
+absolute one:
+
+```bash
+mkdir -p /home/beed/.dotfiles/.config
+ln -sfn /home/beed/.dotfiles/.config/mimeapps.list /home/beed/.config/mimeapps.list
+```
+
+Verify temp-file creation works next to the target:
+
+```bash
+tmp=$(mktemp /home/beed/.dotfiles/.config/mimeapps.list.XXXXXX) && rm "$tmp"
+```
+
 ## SPICE Agent In Virtual Machines
 
 For Void guests in virt-manager, install and enable the SPICE agent so clipboard,
