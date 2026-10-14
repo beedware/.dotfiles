@@ -5,4 +5,6 @@ set -eu
 
 command -v npm >/dev/null 2>&1 || { echo "npm is not installed. Run add/node first."; exit 1; }
 
-npm i -g opencode-ai --allow-scripts=opencode-ai
+npm install -g @opencode/cli --allow-scripts=@opencode/cli
+
+opencode --version
