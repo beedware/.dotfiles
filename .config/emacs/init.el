@@ -147,9 +147,9 @@
 (require 'orgmode-rc)
 
 ;; Languages
-(require 'typst-rc)
-(require 'tex-rc)
 (require 'markdown-rc)
+(require 'typst-rc)
+; (require 'tex-rc)
 ; (require 'python-rc)
 ; (require 'c-rc)
 ; (require 'haskell-rc)
