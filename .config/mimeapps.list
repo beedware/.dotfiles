@@ -34,3 +34,4 @@ application/zip=xarchiver.desktop;
 audio/mpeg=mpv.desktop;
 image/gif=mpv.desktop;nsxiv.desktop;
 application/octet-stream=libresprite.desktop;
+application/xml=firefox.desktop;

@@ -54,14 +54,13 @@ Ensure the dotfiles config directory exists, then replace the symlink with an
 absolute one:
 
 ```bash
-mkdir -p /home/beed/.dotfiles/.config
-ln -sfn /home/beed/.dotfiles/.config/mimeapps.list /home/beed/.config/mimeapps.list
+ln -sfn ~/.dotfiles/.config/mimeapps.list /home/beed/.config/mimeapps.list
 ```
 
 Verify temp-file creation works next to the target:
 
 ```bash
-tmp=$(mktemp /home/beed/.dotfiles/.config/mimeapps.list.XXXXXX) && rm "$tmp"
+tmp=$(mktemp ~/.dotfiles/.config/mimeapps.list.XXXXXX) && rm "$tmp"
 ```
 
 ## SPICE Agent In Virtual Machines
