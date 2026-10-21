@@ -21,19 +21,19 @@ workspace 10 output DP-0 HDMI-A-0
 
 focus_wrapping workspace
 
-for_window [class="(?i)^firefox$" title="^YouTube Music — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number 6
+for_window [class="^firefox$" title="^YouTube Music — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number 6
 
 set $chat_ws 7
 
-for_window [class="(?i)^firefox$" title="^WhatsApp Web — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
-for_window [class="(?i)^firefox$" title="^Discord — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
-for_window [class="(?i)^firefox$" title="^Element — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
-for_window [class="(?i)^firefox$" title="^Google Messages for web: Conversations — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
+for_window [class="^firefox$" title="^WhatsApp Web — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
+for_window [class="^firefox$" title="^Discord — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
+for_window [class="^firefox$" title="^Element — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
+for_window [class="^firefox$" title="^Google Messages for web: Conversations — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $chat_ws
 
 set $email_ws 8
 
-for_window [class="(?i)^firefox$" title="^Gmail — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $email_ws
-for_window [class="(?i)^firefox$" title="^Outlook — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $email_ws
+for_window [class="^firefox$" title="^Gmail — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $email_ws
+for_window [class="^firefox$" title="^Outlook — Mozilla Firefox$"] move --no-auto-back-and-forth to workspace number $email_ws
 
 assign [class="protonvpn-app"] number 9
 assign [class="KeePassXC"] number 9
