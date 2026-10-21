@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+# tags: #pkg
+
+sudo xbps-install -Sy curl
+
+VERSION="2.7.1"
+ARCHIVE="NuSMV-${VERSION}-linux64.tar.xz"
+CHECKSUM="894dc71f0997683f28d4dc3512e3a6b608e02b9700e5e813017931df2d11883c"
+INSTALL_DIR="/opt/NuSMV-${VERSION}-linux64"
+BIN_LINK="/usr/local/bin/NuSMV"
+URL="https://nusmv.fbk.eu/distrib/${VERSION}/${ARCHIVE}"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+cd "$TMP_DIR"
+
+curl -fL -o "$ARCHIVE" "$URL"
+printf '%s  %s\n' "$CHECKSUM" "$ARCHIVE" | sha256sum --check
+tar -xJf "$ARCHIVE"
+
+sudo rm -rf "$INSTALL_DIR"
+sudo mv "NuSMV-${VERSION}-linux64" "$INSTALL_DIR"
+
+sudo ln -sfn "$INSTALL_DIR/bin/NuSMV" "$BIN_LINK"
+
+echo "NuSMV installed: $BIN_LINK -> $INSTALL_DIR/bin/NuSMV"
