@@ -160,16 +160,176 @@ local function search_slipbox_titles()
   search_with_vimgrep(pattern)
 end
 
+local function slipbox_notes()
+  local dir = fn.resolve(fn.expand "~/Compendium/Slipbox")
+  local notes = {}
+
+  for _, path in ipairs(fn.globpath(dir, "*.typ", false, true)) do
+    local id = fn.fnamemodify(path, ":t:r")
+    if id:match "^%d%d%d%d%d%d%d%d%d%d%d%d%d%d$" then
+      local ok, lines = pcall(fn.readfile, path, "", 40)
+      if ok then
+        for _, line in ipairs(lines) do
+          local title = line:match [[^#let%s+title%s*=%s*"([^"]*)"]]
+          if title then
+            table.insert(notes, { id = id, title = title, path = path })
+            break
+          end
+        end
+      end
+    end
+  end
+
+  table.sort(notes, function(a, b)
+    return a.title:lower() < b.title:lower() or a.title:lower() == b.title:lower() and a.id < b.id
+  end)
+  return notes
+end
+
+local function slipbox_backlinks(id)
+  id = id ~= "" and id or fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t:r")
+  if not id:match "^%d%d%d%d%d%d%d%d%d%d%d%d%d%d$" then
+    vim.notify("Expected a timestamp-style note ID", vim.log.levels.WARN)
+    return
+  end
+
+  local items = {}
+  for _, note in ipairs(slipbox_notes()) do
+    if note.id ~= id then
+      local lines = fn.readfile(note.path)
+      local in_links = false
+      for lnum, line in ipairs(lines) do
+        if line:match "^= Links%s*$" then
+          in_links = true
+        elseif in_links and line:match "^=" then
+          in_links = false
+        elseif in_links and line:match "^#bibliography" then
+          break
+        elseif in_links and line:match("^%s*%-%s*" .. id .. "%s*$") then
+          table.insert(items, {
+            filename = note.path,
+            lnum = lnum,
+            col = 1,
+            text = note.title,
+          })
+          break
+        end
+      end
+    end
+  end
+
+  if #items == 0 then
+    fn.setqflist({}, "r", { title = "Backlinks to " .. id, items = {} })
+    vim.notify("No backlinks found for " .. id, vim.log.levels.INFO)
+    return
+  end
+
+  fn.setqflist({}, "r", { title = "Backlinks to " .. id, items = items })
+  vim.cmd "copen"
+end
+
+local function insert_slipbox_id()
+  local notes = slipbox_notes()
+  if #notes == 0 then
+    notify_no_matches()
+    return
+  end
+
+  local buf = vim.api.nvim_get_current_buf()
+  local win = vim.api.nvim_get_current_win()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(win))
+  local line = vim.api.nvim_buf_get_lines(buf, row - 1, row, false)[1]
+  col = math.min(col + 1, #line)
+
+  local function insert(note)
+    if not note or not vim.api.nvim_buf_is_valid(buf) then
+      return
+    end
+    vim.api.nvim_buf_set_text(buf, row - 1, col, row - 1, col, { note.id })
+    if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == buf then
+      vim.api.nvim_win_set_cursor(win, { row, col + #note.id })
+    end
+  end
+
+  local ok, fzf = pcall(require, "fzf-lua")
+  if ok then
+    local entries = {}
+    local by_entry = {}
+    for _, note in ipairs(notes) do
+      local entry = note.title .. " [" .. note.id .. "]"
+      table.insert(entries, entry)
+      by_entry[entry] = note
+    end
+    fzf.fzf_exec(entries, {
+      prompt = "Slipbox title> ",
+      actions = {
+        ["default"] = function(selected)
+          insert(by_entry[selected[1]])
+        end,
+      },
+    })
+    return
+  end
+
+  vim.ui.input({ prompt = "Slipbox title: " }, function(query)
+    if not query or query == "" then
+      return
+    end
+    local matches = {}
+    for _, note in ipairs(notes) do
+      if note.title:lower():find(query:lower(), 1, true) then
+        table.insert(matches, note)
+      end
+    end
+    if #matches == 0 then
+      notify_no_matches()
+    elseif #matches == 1 then
+      insert(matches[1])
+    else
+      vim.ui.select(matches, {
+        prompt = "Slipbox title: ",
+        format_item = function(note)
+          return note.title .. " [" .. note.id .. "]"
+        end,
+      }, insert)
+    end
+  end)
+end
+
+vim.api.nvim_buf_create_user_command(0, "SlipboxBacklinks", function(opts)
+  slipbox_backlinks(opts.args)
+end, {
+  nargs = "?",
+  complete = function()
+    local ids = {}
+    for _, note in ipairs(slipbox_notes()) do
+      table.insert(ids, note.id)
+    end
+    return ids
+  end,
+  desc = "Find notes linking to the current note or a given ID",
+})
+
 local function set_slipbox(enabled)
   pcall(vim.keymap.del, "n", "<leader>fn", { buffer = true })
+  for _, key in ipairs { "<leader>zn", "<leader>zb", "<leader>zi" } do
+    pcall(vim.keymap.del, "n", key, { buffer = true })
+  end
 
   if not enabled then
     return
   end
 
-  map("n", "<leader>fn", search_slipbox_titles, {
+  map("n", "<leader>zn", search_slipbox_titles, {
     buffer = true,
     desc = "Find slipbox notes by title",
+  })
+  map("n", "<leader>zb", function()
+    slipbox_backlinks ""
+  end, { buffer = true, desc = "Find backlinks to this slipbox note" })
+  map("n", "<leader>zi", insert_slipbox_id, {
+    buffer = true,
+    desc = "Insert a slipbox note ID by title",
   })
 end
 
