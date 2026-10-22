@@ -83,17 +83,18 @@ local function item_for(note, lnum)
   return { filename = note.path, lnum = lnum or note.lnum, col = 1, text = label(note) }
 end
 
-local function pick_notes(found, prompt, list_title)
+local function pick_notes(found, prompt, list_title, make_item)
   if #found == 0 then
     notify_empty()
     return
   end
+  make_item = make_item or item_for
 
   local ok, fzf = pcall(require, "fzf-lua")
   if not ok then
     local items = {}
     for _, note in ipairs(found) do
-      table.insert(items, item_for(note))
+      table.insert(items, make_item(note))
     end
     quickfix(list_title, items)
     return
@@ -117,7 +118,7 @@ local function pick_notes(found, prompt, list_title)
           for _, entry in ipairs(selected) do
             local note = by_entry[entry]
             if note then
-              table.insert(items, item_for(note))
+              table.insert(items, make_item(note))
             end
           end
           quickfix(list_title, items)
@@ -162,7 +163,7 @@ local function backlinks(id)
     return
   end
 
-  local items = {}
+  local found, positions = {}, {}
   for _, note in ipairs(notes()) do
     if note.id ~= id then
       local in_links = false
@@ -172,13 +173,16 @@ local function backlinks(id)
         elseif in_links and (line:match "^=" or line:match "^#bibliography") then
           in_links = false
         elseif in_links and link_target(line) == id then
-          table.insert(items, item_for(note, lnum))
+          table.insert(found, note)
+          positions[note] = lnum
           break
         end
       end
     end
   end
-  quickfix("Backlinks to " .. id, items)
+  pick_notes(found, "Backlink> ", "Backlinks to " .. id, function(note)
+    return item_for(note, positions[note])
+  end)
 end
 
 local function insert_id()
