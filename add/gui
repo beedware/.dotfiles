@@ -22,9 +22,9 @@ sudo xbps-install -Sy \
     zathura-pdf-poppler
 
 flatpak install -y flathub com.github.tchx84.Flatseal
-flatpak install -y flathub com.borgbase.Vorta
+flatpak install -y flathub com.protonvpn.www
+flatpak install flathub com.borgbase.Vorta
 flatpak install flathub org.libreoffice.LibreOffice
-flatpak run com.protonvpn.www
 
 "$add_root/firefox"
 "$add_root/emacs"
