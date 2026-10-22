@@ -16,16 +16,12 @@ ls.add_snippets("typst", {
     i(1, "Title"),
     t {
       '"',
-      "#let id = ",
+      "",
+      "",
     },
     f(function()
-      return vim.fn.expand "%:t:r"
+      return ":" .. vim.fn.expand "%:t:r"
     end),
-    t {
-      "",
-      "",
-      ":#id",
-    },
     i(2, ":ghost:"),
     t {
       "",

@@ -12,7 +12,7 @@ local function link_target(line)
 end
 
 local function tags_from_line(line, id)
-  local tags = line:match "^%s*:#id:(.-):%s*$" or line:match("^%s*:" .. id .. ":(.-):%s*$")
+  local tags = line:match("^%s*:" .. id .. ":(.-):%s*$")
   return tags and tags ~= "" and ":" .. tags .. ":" or ""
 end
 
