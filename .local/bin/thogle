@@ -490,6 +490,13 @@ def toggle_nvim() -> None:
     )
 
 
+def toggle_vim() -> None:
+    run_text_toggle(
+        Path.home() / ".vimrc",
+        {"bg=light": "bg=dark"},
+    )
+
+
 def toggle_emacs() -> None:
     run_text_toggle(
         Path.home() / ".config/emacs/lisp/ui-rc.el",
@@ -584,6 +591,7 @@ def main() -> None:
     toggle_tmux()
     toggle_rofi()
     toggle_nvim()
+    toggle_vim()
     toggle_emacs()
     restart_emacs_daemon()
     toggle_opencode(mode)
