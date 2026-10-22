@@ -67,6 +67,11 @@ local function typst_title_text(line)
   return line:match [[#let%s+title%s*=%s*"([^"]*)"]] or line
 end
 
+local function typst_tags_from_line(line, id)
+  local tags = line:match "^%s*:#id:(.-):%s*$" or line:match("^%s*:" .. id .. ":(.-):%s*$")
+  return tags and tags ~= "" and ":" .. tags .. ":" or ""
+end
+
 local function typst_file_tags(filename)
   if not filename or filename == "" then
     return ""
@@ -77,10 +82,11 @@ local function typst_file_tags(filename)
     return ""
   end
 
+  local id = fn.fnamemodify(filename, ":t:r")
   for _, line in ipairs(lines) do
-    local tag_text = line:match "^%s*#id:([^%s]+)"
-    if tag_text then
-      return ":" .. tag_text
+    local tags = typst_tags_from_line(line, id)
+    if tags ~= "" then
+      return tags
     end
   end
 
@@ -88,12 +94,13 @@ local function typst_file_tags(filename)
 end
 
 local function typst_title_entry_text(filename, line)
+  local basename = fn.fnamemodify(filename, ":t")
   local title = typst_title_text(line)
   local tags = typst_file_tags(filename)
   if tags == "" then
-    return title
+    return basename .. "  " .. title
   end
-  return title .. " " .. tags
+  return basename .. "  " .. title .. "  " .. tags
 end
 
 local function simplify_qflist_title_text()
@@ -169,12 +176,15 @@ local function slipbox_notes()
     if id:match "^%d%d%d%d%d%d%d%d%d%d%d%d%d%d$" then
       local ok, lines = pcall(fn.readfile, path, "", 40)
       if ok then
+        local title, tags
         for _, line in ipairs(lines) do
-          local title = line:match [[^#let%s+title%s*=%s*"([^"]*)"]]
-          if title then
-            table.insert(notes, { id = id, title = title, path = path })
-            break
+          title = title or line:match [[^#let%s+title%s*=%s*"([^"]*)"]]
+          if not tags or tags == "" then
+            tags = typst_tags_from_line(line, id)
           end
+        end
+        if title then
+          table.insert(notes, { id = id, title = title, tags = tags or "", path = path })
         end
       end
     end
@@ -184,6 +194,11 @@ local function slipbox_notes()
     return a.title:lower() < b.title:lower() or a.title:lower() == b.title:lower() and a.id < b.id
   end)
   return notes
+end
+
+local function slipbox_note_entry(note)
+  local entry = note.id .. ".typ  " .. note.title
+  return note.tags ~= "" and entry .. "  " .. note.tags or entry
 end
 
 local function search_slipbox_titles()
@@ -202,7 +217,7 @@ local function search_slipbox_titles()
   local entries = {}
   local by_entry = {}
   for _, note in ipairs(notes) do
-    local entry = note.title .. " [" .. note.id .. "]"
+    local entry = slipbox_note_entry(note)
     table.insert(entries, entry)
     by_entry[entry] = note.path
   end
@@ -244,7 +259,7 @@ local function slipbox_backlinks(id)
             filename = note.path,
             lnum = lnum,
             col = 1,
-            text = note.title,
+            text = slipbox_note_entry(note),
           })
           break
         end
@@ -290,7 +305,7 @@ local function insert_slipbox_id()
     local entries = {}
     local by_entry = {}
     for _, note in ipairs(notes) do
-      local entry = note.title .. " [" .. note.id .. "]"
+      local entry = slipbox_note_entry(note)
       table.insert(entries, entry)
       by_entry[entry] = note
     end
@@ -322,9 +337,7 @@ local function insert_slipbox_id()
     else
       vim.ui.select(matches, {
         prompt = "Slipbox title: ",
-        format_item = function(note)
-          return note.title .. " [" .. note.id .. "]"
-        end,
+        format_item = slipbox_note_entry,
       }, insert)
     end
   end)
