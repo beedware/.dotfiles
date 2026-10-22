@@ -24,7 +24,7 @@ ls.add_snippets("typst", {
     t {
       "",
       "",
-      "#id",
+      ":#id",
     },
     i(2, ":ghost:"),
     t {
