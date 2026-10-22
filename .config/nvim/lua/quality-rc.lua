@@ -42,15 +42,20 @@ vim.keymap.set({ "n", "x" }, "<leader>cf", function()
   require("conform").format { lsp_format = "fallback", async = true }
 end, { desc = "Format code" })
 
-vim.api.nvim_create_user_command("FormatDisable", function()
-  format_enabled = false
+vim.api.nvim_create_user_command("Format", function(opts)
+  if opts.args ~= "disable" and opts.args ~= "enable" then
+    vim.notify("Usage: Format {disable|enable}", vim.log.levels.ERROR)
+    return
+  end
+  format_enabled = opts.args == "enable"
   configure()
-end, { desc = "Disable format on save" })
-
-vim.api.nvim_create_user_command("FormatEnable", function()
-  format_enabled = true
-  configure()
-end, { desc = "Enable format on save" })
+end, {
+  nargs = 1,
+  complete = function()
+    return { "disable", "enable" }
+  end,
+  desc = "Enable or disable format on save",
+})
 
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave", "BufEnter" }, {
   group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),

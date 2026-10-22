@@ -7,6 +7,10 @@ local function valid_id(id)
   return #id == 14 and id:match "^%d+$" ~= nil
 end
 
+local function link_target(line)
+  return line:match "^%s*%-%s*(%d+)%s*$" or line:match "^%s*%-%s*(%d+):%s*%S"
+end
+
 local function tags_from_line(line, id)
   local tags = line:match "^%s*:#id:(.-):%s*$" or line:match("^%s*:" .. id .. ":(.-):%s*$")
   return tags and tags ~= "" and ":" .. tags .. ":" or ""
@@ -97,7 +101,7 @@ local function find_titles()
 
   local entries, by_entry = entries_for(found)
   fzf.fzf_exec(entries, {
-    prompt = "Title> ",
+    prompt = "Note> ",
     fzf_opts = { ["--multi"] = true },
     actions = {
       ["default"] = function(selected)
@@ -139,7 +143,7 @@ local function backlinks(id)
           in_links = true
         elseif in_links and (line:match "^=" or line:match "^#bibliography") then
           in_links = false
-        elseif in_links and line:match("^%s*%-%s*" .. id .. "%s*$") then
+        elseif in_links and link_target(line) == id then
           table.insert(items, item_for(note, lnum))
           break
         end
@@ -164,9 +168,10 @@ local function insert_id()
     if not note or not api.nvim_buf_is_valid(buf) then
       return
     end
-    api.nvim_buf_set_text(buf, row - 1, col, row - 1, col, { note.id })
+    local text = "- " .. note.id .. ":" .. note.title
+    api.nvim_buf_set_text(buf, row - 1, col, row - 1, col, { text })
     if api.nvim_win_is_valid(win) and api.nvim_win_get_buf(win) == buf then
-      api.nvim_win_set_cursor(win, { row, col + #note.id })
+      api.nvim_win_set_cursor(win, { row, col + #text - 1 })
     end
   end
 
@@ -174,7 +179,7 @@ local function insert_id()
   local ok, fzf = pcall(require, "fzf-lua")
   if ok then
     fzf.fzf_exec(entries, {
-      prompt = "Title> ",
+      prompt = "Insert> ",
       actions = {
         ["default"] = function(selected)
           insert(by_entry[selected[1]])
@@ -184,7 +189,7 @@ local function insert_id()
     return
   end
 
-  vim.ui.input({ prompt = "Title: " }, function(query)
+  vim.ui.input({ prompt = "Insert> " }, function(query)
     if not query or query == "" then
       return
     end
@@ -200,7 +205,7 @@ local function insert_id()
       insert(matches[1])
     else
       vim.ui.select(matches, {
-        prompt = "Title: ",
+        prompt = "Insert> ",
         format_item = function(note)
           return by_note[note]
         end,
