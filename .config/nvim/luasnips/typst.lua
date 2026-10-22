@@ -3,7 +3,6 @@ local ls = require "luasnip"
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
-local f = ls.function_node
 
 ls.add_snippets("typst", {
   s("zettel", {
@@ -19,9 +18,6 @@ ls.add_snippets("typst", {
       "",
       "",
     },
-    f(function()
-      return ":" .. vim.fn.expand "%:t:r"
-    end),
     i(2, ":ghost:"),
     t {
       "",
