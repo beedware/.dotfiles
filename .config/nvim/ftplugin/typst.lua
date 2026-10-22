@@ -151,7 +151,7 @@ local function search_with_rg(pattern)
   vim.cmd "copen"
 end
 
-local function search_slipbox_titles()
+local function search_slipbox_titles_fallback()
   local pattern = '#let title = "'
   if fn.executable "rg" == 1 then
     search_with_rg(pattern)
@@ -184,6 +184,40 @@ local function slipbox_notes()
     return a.title:lower() < b.title:lower() or a.title:lower() == b.title:lower() and a.id < b.id
   end)
   return notes
+end
+
+local function search_slipbox_titles()
+  local ok, fzf = pcall(require, "fzf-lua")
+  if not ok then
+    search_slipbox_titles_fallback()
+    return
+  end
+
+  local notes = slipbox_notes()
+  if #notes == 0 then
+    notify_no_matches()
+    return
+  end
+
+  local entries = {}
+  local by_entry = {}
+  for _, note in ipairs(notes) do
+    local entry = note.title .. " [" .. note.id .. "]"
+    table.insert(entries, entry)
+    by_entry[entry] = note.path
+  end
+
+  fzf.fzf_exec(entries, {
+    prompt = "Slipbox title> ",
+    actions = {
+      ["default"] = function(selected)
+        local path = by_entry[selected[1]]
+        if path then
+          vim.cmd.edit(fn.fnameescape(path))
+        end
+      end,
+    },
+  })
 end
 
 local function slipbox_backlinks(id)
