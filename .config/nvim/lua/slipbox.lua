@@ -13,6 +13,7 @@ end
 
 local function tags_from_line(line, id)
   local tags = line:match("^%s*:" .. id .. ":(.-):%s*$")
+    or line:match("^%s*:([%w_]+:[%w_:]+):%s*$")
   return tags and tags ~= "" and ":" .. tags .. ":" or ""
 end
 
@@ -82,8 +83,7 @@ local function item_for(note, lnum)
   return { filename = note.path, lnum = lnum or note.lnum, col = 1, text = label(note) }
 end
 
-local function find_titles()
-  local found = notes()
+local function pick_notes(found, prompt, list_title)
   if #found == 0 then
     notify_empty()
     return
@@ -95,13 +95,13 @@ local function find_titles()
     for _, note in ipairs(found) do
       table.insert(items, item_for(note))
     end
-    quickfix("Slipbox notes", items)
+    quickfix(list_title, items)
     return
   end
 
   local entries, by_entry = entries_for(found)
   fzf.fzf_exec(entries, {
-    prompt = "Note> ",
+    prompt = prompt,
     fzf_opts = { ["--multi"] = true },
     actions = {
       ["default"] = function(selected)
@@ -120,11 +120,39 @@ local function find_titles()
               table.insert(items, item_for(note))
             end
           end
-          quickfix("Slipbox notes", items)
+          quickfix(list_title, items)
         end,
       },
     },
   })
+end
+
+local function find_titles()
+  pick_notes(notes(), "Note> ", "Slipbox notes")
+end
+
+local function find_links()
+  local targets, in_links = {}, false
+  for _, line in ipairs(api.nvim_buf_get_lines(0, 0, -1, false)) do
+    if line:match "^= Links%s*$" then
+      in_links = true
+    elseif in_links and (line:match "^=" or line:match "^#bibliography") then
+      in_links = false
+    elseif in_links then
+      local id = link_target(line)
+      if id and valid_id(id) then
+        targets[id] = true
+      end
+    end
+  end
+
+  local found = {}
+  for _, note in ipairs(notes()) do
+    if targets[note.id] then
+      table.insert(found, note)
+    end
+  end
+  pick_notes(found, "Link> ", "Slipbox links")
 end
 
 local function backlinks(id)
@@ -168,7 +196,7 @@ local function insert_id()
     if not note or not api.nvim_buf_is_valid(buf) then
       return
     end
-    local text = "- " .. note.id .. ":" .. note.title
+    local text = "- " .. note.id
     api.nvim_buf_set_text(buf, row - 1, col, row - 1, col, { text })
     if api.nvim_win_is_valid(win) and api.nvim_win_get_buf(win) == buf then
       api.nvim_win_set_cursor(win, { row, col + #text - 1 })
@@ -217,18 +245,19 @@ end
 function M.setup()
   local buf = api.nvim_get_current_buf()
   local function set_mappings(enabled)
-    for _, key in ipairs { "<leader>zn", "<leader>zb", "<leader>zi" } do
+    for _, key in ipairs { "<leader>zn", "<leader>zl", "<leader>zb", "<leader>zi" } do
       pcall(vim.keymap.del, "n", key, { buffer = buf })
     end
     if enabled then
       vim.keymap.set("n", "<leader>zn", find_titles, { buffer = buf, desc = "Find slipbox notes by title" })
+      vim.keymap.set("n", "<leader>zl", find_links, { buffer = buf, desc = "Find this note's links by title and tags" })
       vim.keymap.set("n", "<leader>zb", function()
         backlinks ""
       end, {
         buffer = buf,
         desc = "Find backlinks to this slipbox note",
       })
-      vim.keymap.set("n", "<leader>zi", insert_id, { buffer = buf, desc = "Insert a slipbox note ID by title" })
+      vim.keymap.set("n", "<leader>zi", insert_id, { buffer = buf, desc = "Insert a slipbox link by title" })
     end
   end
 

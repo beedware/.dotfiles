@@ -69,20 +69,18 @@ local function compile_typst(buf)
   local dir = vim.fn.fnamemodify(filepath, ":h")
   local outpath = vim.fs.joinpath(vim.fn.stdpath "cache", "typst-render.pdf")
 
+  local function report_output(_, data)
+    if data and #data > 0 then
+      print(table.concat(data, "\n"))
+    end
+  end
+
   vim.fn.jobstart({ "typst", "compile", filepath, outpath }, {
     cwd = dir,
     stdout_buffered = true,
     stderr_buffered = true,
-    on_stdout = function(_, data)
-      if data and #data > 0 then
-        print(table.concat(data, "\n"))
-      end
-    end,
-    on_stderr = function(_, data)
-      if data and #data > 0 then
-        print(table.concat(data, "\n"))
-      end
-    end,
+    on_stdout = report_output,
+    on_stderr = report_output,
   })
 end
 
