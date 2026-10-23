@@ -202,20 +202,6 @@ vim.api.nvim_create_autocmd("VimResized", {
   command = "wincmd =",
 })
 
-vim.api.nvim_create_autocmd("InsertEnter", {
-  group = vim.api.nvim_create_augroup("ToggleListchars", { clear = true }),
-  callback = function()
-    vim.opt_local.listchars = { tab = "> ", nbsp = "+" }
-  end,
-})
-
-vim.api.nvim_create_autocmd("InsertLeave", {
-  group = vim.api.nvim_create_augroup("ToggleListchars", { clear = false }),
-  callback = function()
-    vim.opt_local.listchars = { tab = "> ", nbsp = "+", trail = "-" }
-  end,
-})
-
 vim.api.nvim_create_autocmd("BufReadPre", {
   group = vim.api.nvim_create_augroup("BigFile", { clear = true }),
   callback = function(args)
