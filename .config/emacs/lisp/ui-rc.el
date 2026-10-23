@@ -15,23 +15,18 @@
   :ensure nil
   :defer nil
   :custom
-  (whitespace-style '(tab-mark nbsp-mark))
+  (whitespace-style '(tab-mark space-mark))
+  (whitespace-display-mappings
+   `((space-mark ?\xA0 [,(make-glyph-code ?¤ 'shadow)]
+      [,(make-glyph-code ?_ 'shadow)])
+     (tab-mark ?\t [,(make-glyph-code ?» 'shadow) ?\t]
+      [,(make-glyph-code ?\\ 'shadow) ?\t])))
   :config
   (global-whitespace-mode 1))
 
 (defface beed/trailing-space-marker
   '((t :inherit shadow))
   "Face used for trailing-space markers.")
-
-(defun beed/set-trailing-space-marker-face ()
-  (when (featurep 'modus-themes)
-    (set-face-attribute
-     'beed/trailing-space-marker nil
-     :foreground (modus-themes-generate-color-blend
-                  (modus-themes-get-color-value 'fg-dim)
-                  (modus-themes-get-color-value 'bg-main)
-                  0.55)
-     :background 'unspecified)))
 
 (defun beed/show-trailing-spaces-as-dots (&rest _)
   (remove-overlays (point-min) (point-max) 'beed/trailing-space t)
@@ -80,9 +75,7 @@
          modus-themes-italic-constructs nil)
   (set-face-attribute 'line-number nil :slant 'normal)
   (set-face-attribute 'line-number-current-line nil :slant 'normal)
-  (load-theme 'modus-vivendi t)
-  (beed/set-trailing-space-marker-face)
-  (add-hook 'enable-theme-functions #'beed/set-trailing-space-marker-face))
+  (load-theme 'modus-vivendi t))
 
 (use-package doom-modeline
   :defer nil
