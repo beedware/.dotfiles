@@ -15,29 +15,29 @@
   :ensure nil
   :defer nil
   :custom
-  (whitespace-style '(tab-mark space-mark))
+  (whitespace-style '(space-mark))
   (whitespace-display-mappings
    `((space-mark ?\xA0 [,(make-glyph-code ?¤ 'shadow)]
-      [,(make-glyph-code ?_ 'shadow)])
-     (tab-mark ?\t [,(make-glyph-code ?» 'shadow) ?\t]
-      [,(make-glyph-code ?\\ 'shadow) ?\t])))
+      [,(make-glyph-code ?_ 'shadow)])))
   :config
   (global-whitespace-mode 1))
 
 (defface beed/trailing-space-marker
   '((t :inherit shadow))
-  "Face used for trailing-space markers.")
+  "Face used for trailing whitespace markers.")
 
 (defun beed/show-trailing-spaces-as-dots (&rest _)
   (remove-overlays (point-min) (point-max) 'beed/trailing-space t)
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward " +$" nil t)
+    (while (re-search-forward "[ \t]+$" nil t)
       (let* ((beg (match-beginning 0))
              (end (match-end 0))
              (overlay (make-overlay beg end)))
         (overlay-put overlay 'beed/trailing-space t)
-        (overlay-put overlay 'display (make-string (- end beg) ?·))
+        (overlay-put overlay 'display
+                     (mapconcat (lambda (char) (if (eq char ?\t) "»\t" "·"))
+                                (match-string 0) ""))
         (overlay-put overlay 'face 'beed/trailing-space-marker)
         (overlay-put overlay 'evaporate t)))))
 
@@ -51,7 +51,7 @@
     (beed/show-trailing-spaces-as-dots)))
 
 (define-minor-mode beed/trailing-space-mode
-  "Display trailing spaces as middle dots."
+  "Display trailing spaces as dots and trailing tabs as guillemets."
   :lighter nil
   :global t
   (if beed/trailing-space-mode
