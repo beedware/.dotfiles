@@ -3,7 +3,7 @@
     "restore_on_startup": "empty_tab",
     "default_open_behavior": "new_window",
     "lsp_results_location": "picker",
-    "show_whitespaces": "trailing",
+    "show_whitespaces": "boundary",
     "show_completions_on_input": false,
     "buffer_font_features": {
         "calt": false

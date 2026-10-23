@@ -42,7 +42,7 @@
   (remove-overlays (point-min) (point-max) 'beed/trailing-space t)
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward " +$" nil t)
+    (while (re-search-forward "^ +\\| +$" nil t)
       (let* ((beg (match-beginning 0))
              (end (match-end 0))
              (overlay (make-overlay beg end)))
@@ -61,7 +61,7 @@
     (beed/show-trailing-spaces-as-dots)))
 
 (define-minor-mode beed/trailing-space-mode
-  "Display trailing spaces as dots."
+  "Display leading and trailing spaces as dots."
   :lighter nil
   :global t
   (if beed/trailing-space-mode
