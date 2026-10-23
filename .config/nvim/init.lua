@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 
 vim.o.spellfile = vim.fs.joinpath(vim.fn.stdpath "config", "spell", "en.utf-8.add")
 
-vim.o.list = true
 vim.o.background = "dark"
 vim.o.splitkeep = "screen"
 
@@ -35,8 +34,6 @@ vim.o.foldlevel = 99
 vim.o.foldtext = "v:folddashes . substitute(getline(v:foldstart), '/\\*\\|\\*/\\|{{{\\d\\=', '', 'g')"
 
 vim.o.updatetime = 250
-
-vim.opt.listchars = { tab = "> ", trail = "-", nbsp = "+", lead = "-" }
 
 vim.opt.fillchars = { eob = " " }
 vim.opt.guicursor = ""

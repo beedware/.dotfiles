@@ -11,73 +11,6 @@
                     :family "CommitMono Nerd Font"
                     :height 120)
 
-(use-package whitespace
-  :ensure nil
-  :defer nil
-  :custom
-  (whitespace-style '(tab-mark space-mark))
-  (whitespace-display-mappings
-   `((space-mark ?\xA0 [,(make-glyph-code ?¤ 'shadow)]
-      [,(make-glyph-code ?_ 'shadow)])
-     (tab-mark ?\t [,(make-glyph-code ?» 'shadow) ?\t]
-      [,(make-glyph-code ?\\ 'shadow) ?\t])))
-  :config
-  (global-whitespace-mode 1))
-
-(defface beed/trailing-space-marker
-  '((t :inherit shadow))
-  "Face used for trailing-space markers.")
-
-(defun beed/set-trailing-space-marker-face (&optional theme)
-  (set-face-attribute
-   'beed/trailing-space-marker nil
-   :foreground (if (or (null theme) (memq theme (modus-themes-get-themes)))
-                   (modus-themes-generate-color-blend
-                    (modus-themes-get-color-value 'fg-dim)
-                    (modus-themes-get-color-value 'bg-main)
-                     0.6)
-                 'unspecified)))
-
-(defun beed/show-trailing-spaces-as-dots (&rest _)
-  (remove-overlays (point-min) (point-max) 'beed/trailing-space t)
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward "^ +\\| +$" nil t)
-      (let* ((beg (match-beginning 0))
-             (end (match-end 0))
-             (overlay (make-overlay beg end)))
-        (overlay-put overlay 'beed/trailing-space t)
-        (overlay-put overlay 'display (make-string (- end beg) ?·))
-        (overlay-put overlay 'face 'beed/trailing-space-marker)
-        (overlay-put overlay 'evaporate t)))))
-
-(defun beed/trailing-space-mode--update-buffer ()
-  (if (or (minibufferp)
-          (derived-mode-p 'shell-mode 'eshell-mode 'term-mode 'vterm-mode))
-      (progn
-        (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
-        (remove-overlays (point-min) (point-max) 'beed/trailing-space t))
-    (add-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots nil t)
-    (beed/show-trailing-spaces-as-dots)))
-
-(define-minor-mode beed/trailing-space-mode
-  "Display leading and trailing spaces as dots."
-  :lighter nil
-  :global t
-  (if beed/trailing-space-mode
-      (progn
-        (add-hook 'after-change-major-mode-hook #'beed/trailing-space-mode--update-buffer)
-        (dolist (buffer (buffer-list))
-          (with-current-buffer buffer
-            (beed/trailing-space-mode--update-buffer))))
-    (remove-hook 'after-change-major-mode-hook #'beed/trailing-space-mode--update-buffer)
-    (dolist (buffer (buffer-list))
-      (with-current-buffer buffer
-        (remove-hook 'after-change-functions #'beed/show-trailing-spaces-as-dots t)
-        (remove-overlays (point-min) (point-max) 'beed/trailing-space t)))))
-
-(beed/trailing-space-mode 1)
-
 (use-package modus-themes
   :demand t
   :config
@@ -85,9 +18,7 @@
          modus-themes-italic-constructs nil)
   (set-face-attribute 'line-number nil :slant 'normal)
   (set-face-attribute 'line-number-current-line nil :slant 'normal)
-  (load-theme 'modus-vivendi t)
-  (beed/set-trailing-space-marker-face)
-  (add-hook 'enable-theme-functions #'beed/set-trailing-space-marker-face))
+  (load-theme 'modus-vivendi t))
 
 (use-package doom-modeline
   :defer nil
