@@ -127,6 +127,10 @@
 (when (file-exists-p custom-file)
   (load custom-file t))
 
+(with-eval-after-load 'whitespace
+  (setq whitespace-style
+        (remove 'newline-mark (remove 'newline whitespace-style))))
+
 ;; Modules
 (require 'ui-rc)
 (require 'completion-rc)
