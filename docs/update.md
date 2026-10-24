@@ -10,7 +10,7 @@
 
 ## Calendars
 
-- [ ] Update org calendars: `~/Compendium/Journal/.scripts/calendars kcl`
+- [ ] Update org calendars: `~/Compendium/Journal/.scripts/calendars kings`
 - [ ] Update Hijri org calendar: `~/Compendium/Journal/.scripts/calendars hijri -g "$(date +%Y/%m/%d)" "$(date -d "$(date +%Y-%m-01) +2 months -1 day" +%Y/%m/%d)"`
 
 ## Editors
