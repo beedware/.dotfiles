@@ -11,44 +11,6 @@
                     :family "CommitMono Nerd Font"
                     :height 120)
 
-(defvar-local beed/selection-whitespace-overlays nil
-  "Whitespace markers displayed in the active region.")
-
-(defvar beed/selection-whitespace-last-buffer nil
-  "Buffer whose selection whitespace was last updated.")
-
-(defun beed/clear-selection-whitespace ()
-  "Remove whitespace markers from the current buffer."
-  (mapc #'delete-overlay beed/selection-whitespace-overlays)
-  (setq beed/selection-whitespace-overlays nil))
-
-(defun beed/update-selection-whitespace ()
-  "Display whitespace characters only in the active region."
-  (when (and (buffer-live-p beed/selection-whitespace-last-buffer)
-             (not (eq beed/selection-whitespace-last-buffer (current-buffer))))
-    (with-current-buffer beed/selection-whitespace-last-buffer
-      (beed/clear-selection-whitespace)))
-  (setq beed/selection-whitespace-last-buffer (current-buffer))
-  (beed/clear-selection-whitespace)
-  (when (use-region-p)
-    (let ((start (region-beginning))
-          (end (region-end)))
-      (save-excursion
-        (goto-char start)
-        (while (re-search-forward "[ \t\u00A0]" end t)
-          (let* ((char (char-before))
-                 (overlay (make-overlay (1- (point)) (point)))
-                 (marker (pcase char
-                           (?\t "»\t")
-                           (?\xA0 "¤")
-                           (_ "·"))))
-            (overlay-put overlay 'display marker)
-             (overlay-put overlay 'face 'shadow)
-            (push overlay beed/selection-whitespace-overlays)))))))
-
-(add-hook 'post-command-hook #'beed/update-selection-whitespace)
-(add-hook 'deactivate-mark-hook #'beed/clear-selection-whitespace)
-
 (use-package modus-themes
   :demand t
   :config

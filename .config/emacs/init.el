@@ -116,9 +116,6 @@
                    (beed/disable-hl-line)
                    (display-line-numbers-mode 0))))
 
-(setq delete-trailing-lines nil)
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-
 (defun beed/arabic-input-method-title ()
   (when (string= current-input-method "arabic")
     (setq current-input-method-title "ARA")))
