@@ -56,7 +56,7 @@ distrotime() {
   fi
 }
 
-source $HOME/.config/fzf/themes/dark.sh
+[ -f "$HOME/.config/fzf/themes/dark.sh" ] && source "$HOME/.config/fzf/themes/dark.sh"
 export FZF_DEFAULT_OPTS="--layout=reverse --height=~14 ${FZF_DEFAULT_OPTS:-}"
 tmux set-environment -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS" 2>/dev/null
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"

@@ -397,10 +397,11 @@ def _toggle_copy_theme(target_path: Path, light_path: Path, dark_path: Path, det
 
 
 def toggle_bashrc() -> str:
+    fzf_source = '[ -f "$HOME/.config/fzf/themes/{theme}.sh" ] && source "$HOME/.config/fzf/themes/{theme}.sh"'
     return run_text_toggle(
         Path.home() / ".bashrc",
         {
-            "fzf/themes/light.sh": "fzf/themes/dark.sh",
+            fzf_source.format(theme="light"): fzf_source.format(theme="dark"),
             "--theme=Light": "--theme=Dark",
         },
     )
