@@ -35,7 +35,7 @@ vim.o.foldtext = "v:folddashes . substitute(getline(v:foldstart), '/\\*\\|\\*/\\
 
 vim.o.updatetime = 250
 
-vim.opt.listchars = { tab = "> ", nbsp = "+", space = "." }
+vim.opt.listchars = { tab = "> ", nbsp = "+", space = ".", trail = "-" }
 
 vim.opt.fillchars = { eob = " " }
 vim.opt.guicursor = ""
