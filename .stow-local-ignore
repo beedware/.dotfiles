@@ -50,3 +50,4 @@ rem
 ^/configs
 .mozilla
 .voidlinux
+.config/mimeapps.list

@@ -10,7 +10,7 @@ fi
 if [ "$choice" = "logout" ]; then
     loginctl terminate-session self
 elif [ "$choice" = "lock" ]; then
-    "$HOME/.config/rofi/modes/locker"
+    "$HOME/.local/bin/locker"
 elif [ -n "$choice" ]; then
     loginctl "$choice"
 fi
