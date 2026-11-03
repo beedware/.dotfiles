@@ -318,7 +318,7 @@ require "gdscript-rc"
 require "web-rc"
 require "scala-rc"
 -- require("flutter-rc")
--- require("tex-rc")
+require("tex-rc")
 -- require("csharp-rc")
 -- require("java-rc")
 -- require("groovy-rc")
