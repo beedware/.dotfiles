@@ -322,3 +322,4 @@ require("tex-rc")
 -- require("csharp-rc")
 -- require("java-rc")
 -- require("groovy-rc")
+require "nusmv-rc"
