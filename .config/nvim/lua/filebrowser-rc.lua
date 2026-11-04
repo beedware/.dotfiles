@@ -8,8 +8,8 @@ require("oil").setup {
     show_hidden = true,
   },
   keymaps = {
-    ["<C-v>"] = { "actions.select", opts = { vertical = true } },
-    ["<C-s>"] = { "actions.select", opts = { horizontal = true } },
+    ["<leader>v"] = { "actions.select", opts = { vertical = true } },
+    ["<leader>s"] = { "actions.select", opts = { horizontal = true } },
   },
   columns = { "permissions", "size", "mtime" },
 }
