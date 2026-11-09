@@ -21,11 +21,11 @@
   :custom
   (xref-show-definitions-function #'consult-xref)
   (xref-show-xrefs-function #'consult-xref)
-  :bind (("C-s" . consult-line)
-         ("C-x b" . consult-buffer)
-         ("M-y" . consult-yank-pop)
-         ("M-g g" . consult-goto-line)
-         ("M-g i" . consult-imenu)
+  :bind (("C-c s l" . consult-line)
+         ("C-c s b" . consult-buffer)
+         ("C-c s y" . consult-yank-pop)
+         ("C-c s g" . consult-goto-line)
+         ("C-c s i" . consult-imenu)
          ("C-c r" . consult-ripgrep)))
 
 (use-package embark

@@ -1,12 +1,12 @@
 ;;; git-rc.el --- Git configuration -*- lexical-binding: t; -*-
 
 (use-package magit
-  :bind ("C-x g" . magit-status)
+  :bind ("C-c g" . magit-status)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package vundo
-  :bind ("C-x u" . vundo))
+  :bind ("C-c u" . vundo))
 
 (use-package diff-hl
   :defer nil
