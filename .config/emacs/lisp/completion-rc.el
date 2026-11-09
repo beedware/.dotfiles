@@ -23,10 +23,10 @@
   (xref-show-xrefs-function #'consult-xref)
   :bind (("C-c s l" . consult-line)
          ("C-c s b" . consult-buffer)
-         ("C-c s y" . consult-yank-pop)
-         ("C-c s g" . consult-goto-line)
-         ("C-c s i" . consult-imenu)
-         ("C-c r" . consult-ripgrep)))
+         ("C-c s r" . consult-ripgrep)
+         ("M-y" . consult-yank-pop)
+         ("M-g g" . consult-goto-line)
+         ("M-g i" . consult-imenu)))
 
 (use-package embark
   :bind (("C-." . embark-act)
