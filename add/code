@@ -1,0 +1,30 @@
+#!/bin/sh
+set -eu
+
+# tags: #pkg
+
+sudo xbps-install -Sy curl tar
+
+VERSION="1.93.1"
+CHECKSUM="4a8598a8016630229f26f243b653bc14b0cc28795038f55ea224543f149fe510"
+APP_DIR="/opt/VSCode-linux-x64"
+BIN_LINK="/usr/local/bin/code"
+TARBALL="vscode-${VERSION}-linux-x64.tar.gz"
+URL="https://update.code.visualstudio.com/${VERSION}/linux-x64/stable"
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+cd "$TMP_DIR"
+
+curl -fL -o "$TARBALL" "$URL"
+printf '%s  %s\n' "$CHECKSUM" "$TARBALL" | sha256sum --check
+tar -xzf "$TARBALL"
+test -x "VSCode-linux-x64/bin/code"
+
+sudo mkdir -p /opt /usr/local/bin
+sudo rm -rf "$APP_DIR"
+sudo mv "VSCode-linux-x64" "$APP_DIR"
+sudo ln -sfn "$APP_DIR/bin/code" "$BIN_LINK"
+
+echo "VS Code $VERSION installed: $BIN_LINK -> $APP_DIR/bin/code"

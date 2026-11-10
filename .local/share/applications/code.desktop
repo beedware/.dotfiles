@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Visual Studio Code
+GenericName=Text Editor
+Comment=Code Editing. Redefined.
+Exec=/usr/local/bin/code %F
+Type=Application
+Icon=/usr/share/icons/Papirus/48x48/apps/vscode.svg
+Terminal=false
+Categories=Development;IDE;TextEditor;
+StartupWMClass=Code
+Keywords=vscode;coding;editor;
