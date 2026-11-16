@@ -11,6 +11,7 @@ sudo xbps-install -S git stow
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 stow .
+themer -y
 ```
 
 The repo includes `.stowrc`, so `stow .` uses `--no-folding`. Stow creates real

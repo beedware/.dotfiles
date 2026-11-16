@@ -330,18 +330,30 @@ class GtkTheme:
         )
 
 
-class WallpaperTheme:
-    def __init__(self, home: str | Path | None = None) -> None:
-        self.home = Path(home).expanduser() if home is not None else Path.home()
-        self.path = self.home / ".config/wallpaper"
+class ScreenLayout:
+    def __init__(self, path: str | Path) -> None:
+        self.path = Path(path).expanduser()
+        self.script = self.path / "screens.sh"
 
-    def set(self, mode: Mode) -> None:
-        wallpaper = self.path / "themes" / f"{mode.value}.jpg"
-        destination = self.path / "current.jpg"
-        shutil.copyfile(wallpaper, destination)
-        script = self.home / ".screenlayout/screens.sh"
-        subprocess.run([str(script)], check=True)
-        print(f"{destination}: {mode}")
+    def setup(self, cli: "CLI") -> bool:
+        if self.script.is_file():
+            return True
+        scripts = sorted(
+            path
+            for path in self.path.glob("*.sh")
+            if path.name != self.script.name and path.is_file()
+        )
+        if not scripts:
+            raise RuntimeError(f"No screen layout scripts found in {self.path}")
+        selected = cli.choose("Choose a screen layout", [path.name for path in scripts])
+        if selected is None:
+            return False
+        shutil.copy2(self.path / selected, self.script)
+        self.script.chmod(self.script.stat().st_mode | 0o100)
+        return True
+
+    def apply(self) -> None:
+        subprocess.run([str(self.script)], check=True)
 
 
 class Themer:
@@ -414,6 +426,34 @@ class CLI:
             return self._rofi_confirm(prompt)
         return self._shell_confirm(prompt)
 
+    def choose(self, prompt: str, options: list[str]) -> str | None:
+        if self.args.rofi:
+            result = subprocess.run(
+                ["rofi", "-dmenu", "-i", "-p", prompt],
+                input="\n".join(options) + "\n",
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            selected = result.stdout.strip()
+            if result.returncode != 0 or selected not in options:
+                return None
+            return selected
+
+        print(prompt)
+        for index, option in enumerate(options, start=1):
+            print(f"  {index}. {option}")
+        while True:
+            try:
+                answer = input("Select a number (Enter to cancel): ").strip()
+            except EOFError:
+                return None
+            if not answer:
+                return None
+            if answer.isdecimal() and 1 <= int(answer) <= len(options):
+                return options[int(answer) - 1]
+            print(f"Choose a number between 1 and {len(options)}.")
+
 
 def main() -> None:
     cli: CLI = CLI(description="Toggle application themes")
@@ -430,6 +470,9 @@ def main() -> None:
 
     home: Path = Path.home()
     config: Path = home / ".config"
+    screen_layout = ScreenLayout(home / ".screenlayout")
+    if not screen_layout.setup(cli):
+        return
 
     FileTheme(config / "alacritty", "theme.toml").set(mode)
     FileTheme(config / "dunst", "dunstrc").set(mode)
@@ -438,12 +481,13 @@ def main() -> None:
     FileTheme(config / "rofi", "theme.rasi").set(mode)
     FileTheme(config / "opencode" / "themes", "modus.json").set(mode)
     FileTheme(config / "tmux", "theme.conf").set(mode)
+    FileTheme(config / "wallpaper", "theme.jpg").set(mode)
 
     CalibreTheme(config / "calibre").set(mode)
     GtkTheme(home).set(mode)
-    WallpaperTheme(home).set(mode)
 
     themer.set_mode(mode)
+    screen_layout.apply()
     subprocess.run(["dunstctl", "reload"], check=False)
     subprocess.run(["i3-msg", "reload"], check=False)
     subprocess.run(["killall", "emacs"], check=False)
