@@ -112,6 +112,7 @@ def main() -> None:
     config: Path = home / ".config"
     FileTheme(config / "bash", "theme.sh").set(mode)
     FileTheme(config / "alacritty", "theme.toml").set(mode)
+    FileTheme(config / "dunst", "dunstrc").set(mode)
     # toggle_dunst()
     # toggle_i3()
     # toggle_zathura()
@@ -127,6 +128,7 @@ def main() -> None:
     # toggle_gtk(mode)
     # reset_terminal_sessions()
     themer.set_mode(mode)
+    subprocess.run(["dunstctl", "reload"], check=False)
 
 
 if __name__ == "__main__":

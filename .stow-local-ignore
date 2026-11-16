@@ -18,10 +18,6 @@ _darcs
 ^/\.stow-local-ignore$
 ^/\.stowrc$
 
-# Generated theme files must stay local, not symlink back into this repository.
-^/\.config/bash/theme\.sh$
-^/\.config/alacritty/theme\.toml$
-
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
