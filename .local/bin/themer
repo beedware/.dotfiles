@@ -115,8 +115,8 @@ def main() -> None:
     FileTheme(config / "dunst", "dunstrc").set(mode)
     FileTheme(config / "i3", "theme.conf").set(mode)
     FileTheme(config / "zathura", "zathurarc").set(mode)
+    FileTheme(config / "rofi", "theme.rasi").set(mode)
 
-    # toggle_rofi()
     # toggle_nvim()
     # toggle_vim()
     # toggle_emacs()

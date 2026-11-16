@@ -1,4 +1,4 @@
-@import "themes/dark"
+@import "theme"
 
 configuration {
     show-icons: false;
