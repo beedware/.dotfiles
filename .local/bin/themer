@@ -103,7 +103,6 @@ def main() -> None:
     home: Path = Path.home()
     config: Path = home / ".config"
     FileTheme(config / "bash", "theme.sh").set(mode)
-    # toggle_bashrc()
     # toggle_alacritty()
     # toggle_dunst()
     # toggle_i3()
