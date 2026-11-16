@@ -330,6 +330,20 @@ class GtkTheme:
         )
 
 
+class WallpaperTheme:
+    def __init__(self, home: str | Path | None = None) -> None:
+        self.home = Path(home).expanduser() if home is not None else Path.home()
+        self.path = self.home / ".config/wallpaper"
+
+    def set(self, mode: Mode) -> None:
+        wallpaper = self.path / "themes" / f"{mode.value}.jpg"
+        destination = self.path / "current.jpg"
+        shutil.copyfile(wallpaper, destination)
+        script = self.home / ".screenlayout/screens.sh"
+        subprocess.run([str(script)], check=True)
+        print(f"{destination}: {mode}")
+
+
 class Themer:
     def __init__(self, path: Path | None = None) -> None:
         self.path = path if path is not None else Path.home() / ".config/themer/mode"
@@ -423,19 +437,19 @@ def main() -> None:
     FileTheme(config / "zathura", "zathurarc").set(mode)
     FileTheme(config / "rofi", "theme.rasi").set(mode)
     FileTheme(config / "opencode" / "themes", "modus.json").set(mode)
+    FileTheme(config / "tmux", "theme.conf").set(mode)
 
     CalibreTheme(config / "calibre").set(mode)
     GtkTheme(home).set(mode)
-    # set_wallpaper(mode)
+    WallpaperTheme(home).set(mode)
 
-    # FileTheme(config / "tmux", "theme.conf").set(mode)
     themer.set_mode(mode)
     subprocess.run(["dunstctl", "reload"], check=False)
     subprocess.run(["i3-msg", "reload"], check=False)
     subprocess.run(["killall", "emacs"], check=False)
     subprocess.run(["emacs", "--daemon"], check=True)
-    # subprocess.run(["tmux", "kill-server"], check=False)
-    # subprocess.run(["killall", "alacritty"], check=False)
+    subprocess.run(["tmux", "kill-server"], check=False)
+    subprocess.run(["killall", "alacritty"], check=False)
 
 
 if __name__ == "__main__":
