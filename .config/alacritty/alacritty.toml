@@ -1,5 +1,5 @@
 general.import = [
-  "~/.config/alacritty/themes/dark.toml"
+  "~/.config/alacritty/theme.toml"
 ]
 
 [font]

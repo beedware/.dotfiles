@@ -58,7 +58,13 @@ class CLI:
             action="store_true",
             help="Ask for confirmation in rofi instead of the shell",
         )
-        self.args = argparse.Namespace(rofi=False, theme=None)
+        self.parser.add_argument(
+            "-y",
+            "--yes",
+            action="store_true",
+            help="Skip confirmation and assume yes",
+        )
+        self.args = argparse.Namespace(rofi=False, theme=None, yes=False)
 
     def parse_args(self, argv: list[str] | None = None) -> argparse.Namespace:
         self.args = self.parser.parse_args(argv)
@@ -83,6 +89,8 @@ class CLI:
         return result.stdout.strip().lower() == "yes"
 
     def confirm(self, prompt: str) -> bool:
+        if self.args.yes:
+            return True
         if self.args.rofi:
             return self._rofi_confirm(prompt)
         return self._shell_confirm(prompt)
@@ -103,7 +111,7 @@ def main() -> None:
     home: Path = Path.home()
     config: Path = home / ".config"
     FileTheme(config / "bash", "theme.sh").set(mode)
-    # toggle_alacritty()
+    FileTheme(config / "alacritty", "theme.toml").set(mode)
     # toggle_dunst()
     # toggle_i3()
     # toggle_zathura()
