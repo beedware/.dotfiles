@@ -117,7 +117,6 @@ def main() -> None:
     FileTheme(config / "zathura", "zathurarc").set(mode)
     FileTheme(config / "rofi", "theme.rasi").set(mode)
 
-    # toggle_nvim()
     # toggle_vim()
     # toggle_emacs()
     # restart_emacs_daemon()

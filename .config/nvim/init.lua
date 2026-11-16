@@ -2,7 +2,12 @@ vim.g.mapleader = " "
 
 vim.o.spellfile = vim.fs.joinpath(vim.fn.stdpath "config", "spell", "en.utf-8.add")
 
-vim.o.background = "dark"
+local mode_file = io.open(vim.fn.expand "~/.config/themer/mode", "r")
+local mode = mode_file and mode_file:read "*a" or "dark"
+if mode_file then
+  mode_file:close()
+end
+vim.o.background = vim.trim(mode) == "light" and "light" or "dark"
 vim.o.splitkeep = "screen"
 
 vim.o.cursorline = true
@@ -318,7 +323,7 @@ require "gdscript-rc"
 require "web-rc"
 require "scala-rc"
 -- require("flutter-rc")
-require("tex-rc")
+require "tex-rc"
 -- require("csharp-rc")
 -- require("java-rc")
 -- require("groovy-rc")
