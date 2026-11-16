@@ -2,3 +2,4 @@ Session.vim
 __pycache__/
 .ruff_cache/
 out/
+.config/bash/theme.sh
