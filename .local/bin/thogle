@@ -6,9 +6,16 @@ import shutil
 import subprocess
 import time
 from dataclasses import asdict, dataclass
+from enum import StrEnum
 from pathlib import Path
 
-GTK_START = time.monotonic()
+GTK_START: float = time.monotonic()
+THOGLE_CONFIG = Path.home() / ".config/thogle"
+
+
+class Mode(StrEnum):
+    LIGHT = "light"
+    DARK = "dark"
 
 
 @dataclass
@@ -125,15 +132,15 @@ def load_gtk_preferences() -> GtkPreferences:
     )
 
 
-def gtk_profile(mode: str) -> tuple[str, str, str]:
-    if mode == "dark":
+def gtk_profile(mode: Mode) -> tuple[str, str, str]:
+    if mode == Mode.DARK:
         return "Yaru-blue-dark", "Papirus-Dark", "prefer-dark"
-    if mode == "light":
+    if mode == Mode.LIGHT:
         return "Yaru-blue", "Papirus-Light", "prefer-light"
     raise ValueError(f"Unsupported mode: {mode}")
 
 
-def apply_gtk_profile(mode: str) -> GtkPreferences:
+def apply_gtk_profile(mode: Mode) -> GtkPreferences:
     gtk_theme, icon_theme, color_scheme = gtk_profile(mode)
     prefs = load_gtk_preferences()
     prefs.gtk_theme = gtk_theme
@@ -316,7 +323,9 @@ def symlink_gtk4_css(prefs: GtkPreferences) -> None:
 def backup_gtk_prefs(prefs: GtkPreferences) -> None:
     backup_dir = Path.home() / ".local/share/nwg-look"
     backup_dir.mkdir(parents=True, exist_ok=True)
-    (backup_dir / "gsettings.json").write_text(json.dumps(asdict(prefs), indent=2) + "\n")
+    (backup_dir / "gsettings.json").write_text(
+        json.dumps(asdict(prefs), indent=2) + "\n"
+    )
     gtk_log(f">>> Backing up gsettings to {backup_dir}")
 
 
@@ -335,12 +344,10 @@ def log_gtk_prefs(prefs: GtkPreferences) -> None:
     gtk_log(f"text-scaling-factor: {prefs.text_scaling_factor:g}")
     gtk_log(f"color-scheme: {prefs.color_scheme}")
     gtk_log(f"event-sounds: {str(prefs.event_sounds).lower()}")
-    gtk_log(
-        f"input-feedback-sounds: {str(prefs.input_feedback_sounds).lower()}"
-    )
+    gtk_log(f"input-feedback-sounds: {str(prefs.input_feedback_sounds).lower()}")
 
 
-def toggle_gtk(mode: str) -> None:
+def toggle_gtk(mode: Mode) -> None:
     gtk_log(">>> Loading preferences")
     gtk_log(">>> Reading gsettings")
     prefs = apply_gtk_profile(mode)
@@ -386,7 +393,9 @@ def run_text_toggle(path: Path, light_to_dark: dict[str, str]) -> str:
     return new_mode
 
 
-def _toggle_copy_theme(target_path: Path, light_path: Path, dark_path: Path, detect_light: str) -> None:
+def _toggle_copy_theme(
+    target_path: Path, light_path: Path, dark_path: Path, detect_light: str
+) -> None:
     current = target_path.read_text()
     if detect_light in current:
         src, old_mode, new_mode = dark_path, "light", "dark"
@@ -511,7 +520,7 @@ def restart_emacs_daemon() -> None:
     print("Emacs default daemon restarted")
 
 
-def toggle_opencode(mode: str) -> None:
+def toggle_opencode(mode: Mode) -> None:
     _toggle_json_key(Path.home() / ".config/opencode/tui.json", "theme", mode)
 
 
@@ -544,7 +553,7 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2) + "\n")
 
 
-def _toggle_json_key(path: Path, key: str, mode: str) -> None:
+def _toggle_json_key(path: Path, key: str, mode: Mode) -> None:
     data = read_json_or_empty(path)
     keys = key.split(".")
     target = data
@@ -556,14 +565,16 @@ def _toggle_json_key(path: Path, key: str, mode: str) -> None:
     print(f"{path}: {old} => {mode}")
 
 
-def toggle_calibre(mode: str) -> None:
+def toggle_calibre(mode: Mode) -> None:
     close_calibre()
     calibre_dir = Path.home() / ".config/calibre"
     _toggle_json_key(calibre_dir / "gui.json", "color_palette", mode)
-    _toggle_json_key(calibre_dir / "viewer-webengine.json", "session_data.current_color_scheme", mode)
+    _toggle_json_key(
+        calibre_dir / "viewer-webengine.json", "session_data.current_color_scheme", mode
+    )
 
 
-def set_wallpaper(mode: str) -> None:
+def set_wallpaper(mode: Mode) -> None:
     wallpaper_dir = Path.home() / ".config/wallpaper"
     wallpaper = wallpaper_dir / "themes" / f"{mode}.jpg"
     shutil.copyfile(wallpaper, wallpaper_dir / "current.jpg")
@@ -578,13 +589,32 @@ def reset_terminal_sessions() -> None:
     print("Reset terminal sessions: killed alacritty and tmux server")
 
 
+def get_mode() -> Mode:
+    mode_path = THOGLE_CONFIG / "mode"
+    if mode_path.exists():
+        raw_mode = mode_path.read_text().strip()
+        try:
+            current_mode = Mode(raw_mode)
+        except ValueError as exc:
+            raise ValueError(
+                f"Invalid theme mode in {mode_path}: {raw_mode!r}"
+            ) from exc
+    else:
+        current_mode = Mode.DARK
+
+    mode = Mode.DARK if current_mode == Mode.LIGHT else Mode.LIGHT
+    mode_path.parent.mkdir(parents=True, exist_ok=True)
+    mode_path.write_text(mode.value + "\n")
+    return mode
+
+
 def main() -> None:
     args = _parse_args()
     confirm = _confirm_with_rofi if args.rofi else _confirm_with_shell
     if not confirm("Run thogle?"):
-        print("Cancelled")
         return
-    mode = toggle_bashrc()
+    mode = get_mode()
+    toggle_bashrc()
     toggle_alacritty()
     toggle_dunst()
     toggle_i3()
