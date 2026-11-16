@@ -160,5 +160,5 @@ bindsym $mod+Shift+period move container to output right
 bindsym $mod+Mod1+f exec --no-startup-id ~/.local/bin/xshot screen --full-screen --no-save --no-notify
 bindsym $mod+Mod1+b bar mode toggle
 bindsym $mod+Mod1+r reload
-bindsym $mod+Mod1+t exec --no-startup-id ~/.local/bin/thogle --rofi
+bindsym $mod+Mod1+t exec --no-startup-id ~/.local/bin/themer --rofi
 bindsym $mod+Mod1+Shift+r restart
