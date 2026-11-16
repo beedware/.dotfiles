@@ -112,6 +112,7 @@ class GtkTheme:
         self._backup_preferences(prefs)
         self._export_files(prefs)
         self._symlink_gtk4_css(prefs)
+        subprocess.run(["pkill", "-HUP", "-x", "xsettingsd"], check=False)
 
     @staticmethod
     def _run_gsettings(args: list[str]) -> str:
