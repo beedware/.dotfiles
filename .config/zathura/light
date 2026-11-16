@@ -1,3 +1,7 @@
+set selection-clipboard clipboard
+set font "CommitMono Nerd Font Mono 12"
+set recolor "true"
+
 # Light
 set notification-error-bg "#ff8f88"
 set notification-error-fg "#000000"
