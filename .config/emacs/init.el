@@ -146,6 +146,7 @@
 (require 'debugging-rc)
 
 (require 'orgmode-rc)
+(require 'calendar-rc)
 
 ;; Languages
 (require 'markdown-rc)
