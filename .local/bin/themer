@@ -108,8 +108,6 @@ class GtkTheme:
             prefs.gtk_theme = "Yaru-blue"
             prefs.icon_theme = "Papirus-Light"
             prefs.color_scheme = "prefer-light"
-        else:
-            raise ValueError(f"Unsupported mode: {mode}")
         self._apply_gsettings(prefs)
         self._backup_preferences(prefs)
         self._export_files(prefs)
