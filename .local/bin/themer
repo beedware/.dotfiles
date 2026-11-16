@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+import argparse
+import shutil
+import subprocess
+from enum import StrEnum
+from pathlib import Path
+
+
+class Mode(StrEnum):
+    LIGHT = "light"
+    DARK = "dark"
+
+    def toggle(self) -> "Mode":
+        return Mode.DARK if self is Mode.LIGHT else Mode.LIGHT
+
+
+class FileTheme:
+    def __init__(self, src: str | Path, dist_file: str | Path) -> None:
+        self.src = Path(src).expanduser()
+        self.dist_file = Path(dist_file).expanduser()
+
+    def set(self, mode: Mode) -> None:
+        source = self.src / f"{mode.value}{self.dist_file.suffix}"
+        destination = self.src / self.dist_file
+        shutil.copyfile(source, destination)
+
+
+class Themer:
+    def __init__(self, path: Path | None = None) -> None:
+        self.path = path if path is not None else Path.home() / ".config/themer/mode"
+
+    def get_mode(self) -> Mode:
+        try:
+            value = self.path.read_text(encoding="utf-8").strip()
+        except FileNotFoundError:
+            self.set_mode(Mode.DARK)
+            return Mode.DARK
+        return Mode(value)
+
+    def set_mode(self, mode: Mode) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(f"{mode.value}\n", encoding="utf-8")
+
+
+class CLI:
+    def __init__(self, description: str | None = None) -> None:
+        self.parser = argparse.ArgumentParser(description=description)
+        self.parser.add_argument(
+            "-t",
+            "--theme",
+            type=Mode,
+            choices=list(Mode),
+            help="Set the theme instead of toggling it",
+        )
+        self.parser.add_argument(
+            "-r",
+            "--rofi",
+            action="store_true",
+            help="Ask for confirmation in rofi instead of the shell",
+        )
+        self.args = argparse.Namespace(rofi=False, theme=None)
+
+    def parse_args(self, argv: list[str] | None = None) -> argparse.Namespace:
+        self.args = self.parser.parse_args(argv)
+        return self.args
+
+    @staticmethod
+    def _shell_confirm(prompt: str) -> bool:
+        answer = input(f"{prompt} [y/N] ")
+        return answer.strip().lower() in {"y", "yes"}
+
+    @staticmethod
+    def _rofi_confirm(prompt: str) -> bool:
+        result = subprocess.run(
+            ["rofi", "-dmenu", "-i", "-p", prompt],
+            input="no\nyes\n",
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            return False
+        return result.stdout.strip().lower() == "yes"
+
+    def confirm(self, prompt: str) -> bool:
+        if self.args.rofi:
+            return self._rofi_confirm(prompt)
+        return self._shell_confirm(prompt)
+
+
+def main() -> None:
+    cli: CLI = CLI(description="Toggle application themes")
+    args: argparse.Namespace = cli.parse_args()
+    prompt: str = (
+        f"Change to {args.theme} theme?" if args.theme is not None else "Toggle theme?"
+    )
+    if not cli.confirm(prompt):
+        return
+    themer: Themer = Themer()
+    mode: Mode = themer.get_mode().toggle()
+    if args.theme:
+        mode = args.theme
+    home: Path = Path.home()
+    config: Path = home / ".config"
+    FileTheme(config / "bash", "theme.sh").set(mode)
+    # toggle_bashrc()
+    # toggle_alacritty()
+    # toggle_dunst()
+    # toggle_i3()
+    # toggle_zathura()
+    # toggle_tmux()
+    # toggle_rofi()
+    # toggle_nvim()
+    # toggle_vim()
+    # toggle_emacs()
+    # restart_emacs_daemon()
+    # toggle_opencode(mode)
+    # toggle_calibre(mode)
+    # set_wallpaper(mode)
+    # toggle_gtk(mode)
+    # reset_terminal_sessions()
+    themer.set_mode(mode)
+
+
+if __name__ == "__main__":
+    main()
