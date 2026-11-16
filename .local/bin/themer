@@ -108,14 +108,16 @@ def main() -> None:
     mode: Mode = themer.get_mode().toggle()
     if args.theme:
         mode = args.theme
+
     home: Path = Path.home()
     config: Path = home / ".config"
-    FileTheme(config / "bash", "theme.sh").set(mode)
+
     FileTheme(config / "alacritty", "theme.toml").set(mode)
     FileTheme(config / "dunst", "dunstrc").set(mode)
     FileTheme(config / "i3", "theme.conf").set(mode)
     FileTheme(config / "zathura", "zathurarc").set(mode)
     FileTheme(config / "rofi", "theme.rasi").set(mode)
+    FileTheme(config / "opencode" / "themes", "modus.json").set(mode)
 
     # toggle_opencode(mode)
     # toggle_calibre(mode)
