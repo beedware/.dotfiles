@@ -5,4 +5,4 @@ let s:mode = filereadable(s:mode_file) ? trim(join(readfile(s:mode_file), "\n"))
 let &background = s:mode ==# 'light' ? 'light' : 'dark'
 set undodir=~/.vim/undo//
 sy on
-ca Hash w !cpp -dD -P -fpreprocessed <Bar> tr -d '[:space:]' <Bar> md5sum <Bar> cut -c-6
+cnoreabbrev <special> Hash w !cpp -dD -P -fpreprocessed <Bar> tr -d '[:space:]' <Bar> md5sum <Bar> cut -c-6
