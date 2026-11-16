@@ -115,7 +115,7 @@ def main() -> None:
     FileTheme(config / "dunst", "dunstrc").set(mode)
     FileTheme(config / "i3", "theme.conf").set(mode)
     FileTheme(config / "zathura", "zathurarc").set(mode)
-    # toggle_tmux()
+
     # toggle_rofi()
     # toggle_nvim()
     # toggle_vim()
@@ -123,12 +123,15 @@ def main() -> None:
     # restart_emacs_daemon()
     # toggle_opencode(mode)
     # toggle_calibre(mode)
-    # set_wallpaper(mode)
     # toggle_gtk(mode)
-    # reset_terminal_sessions()
+    # set_wallpaper(mode)
+
+    # FileTheme(config / "tmux", "theme.conf").set(mode)
     themer.set_mode(mode)
     subprocess.run(["dunstctl", "reload"], check=False)
     subprocess.run(["i3-msg", "reload"], check=False)
+    # subprocess.run(["tmux", "kill-server"], check=False)
+    # subprocess.run(["killall", "alacritty"], check=False)
 
 
 if __name__ == "__main__":
