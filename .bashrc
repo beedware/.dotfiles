@@ -56,7 +56,13 @@ distrotime() {
   fi
 }
 
-[ -f "$HOME/.config/bash/theme.sh" ] && source "$HOME/.config/bash/theme.sh"
+theme_mode=dark
+if [[ -r "$HOME/.config/themer/mode" ]]; then
+  read -r theme_mode < "$HOME/.config/themer/mode"
+fi
+[[ $theme_mode == light ]] || theme_mode=dark
+[ -f "$HOME/.config/bash/$theme_mode.sh" ] && source "$HOME/.config/bash/$theme_mode.sh"
+unset theme_mode
 
 export FZF_DEFAULT_OPTS="--layout=reverse --height=~14 ${FZF_DEFAULT_OPTS:-}"
 tmux set-environment -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS" 2>/dev/null
