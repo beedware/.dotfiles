@@ -18,7 +18,13 @@
          modus-themes-italic-constructs nil)
   (set-face-attribute 'line-number nil :slant 'normal)
   (set-face-attribute 'line-number-current-line nil :slant 'normal)
-  (load-theme 'modus-vivendi t))
+  (require 'subr-x)
+  (let* ((mode-file (expand-file-name "~/.config/themer/mode"))
+         (mode (when (file-readable-p mode-file)
+                 (with-temp-buffer
+                   (insert-file-contents mode-file)
+                   (string-trim (buffer-string))))))
+    (load-theme (if (equal mode "light") 'modus-operandi 'modus-vivendi) t)))
 
 (use-package doom-modeline
   :defer nil

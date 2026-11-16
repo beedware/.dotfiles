@@ -117,9 +117,6 @@ def main() -> None:
     FileTheme(config / "zathura", "zathurarc").set(mode)
     FileTheme(config / "rofi", "theme.rasi").set(mode)
 
-    # toggle_vim()
-    # toggle_emacs()
-    # restart_emacs_daemon()
     # toggle_opencode(mode)
     # toggle_calibre(mode)
     # toggle_gtk(mode)
@@ -129,6 +126,8 @@ def main() -> None:
     themer.set_mode(mode)
     subprocess.run(["dunstctl", "reload"], check=False)
     subprocess.run(["i3-msg", "reload"], check=False)
+    subprocess.run(["killall", "emacs"], check=False)
+    subprocess.run(["emacs", "--daemon"], check=True)
     # subprocess.run(["tmux", "kill-server"], check=False)
     # subprocess.run(["killall", "alacritty"], check=False)
 
