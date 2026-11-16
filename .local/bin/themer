@@ -113,8 +113,7 @@ def main() -> None:
     FileTheme(config / "bash", "theme.sh").set(mode)
     FileTheme(config / "alacritty", "theme.toml").set(mode)
     FileTheme(config / "dunst", "dunstrc").set(mode)
-    # toggle_dunst()
-    # toggle_i3()
+    FileTheme(config / "i3", "theme.conf").set(mode)
     # toggle_zathura()
     # toggle_tmux()
     # toggle_rofi()
@@ -129,6 +128,7 @@ def main() -> None:
     # reset_terminal_sessions()
     themer.set_mode(mode)
     subprocess.run(["dunstctl", "reload"], check=False)
+    subprocess.run(["i3-msg", "reload"], check=False)
 
 
 if __name__ == "__main__":

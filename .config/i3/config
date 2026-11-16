@@ -4,7 +4,7 @@ set $files thunar
 
 font pango:CommitMono Nerd Font Mono 12
 
-include ~/.config/i3/themes/dark.conf
+include ~/.config/i3/theme.conf
 
 exec --no-startup-id ~/.local/share/autostart
 
