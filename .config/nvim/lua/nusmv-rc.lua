@@ -1,16 +1,7 @@
--- Language server: build LiamWalsh98/vscode-nusmv's langium-nusmv directory
--- with `npm ci && npm run build`, then set vim.g.nusmv_server_path to its
--- out/language/main.js (or put the checkout in stdpath('data')/vscode-nusmv).
--- Optional settings (set before requiring this module):
--- vim.g.nusmv = { executable = 'nusmv', args = {}, reveal_output = 'always',
---   disable_semantic_checks_on_large_files = true, semantic_checks_max_lines = 10000 }
--- vim.g.nusmv_server_cmd can override the complete LSP argv instead.
 local config = vim.tbl_extend("force", {
   executable = "nusmv",
   args = {},
-  reveal_output = "always", -- always, onFailure, never
-  disable_semantic_checks_on_large_files = true,
-  semantic_checks_max_lines = 10000,
+  reveal_output = "always",
 }, vim.g.nusmv or {})
 
 vim.filetype.add {
@@ -20,29 +11,6 @@ vim.filetype.add {
 }
 
 local group = vim.api.nvim_create_augroup("NuSMV", { clear = true })
-local server = vim.g.nusmv_server_path
-  or vim.fs.joinpath(vim.fn.stdpath "data", "vscode-nusmv", "langium-nusmv", "out", "language", "main.js")
-local server_cmd = vim.g.nusmv_server_cmd
-if not server_cmd and vim.fn.filereadable(server) == 1 and vim.fn.executable "node" == 1 then
-  server_cmd = { "node", server, "--stdio" }
-end
-if server_cmd then
-  vim.lsp.config("nusmv", {
-    cmd = server_cmd,
-    filetypes = { "nusmv" },
-    workspace_required = false,
-    root_dir = function(buf, on_dir)
-      if
-        config.disable_semantic_checks_on_large_files
-        and vim.api.nvim_buf_line_count(buf) > config.semantic_checks_max_lines
-      then
-        return
-      end
-      on_dir(vim.fs.root(buf, { ".git" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(buf)))
-    end,
-  })
-  vim.lsp.enable "nusmv"
-end
 
 local active_run
 local output_buf
@@ -203,7 +171,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.commentstring = "-- %s"
     vim.bo.comments = ":--"
     vim.opt_local.iskeyword = "@,48-57,_,36,35,45"
-    -- Do not use the global Tree-sitter fold expression without an SMV parser.
     vim.wo.foldmethod = "manual"
     vim.keymap.set("n", "<localleader>r", "<Cmd>NuSMVRun<CR>", { buffer = true, desc = "Run NuSMV model" })
     vim.keymap.set("n", "<localleader>i", "<Cmd>NuSMVShell<CR>", { buffer = true, desc = "NuSMV interactive shell" })
