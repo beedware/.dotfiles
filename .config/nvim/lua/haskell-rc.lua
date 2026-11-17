@@ -83,9 +83,7 @@ vim.g.haskell_tools = {
 
       vim.schedule(function()
         if vim.api.nvim_buf_is_valid(bufnr) then
-          map("gd", function()
-            vim.cmd.Haskell { "definition" }
-          end, "Haskell definition")
+          map("gd", vim.lsp.buf.definition, "Go to definition")
         end
       end)
 
