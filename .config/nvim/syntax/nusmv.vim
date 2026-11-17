@@ -36,8 +36,20 @@ syntax match nusmvNumber "\<0[us]\=[oO]\d*_[0-7][0-7_]*\>"
 syntax match nusmvNumber "\<0[us]\=[dD]\d\+_[0-9][0-9_]*\>"
 syntax match nusmvNumber "\<0[us]\=[hH]\d*_[0-9a-fA-F][0-9a-fA-F_]*\>"
 
+" Contextual scopes matching vscode-nusmv's TextMate grammar. Keep the
+" more complete language/PSL keyword and literal coverage above.
+syntax match nusmvModule "\%(\<MODULE\s\+\)\@<=[A-Za-z_][A-Za-z0-9_$#-]*"
+syntax match nusmvModule "\%(\<process\s\+\)\@<=[A-Za-z_][A-Za-z0-9_$#-]*"
+syntax match nusmvModule "\%(:\s*\)\@<=[A-Za-z_][A-Za-z0-9_$#-]*\ze\s*("
+syntax match nusmvSpecification "\%(\<NAME\s\+\)\@<=[A-Za-z_][A-Za-z0-9_$#-]*"
+syntax match nusmvVariable "^\s*\zs\%(TRUE\>\|FALSE\>\)\@![A-Za-z_][A-Za-z0-9_$#-]*\ze\s*:\%([=]\)\@!"
+syntax match nusmvDefine "^\s*\zs[A-Za-z_][A-Za-z0-9_$#-]*\ze\s*:="
+syntax match nusmvEnum "\<[A-Za-z_][A-Za-z0-9_$#-]*\>" contained
+syntax region nusmvEnumSet matchgroup=nusmvDelimiter start="{" end="}" contains=nusmvEnum,nusmvBoolean,nusmvNumber,nusmvComment,nusmvDelimiter
+syntax match nusmvDelimiter "\.\%([.]\)\@!\%([.]\)\@<!"
+
 " PSL-only words are contained so ordinary SMV identifiers remain uncoloured.
-syntax cluster nusmvExpression contains=nusmvKeyword,nusmvConditional,nusmvType,nusmvBoolean,nusmvSpecial,nusmvFunction,nusmvOperator,nusmvTemporal,nusmvDelimiter,nusmvNumber,nusmvComment
+syntax cluster nusmvExpression contains=nusmvKeyword,nusmvConditional,nusmvType,nusmvBoolean,nusmvSpecial,nusmvFunction,nusmvOperator,nusmvTemporal,nusmvDelimiter,nusmvNumber,nusmvComment,nusmvModule,nusmvSpecification,nusmvVariable,nusmvDefine,nusmvEnumSet
 syntax region nusmvPSL transparent matchgroup=nusmvKeyword start="\<PSLSPEC\>" end=";" contains=@nusmvExpression,nusmvPSLTemporal,nusmvPSLKeyword,nusmvPSLConstant,nusmvPSLFunction,nusmvPSLOperator,nusmvPSLCase
 syntax keyword nusmvPSLTemporal W always never contained
 syntax match nusmvPSLTemporal "\<\%(next_a\|next_e\|next_event\|next_event_a\|next_event_e\|until\|before\|within\|whilenot\)\>" contained
@@ -56,6 +68,11 @@ syntax region nusmvComment start="/--" end="--/" contains=nusmvTodo,@Spell
 syntax sync minlines=100
 
 highlight default link nusmvKeyword Keyword
+highlight default link nusmvModule Type
+highlight default link nusmvSpecification Label
+highlight default link nusmvVariable Identifier
+highlight default link nusmvDefine Function
+highlight default link nusmvEnum Constant
 highlight default link nusmvConditional Conditional
 highlight default link nusmvType Type
 highlight default link nusmvBoolean Boolean
