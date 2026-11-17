@@ -64,7 +64,7 @@ local function terminal(cmd, cwd)
   vim.cmd "startinsert"
 end
 
-vim.api.nvim_create_user_command("NuSMVRun", function()
+local function run_model()
   if active_run then
     return notify("A NuSMV run is already in progress; use :NuSMVStop", vim.log.levels.WARN)
   end
@@ -129,28 +129,28 @@ vim.api.nvim_create_user_command("NuSMVRun", function()
     return notify("Cannot start NuSMV: " .. tostring(process), vim.log.levels.ERROR)
   end
   run.process = process
-end, { desc = "Save and run current NuSMV model; capture output and summarize specs" })
+end
 
-vim.api.nvim_create_user_command("NuSMVStop", function()
+local function stop_model()
   if active_run then
     active_run.cancelled = true
     active_run.process:kill(15)
   end
-end, { desc = "Cancel the current NuSMV run" })
+end
 
-vim.api.nvim_create_user_command("NuSMVOutput", show_output, { desc = "Show the last NuSMV run output" })
-vim.api.nvim_create_user_command("NuSMVRunTerminal", function()
+local function run_terminal()
   local cmd, cwd = model_command()
   if cmd then
     terminal(cmd, cwd)
   end
-end, { desc = "Save and run current NuSMV model in a terminal" })
-vim.api.nvim_create_user_command("NuSMVShell", function()
+end
+
+local function open_shell()
   if executable() then
     local path = vim.api.nvim_buf_get_name(0)
     terminal({ config.executable, "-int" }, path ~= "" and vim.fs.dirname(path) or vim.fn.getcwd())
   end
-end, { desc = "Open an interactive NuSMV shell" })
+end
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
   group = group,
@@ -164,7 +164,16 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 vim.api.nvim_create_autocmd("FileType", {
   group = group,
   pattern = "nusmv",
-  callback = function()
+  callback = function(event)
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRun", run_model, {
+      desc = "Save and run current NuSMV model; capture output and summarize specs",
+    })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVStop", stop_model, { desc = "Cancel the current NuSMV run" })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVOutput", show_output, { desc = "Show the last NuSMV run output" })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRunTerminal", run_terminal, {
+      desc = "Save and run current NuSMV model in a terminal",
+    })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVShell", open_shell, { desc = "Open an interactive NuSMV shell" })
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
