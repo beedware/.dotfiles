@@ -1,5 +1,6 @@
+vim.g.nusmv = { executable = 'NuSMV', args = {}, reveal_output = 'always' }
 local config = vim.tbl_extend("force", {
-  executable = "nusmv",
+  executable = "NuSMV",
   args = {},
   reveal_output = "always",
 }, vim.g.nusmv or {})
@@ -171,6 +172,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.commentstring = "-- %s"
     vim.bo.comments = ":--"
     vim.opt_local.iskeyword = "@,48-57,_,36,35,45"
+    -- Do not use the global Tree-sitter fold expression without an SMV parser.
     vim.wo.foldmethod = "manual"
     vim.keymap.set("n", "<localleader>r", "<Cmd>NuSMVRun<CR>", { buffer = true, desc = "Run NuSMV model" })
     vim.keymap.set("n", "<localleader>i", "<Cmd>NuSMVShell<CR>", { buffer = true, desc = "NuSMV interactive shell" })
