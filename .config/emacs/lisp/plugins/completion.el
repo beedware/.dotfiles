@@ -12,9 +12,12 @@
   "Initialize completion before the first minibuffer is set up."
   (vertico-mode 1)
   (marginalia-mode 1)
+  (remove-hook 'pre-command-hook #'beed/enable-minibuffer-completion)
+  (advice-remove 'completing-read #'beed/enable-minibuffer-completion)
   (advice-remove 'read-from-minibuffer #'beed/enable-minibuffer-completion))
 
-(advice-add 'read-from-minibuffer :before #'beed/enable-minibuffer-completion)
+(add-hook 'pre-command-hook #'beed/enable-minibuffer-completion)
+(advice-add 'completing-read :before #'beed/enable-minibuffer-completion)
 
 (use-package orderless
   :custom
