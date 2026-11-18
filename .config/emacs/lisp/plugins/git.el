@@ -9,16 +9,17 @@
   :bind ("C-c u" . vundo))
 
 (use-package diff-hl
-  :defer nil
-  :hook ((prog-mode . diff-hl-mode)
-         (text-mode . diff-hl-mode)
-         (dired-mode . diff-hl-dired-mode)
+  :commands diff-hl-mode
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook (lambda ()
+                     (beed/when-editing (lambda () (diff-hl-mode 1))))))
+  :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :custom
   (diff-hl-autohide-margin t)
   :config
-  (global-diff-hl-mode 1)
   (require 'diff-hl-margin)
   (dolist (face '(diff-hl-margin-insert
                   diff-hl-margin-delete

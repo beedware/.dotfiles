@@ -7,7 +7,8 @@
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
         ("melpa"  . "https://melpa.org/packages/")))
 
-(package-initialize)
+(unless (bound-and-true-p package--activated)
+  (package-activate-all))
 
 (unless (package-installed-p 'use-package)
   (unless package-archive-contents

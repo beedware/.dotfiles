@@ -1,14 +1,20 @@
 ;;; completion.el --- Minibuffer and in-buffer completion -*- lexical-binding: t; -*-
 
 (use-package vertico
+  :commands vertico-mode
   :custom
-  (vertico-count 12)
-  :init
-  (vertico-mode 1))
+  (vertico-count 12))
 
 (use-package marginalia
-  :init
-  (marginalia-mode 1))
+  :commands marginalia-mode)
+
+(defun beed/enable-minibuffer-completion (&rest _)
+  "Initialize completion before the first minibuffer is set up."
+  (vertico-mode 1)
+  (marginalia-mode 1)
+  (advice-remove 'read-from-minibuffer #'beed/enable-minibuffer-completion))
+
+(advice-add 'read-from-minibuffer :before #'beed/enable-minibuffer-completion)
 
 (use-package orderless
   :custom
@@ -42,31 +48,42 @@
 (require 'plugins/snippets)
 
 (use-package corfu
+  :commands corfu-mode
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook (lambda ()
+                     (beed/when-editing (lambda () (corfu-mode 1))))))
   :custom
   (corfu-preselect 'prompt)
   (corfu-popupinfo-delay '(0.0 . 0.0))
-  :init
-  (global-corfu-mode)
   :config
   (corfu-popupinfo-mode 1))
 
 (defvar-local beed/eglot-capf-has-yasnippet nil)
 
+(defun beed/setup-capf ()
+  "Set up completion backends when an editing buffer needs them."
+  (require 'cape)
+  (setq-local completion-at-point-functions
+              (append completion-at-point-functions
+                      (list (cape-capf-super #'beed/yasnippet-capf
+                                             #'cape-file
+                                             #'cape-dabbrev
+                                             #'cape-keyword)))))
+
 (use-package cape
   :bind ("C-c p" . cape-prefix-map)
-  :defer nil
-  :config
-  (setq completion-at-point-functions
-        (list (cape-capf-super #'beed/yasnippet-capf
-                               #'cape-file
-                               #'cape-dabbrev
-                               #'cape-keyword)))
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook (lambda () (beed/when-editing #'beed/setup-capf))))
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
               (unless beed/eglot-capf-has-yasnippet
                 (setq-local completion-at-point-functions
                             (mapcar (lambda (capf)
-                                      (cape-capf-super #'beed/yasnippet-capf capf))
+                                      (if (eq capf t)
+                                          t
+                                        (cape-capf-super #'beed/yasnippet-capf capf)))
                                     completion-at-point-functions))
                 (setq-local beed/eglot-capf-has-yasnippet t)))))
 

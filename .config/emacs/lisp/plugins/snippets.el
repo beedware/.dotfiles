@@ -1,18 +1,17 @@
 ;;; snippets.el --- Snippet configuration -*- lexical-binding: t; -*-
 
 (use-package yasnippet
-  :defer nil
+  :commands yas-minor-mode
   :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook (lambda ()
+                     (beed/when-editing (lambda () (yas-minor-mode 1))))))
   (setq yas-snippet-dirs
-        (list (expand-file-name "snippets" beed/emacs-config-directory)))
-  :config
-  (yas-global-mode 1))
+        (list (expand-file-name "snippets" beed/emacs-config-directory))))
 
 (use-package yasnippet-snippets
   :after yasnippet
-  :config
-  (add-to-list 'yas-snippet-dirs yasnippet-snippets-dir t)
-  (yas-reload-all))
+  :demand t)
 
 (defun beed/yasnippet-capf ()
   "Complete Yasnippet snippets at point."

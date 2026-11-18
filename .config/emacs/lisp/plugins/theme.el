@@ -27,7 +27,7 @@
     (load-theme (if (equal mode "light") 'modus-operandi 'modus-vivendi) t)))
 
 (use-package doom-modeline
-  :defer nil
+  :defer 0.5
   :init
   (setq doom-modeline-icon nil
         doom-modeline-major-mode-icon nil

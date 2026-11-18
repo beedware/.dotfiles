@@ -4,7 +4,9 @@
   "Refresh package archives and upgrade installed packages."
   (interactive)
   (package-refresh-contents)
-  (package-upgrade-all))
+  (package-upgrade-all)
+  (when package-quickstart
+    (package-quickstart-refresh)))
 
 (defun beed/empty-hl-line-range ()
   "Return an empty range for line highlighting."
