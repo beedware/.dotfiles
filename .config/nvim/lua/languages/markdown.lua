@@ -1,5 +1,5 @@
-local quality = require "quality-rc"
-local treesitter = require "treesitter-rc"
+local quality = require "plugins.quality"
+local treesitter = require "plugins.treesitter"
 
 treesitter.add {
   "markdown",

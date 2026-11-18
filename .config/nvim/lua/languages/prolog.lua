@@ -1,6 +1,6 @@
-local lsp = require "lsp-rc"
-local quality = require "quality-rc"
-local treesitter = require "treesitter-rc"
+local lsp = require "plugins.lsp"
+local quality = require "plugins.quality"
+local treesitter = require "plugins.treesitter"
 
 vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("PrologTreesitterParser", { clear = true }),

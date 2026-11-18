@@ -1,7 +1,7 @@
-local mason = require "mason-rc"
-local treesitter = require "treesitter-rc"
-local quality = require "quality-rc"
-local dap = require "debugging-rc"
+local mason = require "plugins.mason"
+local treesitter = require "plugins.treesitter"
+local quality = require "plugins.quality"
+local dap = require "plugins.debugging"
 
 vim.pack.add {
   "https://github.com/seblyng/roslyn.nvim",

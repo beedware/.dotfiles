@@ -1,8 +1,8 @@
-local mason = require "mason-rc"
-local quality = require "quality-rc"
-local treesitter = require "treesitter-rc"
+local mason = require "plugins.mason"
+local quality = require "plugins.quality"
+local treesitter = require "plugins.treesitter"
 
-local dap_ok = pcall(require, "debugging-rc")
+local dap_ok = pcall(require, "plugins.debugging")
 
 local function refresh_codelens(bufnr)
   if not vim.api.nvim_buf_is_valid(bufnr) then

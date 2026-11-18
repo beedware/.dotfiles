@@ -1,8 +1,8 @@
-local lsp = require "lsp-rc"
-local mason = require "mason-rc"
-local quality = require "quality-rc"
-local treesitter = require "treesitter-rc"
-local dap = require "debugging-rc"
+local lsp = require "plugins.lsp"
+local mason = require "plugins.mason"
+local quality = require "plugins.quality"
+local treesitter = require "plugins.treesitter"
+local dap = require "plugins.debugging"
 
 lsp.enable { "gdscript" }
 mason.add { "gdtoolkit" }

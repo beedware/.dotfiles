@@ -1,7 +1,7 @@
-local lsp = require "lsp-rc"
-local quality = require "quality-rc"
-local treesitter = require "treesitter-rc"
-local dap = require "debugging-rc"
+local lsp = require "plugins.lsp"
+local quality = require "plugins.quality"
+local treesitter = require "plugins.treesitter"
+local dap = require "plugins.debugging"
 local dart = vim.fn.exepath "dart" ~= "" and vim.fn.exepath "dart" or "dart"
 local flutter = vim.fn.exepath "flutter" ~= "" and vim.fn.exepath "flutter" or "flutter"
 local flutter_realpath = vim.uv.fs_realpath(flutter) or flutter

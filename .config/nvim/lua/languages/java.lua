@@ -1,5 +1,5 @@
-local mason = require "mason-rc"
-local treesitter = require "treesitter-rc"
+local mason = require "plugins.mason"
+local treesitter = require "plugins.treesitter"
 
 vim.pack.add {
   "https://codeberg.org/mfussenegger/nvim-jdtls",

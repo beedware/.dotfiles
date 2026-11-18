@@ -45,7 +45,7 @@ if opened_with_flag "-A" then
   opt_local.spell = false
 end
 
-require("slipbox").setup()
+require("features.slipbox").setup()
 
 local function compile_typst(buf)
   if vim.bo[buf].buftype ~= "" then

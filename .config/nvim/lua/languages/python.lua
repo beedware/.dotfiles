@@ -1,9 +1,9 @@
-local lsp = require "lsp-rc"
-local mason = require "mason-rc"
-local quality = require "quality-rc"
-local documentation = require "documentation-rc"
-local treesitter = require "treesitter-rc"
-require "debugging-rc"
+local lsp = require "plugins.lsp"
+local mason = require "plugins.mason"
+local quality = require "plugins.quality"
+local documentation = require "plugins.documentation"
+local treesitter = require "plugins.treesitter"
+require "plugins.debugging"
 
 lsp.enable { "ty" }
 mason.add {
