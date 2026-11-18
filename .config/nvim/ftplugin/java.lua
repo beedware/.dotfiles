@@ -168,5 +168,5 @@ map("n", "<leader>tc", jdtls.test_class, "Debug test class")
 map("n", "<leader>tr", jdtls.test_nearest_method, "Debug nearest test")
 
 map({ "n", "x" }, "<leader>cf", function()
-  require("conform").format { lsp_format = "first", async = true }
+  require("tools").format { lsp_format = "first", async = true }
 end, "Format Java code")

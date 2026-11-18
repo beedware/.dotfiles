@@ -38,8 +38,12 @@
     },
     "haskell-tools.nvim": {
       "rev": "851c4fbe24213615e29fed441208b9c96ec0ff1a",
-      "src": "https://github.com/MrcJkb/haskell-tools.nvim",
-      "version": "'v11.0.0'"
+      "src": "https://github.com/MrcJkb/haskell-tools.nvim"
+    },
+    "lazy.nvim": {
+      "rev": "85c7ff3711b730b4030d03144f6db6375044ae82",
+      "src": "https://github.com/folke/lazy.nvim",
+      "version": "'stable'"
     },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",

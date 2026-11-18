@@ -7,33 +7,40 @@ require "keymaps"
 
 require("vim._core.ui2").enable {}
 vim.cmd.packadd "nvim.undotree"
-require "plugins.theme"
-require "plugins.mini"
-require "plugins.git"
-require "plugins.filebrowser"
-require "plugins.completion"
-require "plugins.documentation"
-require "plugins.navigation"
-require "plugins.mason"
+vim.cmd.packadd "nvim.difftool"
 
-require "languages.lua"
-require "languages.vim"
-require "languages.query"
-require "languages.markdown"
-require "languages.yaml"
-require "languages.shell"
+require("lazypm").setup {
+  require "feat.theme",
+  require "feat.mini",
+  require "feat.git",
+  require "feat.filebrowser",
+  require "feat.completion",
+  require "feat.documentation",
+  require "feat.navigation",
+  require "feat.mason",
+  require "feat.lsp",
+  require "feat.quality",
+  require "feat.treesitter",
+  require "feat.debugging",
 
-require "languages.python"
-require "languages.c"
-require "languages.haskell"
-require "languages.prolog"
-require "languages.typst"
-require "languages.gdscript"
-require "languages.web"
-require "languages.scala"
-require "languages.tex"
-require "languages.nusmv"
--- require("languages.flutter")
--- require("languages.csharp")
--- require("languages.java")
--- require("languages.groovy")
+  require "lang.lua",
+  require "lang.vim",
+  require "lang.query",
+  require "lang.markdown",
+  require "lang.yaml",
+  require "lang.shell",
+  require "lang.python",
+  require "lang.c",
+  require "lang.haskell",
+  require "lang.prolog",
+  require "lang.typst",
+  require "lang.gdscript",
+  require "lang.web",
+  require "lang.scala",
+  require "lang.tex",
+  require "lang.nusmv",
+  -- require "lang.flutter",
+  -- require "lang.csharp",
+  -- require "lang.java",
+  -- require "lang.groovy",
+}

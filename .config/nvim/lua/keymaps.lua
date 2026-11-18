@@ -5,8 +5,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.keymap.set("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "Show diagnostics in location list" })
-vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, { desc = "Show all diagnostics in quickfix" })
+vim.keymap.set("n", "<leader>ds", function()
+  vim.diagnostic.setloclist()
+end, { desc = "Show diagnostics in location list" })
+vim.keymap.set("n", "<leader>da", function()
+  vim.diagnostic.setqflist()
+end, { desc = "Show all diagnostics in quickfix" })
 
 vim.keymap.set("n", "<leader>ta", function()
   if vim.wo.arabic then

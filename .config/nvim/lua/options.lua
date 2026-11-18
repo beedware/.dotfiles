@@ -31,7 +31,7 @@ vim.o.splitright = true
 vim.o.undofile = true
 vim.o.undodir = vim.fs.joinpath(vim.fn.stdpath "data", "undodir")
 
-vim.o.foldmethod = "expr"
+vim.o.foldmethod = "manual"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldlevel = 99
 vim.o.foldtext = "v:folddashes . substitute(getline(v:foldstart), '/\\*\\|\\*/\\|{{{\\d\\=', '', 'g')"

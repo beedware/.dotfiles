@@ -53,33 +53,3 @@ vim.api.nvim_create_user_command("GrepAll", has_rg and function(args)
     error(err)
   end
 end or need_rg "GrepAll", { complete = rg_find_all_complete, desc = "Grep including gitignored files", nargs = "+" })
-
-vim.api.nvim_create_user_command("PackUpdate", function()
-  vim.pack.update()
-end, {
-  desc = "Update vim.pack plugins",
-})
-
-vim.api.nvim_create_user_command("PackClean", function(args)
-  local unused = {}
-  for _, plugin in ipairs(vim.pack.get()) do
-    if not plugin.active and plugin.spec.name then
-      table.insert(unused, plugin.spec.name)
-    end
-  end
-
-  if vim.tbl_isempty(unused) then
-    vim.notify "No unused packages found"
-    return
-  end
-
-  if not args.bang then
-    vim.notify("Unused packages: " .. table.concat(unused, ", ") .. "\nRun :PackClean! to uninstall them")
-    return
-  end
-
-  vim.pack.del(unused)
-end, {
-  bang = true,
-  desc = "Uninstall inactive vim.pack packages",
-})

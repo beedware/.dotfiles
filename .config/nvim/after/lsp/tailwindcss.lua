@@ -1,7 +1,5 @@
----@type vim.lsp.Config
 return {
   filetypes = {
-    -- BEGIN Language: Web/JS/TS
     "astro",
     "css",
     "html",
@@ -14,6 +12,5 @@ return {
     "scss",
     "sass",
     "less",
-    -- END Language: Web/JS/TS
   },
 }

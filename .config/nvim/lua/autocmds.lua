@@ -5,6 +5,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("TreesitterFolds", { clear = true }),
+  callback = function(args)
+    if vim.bo[args.buf].buftype == "" and not vim.b[args.buf].bigfile then
+      vim.wo.foldmethod = "expr"
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("BufRead", {
   group = vim.api.nvim_create_augroup("DotenvFt", { clear = true }),
   pattern = { ".env", ".env.*" },
