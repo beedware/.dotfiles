@@ -1,4 +1,4 @@
-;;; tex-rc.el --- TeX configuration -*- lexical-binding: t; -*-
+;;; tex.el --- TeX configuration -*- lexical-binding: t; -*-
 
 (use-package tex
   :ensure auctex
@@ -35,5 +35,5 @@
 
 (beed/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
 
-(provide 'tex-rc)
-;;; tex-rc.el ends here
+(provide 'languages/tex)
+;;; tex.el ends here

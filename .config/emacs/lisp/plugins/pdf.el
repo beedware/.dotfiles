@@ -1,4 +1,4 @@
-;;; pdf-rc.el --- PDF viewing configuration -*- lexical-binding: t; -*-
+;;; pdf.el --- PDF viewing configuration -*- lexical-binding: t; -*-
 
 (defun beed/pdf-view-setup ()
   "Configure `pdf-view-mode' buffers."
@@ -27,5 +27,5 @@
   :config
   (pdf-tools-install :no-query))
 
-(provide 'pdf-rc)
-;;; pdf-rc.el ends here
+(provide 'plugins/pdf)
+;;; pdf.el ends here

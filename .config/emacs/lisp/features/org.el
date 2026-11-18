@@ -1,4 +1,4 @@
-;;; orgmode-rc.el --- Org configuration -*- lexical-binding: t; -*-
+;;; org.el --- Org configuration -*- lexical-binding: t; -*-
 
 (defconst beed/journal-directory
   (file-truename (expand-file-name "~/Compendium/Journal/")))
@@ -121,5 +121,5 @@
             (org-agenda-skip-function
              '(org-agenda-skip-entry-if 'notdeadline)))))))
 
-(provide 'orgmode-rc)
-;;; orgmode-rc.el ends here
+(provide 'features/org)
+;;; org.el ends here

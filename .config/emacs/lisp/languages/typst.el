@@ -1,4 +1,4 @@
-;;; typst-rc.el --- Typst configuration -*- lexical-binding: t; -*-
+;;; typst.el --- Typst configuration -*- lexical-binding: t; -*-
 
 (use-package typst-ts-mode
   :mode ("\\.typ\\'" . typst-ts-mode)
@@ -15,5 +15,5 @@
 
 (beed/formatter-add 'typst-ts-mode '(prettypst))
 
-(provide 'typst-rc)
-;;; typst-rc.el ends here
+(provide 'languages/typst)
+;;; typst.el ends here

@@ -1,4 +1,4 @@
-;;; filebrowser-rc.el --- File browser configuration -*- lexical-binding: t; -*-
+;;; filebrowser.el --- File browser configuration -*- lexical-binding: t; -*-
 
 (use-package dired
   :ensure nil
@@ -6,5 +6,5 @@
   (setq dired-listing-switches "-alh --group-directories-first")
   (setenv "LC_COLLATE" "C"))
 
-(provide 'filebrowser-rc)
-;;; filebrowser-rc.el ends here
+(provide 'plugins/filebrowser)
+;;; filebrowser.el ends here

@@ -1,4 +1,4 @@
-;;; treesitter-rc.el --- Tree-sitter configuration -*- lexical-binding: t; -*-
+;;; treesitter.el --- Tree-sitter configuration -*- lexical-binding: t; -*-
 
 (use-package treesit-auto
   :demand t
@@ -9,5 +9,5 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-(provide 'treesitter-rc)
-;;; treesitter-rc.el ends here
+(provide 'plugins/treesitter)
+;;; treesitter.el ends here

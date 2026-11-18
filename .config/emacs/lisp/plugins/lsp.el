@@ -1,4 +1,4 @@
-;;; lsp-rc.el --- LSP configuration -*- lexical-binding: t; -*-
+;;; lsp.el --- LSP configuration -*- lexical-binding: t; -*-
 
 (use-package eglot
   :ensure nil
@@ -33,5 +33,5 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs server)))
 
-(provide 'lsp-rc)
-;;; lsp-rc.el ends here
+(provide 'plugins/lsp)
+;;; lsp.el ends here

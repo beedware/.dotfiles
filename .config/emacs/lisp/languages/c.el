@@ -1,4 +1,4 @@
-;;; c-rc.el --- C and C++ configuration -*- lexical-binding: t; -*-
+;;; c.el --- C and C++ configuration -*- lexical-binding: t; -*-
 
 (use-package c-ts-mode
   :ensure nil
@@ -18,5 +18,5 @@
 (beed/formatter-add 'c-ts-mode '(clang-format))
 (beed/formatter-add 'c++-ts-mode '(clang-format))
 
-(provide 'c-rc)
-;;; c-rc.el ends here
+(provide 'languages/c)
+;;; c.el ends here

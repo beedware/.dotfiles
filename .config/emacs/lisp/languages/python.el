@@ -1,4 +1,4 @@
-;;; python-rc.el --- Python configuration -*- lexical-binding: t; -*-
+;;; python.el --- Python configuration -*- lexical-binding: t; -*-
 
 (require 'project)
 (require 'seq)
@@ -69,5 +69,5 @@
 
 (beed/formatter-add 'python-ts-mode '(ruff-isort ruff))
 
-(provide 'python-rc)
-;;; python-rc.el ends here
+(provide 'languages/python)
+;;; python.el ends here

@@ -1,4 +1,4 @@
-;;; calendar-rc.el --- Calfw calendar configuration -*- lexical-binding: t; -*-
+;;; calendar.el --- Calfw calendar configuration -*- lexical-binding: t; -*-
 
 (defun beed/calendar-setup ()
   "Keep the calendar grid free of line numbers and line highlighting."
@@ -26,5 +26,5 @@
   :custom
   (calfw-read-date-command #'calfw-org-read-date-command))
 
-(provide 'calendar-rc)
-;;; calendar-rc.el ends here
+(provide 'features/calendar)
+;;; calendar.el ends here

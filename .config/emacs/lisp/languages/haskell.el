@@ -1,4 +1,4 @@
-;;; haskell-rc.el --- Haskell configuration -*- lexical-binding: t; -*-
+;;; haskell.el --- Haskell configuration -*- lexical-binding: t; -*-
 
 (use-package haskell-mode
   :mode (("\\.hs\\'" . haskell-mode)
@@ -12,5 +12,5 @@
 (beed/formatter-add 'haskell-mode '(fourmolu))
 (beed/formatter-add 'haskell-literate-mode '(fourmolu))
 
-(provide 'haskell-rc)
-;;; haskell-rc.el ends here
+(provide 'languages/haskell)
+;;; haskell.el ends here

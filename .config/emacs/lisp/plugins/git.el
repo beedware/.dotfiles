@@ -1,4 +1,4 @@
-;;; git-rc.el --- Git configuration -*- lexical-binding: t; -*-
+;;; git.el --- Git configuration -*- lexical-binding: t; -*-
 
 (use-package magit
   :bind ("C-c g" . magit-status)
@@ -31,5 +31,5 @@
     (set-face-attribute face nil :background (face-background 'fringe nil t)))
   (diff-hl-flydiff-mode 1))
 
-(provide 'git-rc)
-;;; git-rc.el ends here
+(provide 'plugins/git)
+;;; git.el ends here

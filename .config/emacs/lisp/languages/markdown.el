@@ -1,4 +1,4 @@
-;;; markdown-rc.el --- Markdown configuration -*- lexical-binding: t; -*-
+;;; markdown.el --- Markdown configuration -*- lexical-binding: t; -*-
 
 (use-package markdown-mode
   :mode (("README\\.md\\'" . gfm-mode)
@@ -10,5 +10,5 @@
   (markdown-enable-wiki-links t)
   (markdown-italic-underscore t))
 
-(provide 'markdown-rc)
-;;; markdown-rc.el ends here
+(provide 'languages/markdown)
+;;; markdown.el ends here

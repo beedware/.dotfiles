@@ -1,4 +1,4 @@
-;;; debugging-rc.el --- Debugging configuration -*- lexical-binding: t; -*-
+;;; debugging.el --- Debugging configuration -*- lexical-binding: t; -*-
 
 (use-package dape
   :bind (("C-c d d" . dape)
@@ -21,5 +21,5 @@
   (setq window-sides-vertical t)
   (add-hook 'dape-start-hook (lambda () (save-some-buffers t t))))
 
-(provide 'debugging-rc)
-;;; debugging-rc.el ends here
+(provide 'plugins/debugging)
+;;; debugging.el ends here

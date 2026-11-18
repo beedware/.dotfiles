@@ -1,4 +1,4 @@
-;;; ui-rc.el --- UI configuration -*- lexical-binding: t; -*-
+;;; theme.el --- Theme and UI configuration -*- lexical-binding: t; -*-
 
 (set-face-attribute 'default nil
                     :family "CommitMono Nerd Font"
@@ -48,5 +48,5 @@
   :config
   (doom-modeline-mode 1))
 
-(provide 'ui-rc)
-;;; ui-rc.el ends here
+(provide 'plugins/theme)
+;;; theme.el ends here

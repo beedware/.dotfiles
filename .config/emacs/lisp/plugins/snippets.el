@@ -1,4 +1,4 @@
-;;; snippets-rc.el --- Snippet configuration -*- lexical-binding: t; -*-
+;;; snippets.el --- Snippet configuration -*- lexical-binding: t; -*-
 
 (use-package yasnippet
   :defer nil
@@ -28,5 +28,5 @@
                              (when (eq status 'finished)
                                (yas-expand)))))))
 
-(provide 'snippets-rc)
-;;; snippets-rc.el ends here
+(provide 'plugins/snippets)
+;;; snippets.el ends here
