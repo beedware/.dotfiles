@@ -1,6 +1,4 @@
 local has_rg = vim.fn.executable "rg" == 1
-local rg_grep = "rg --vimgrep --smart-case --hidden --glob '!.git'"
-local rg_grep_all = "rg --vimgrep --smart-case --hidden --no-ignore --glob '!.git'"
 
 local function rg_find(query, no_ignore, complete)
   local files = vim.fn.systemlist {
@@ -18,7 +16,7 @@ local function rg_find(query, no_ignore, complete)
 end
 
 if has_rg then
-  vim.o.grepprg = rg_grep
+  vim.o.grepprg = "rg --vimgrep --smart-case --hidden --glob '!.git'"
   vim.o.grepformat = "%f:%l:%c:%m"
   vim.o.findfunc = "v:lua.RgFindFiles"
   function _G.RgFindFiles(cmdarg, cmdcomplete)
@@ -46,7 +44,7 @@ end or need_rg "FindAll", { complete = rg_find_all_complete, desc = "Find file i
 
 vim.api.nvim_create_user_command("GrepAll", has_rg and function(args)
   local old_grepprg = vim.o.grepprg
-  vim.o.grepprg = rg_grep_all
+  vim.o.grepprg = "rg --vimgrep --smart-case --hidden --no-ignore --glob '!.git'"
   local ok, err = pcall(vim.cmd.grep, { args = { args.args }, bang = true })
   vim.o.grepprg = old_grepprg
   if not ok then
