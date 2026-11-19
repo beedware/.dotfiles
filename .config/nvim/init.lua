@@ -30,11 +30,13 @@ require("deps.lazy").setup {
   require "lang.markdown",
   require "lang.yaml",
   require "lang.shell",
+
   require "lang.python",
   require "lang.c",
   require "lang.haskell",
   require "lang.prolog",
   require "lang.typst",
+
   require "lang.gdscript",
   require "lang.web",
   require "lang.scala",
