@@ -3,6 +3,10 @@
   "theme": {
     "name": "modus"
   },
+  "cursor": {
+    "style": "block",
+    "blinking": false
+  },
   "tabs": {
     "mode": "off"
   }
