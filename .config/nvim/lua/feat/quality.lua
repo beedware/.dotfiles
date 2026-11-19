@@ -1,41 +1,36 @@
-local function init()
-  local format_enabled = true
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = vim.api.nvim_create_augroup("ConformSave", { clear = true }),
-    callback = function(args)
-      if format_enabled and vim.bo[args.buf].buftype == "" then
-        require("conform").format { bufnr = args.buf, lsp_format = "never", formatters = { "trim_whitespace" } }
-      end
-    end,
-  })
-  vim.keymap.set({ "n", "x" }, "<leader>cf", function()
-    require("conform").format { lsp_format = "fallback", async = true }
-  end, { desc = "Format code" })
-  vim.api.nvim_create_user_command("Format", function(opts)
-    if opts.args ~= "disable" and opts.args ~= "enable" then
-      vim.notify("Usage: Format {disable|enable}", vim.log.levels.ERROR)
-      return
-    end
-    format_enabled = opts.args == "enable"
-  end, {
-    nargs = 1,
-    complete = function()
-      return { "disable", "enable" }
-    end,
-    desc = "Enable or disable format on save",
-  })
-end
-
 return {
   {
     "stevearc/conform.nvim",
     cmd = "ConformInfo",
-    init = init,
+    init = function()
+      local format_enabled = true
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("ConformSave", { clear = true }),
+        callback = function(args)
+          if format_enabled and vim.bo[args.buf].buftype == "" then
+            require("conform").format { bufnr = args.buf, lsp_format = "never", formatters = { "trim_whitespace" } }
+          end
+        end,
+      })
+      vim.keymap.set({ "n", "x" }, "<leader>cf", function()
+        require("conform").format { lsp_format = "fallback", async = true }
+      end, { desc = "Format code" })
+      vim.api.nvim_create_user_command("Format", function(opts)
+        if opts.args ~= "disable" and opts.args ~= "enable" then
+          vim.notify("Usage: Format {disable|enable}", vim.log.levels.ERROR)
+          return
+        end
+        format_enabled = opts.args == "enable"
+      end, {
+        nargs = 1,
+        complete = function()
+          return { "disable", "enable" }
+        end,
+        desc = "Enable or disable format on save",
+      })
+    end,
     opts = function()
       return { formatters_by_ft = require("tools").quality.formatters_by_ft }
-    end,
-    config = function(_, opts)
-      require("conform").setup(opts)
     end,
   },
   {
