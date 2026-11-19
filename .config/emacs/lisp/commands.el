@@ -8,13 +8,9 @@
   (when package-quickstart
     (package-quickstart-refresh)))
 
-(defun beed/empty-hl-line-range ()
-  "Return an empty range for line highlighting."
-  (cons (point) (point)))
-
 (defun beed/disable-hl-line ()
   "Disable line highlighting in the current buffer."
-  (setq-local hl-line-range-function #'beed/empty-hl-line-range)
+  (setq-local hl-line-range-function (lambda () (cons (point) (point))))
   (hl-line-mode -1)
   (global-hl-line-unhighlight))
 

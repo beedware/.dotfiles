@@ -64,21 +64,21 @@
 
 (defvar-local beed/eglot-capf-has-yasnippet nil)
 
-(defun beed/setup-capf ()
-  "Set up completion backends when an editing buffer needs them."
-  (require 'cape)
-  (setq-local completion-at-point-functions
-              (append completion-at-point-functions
-                      (list (cape-capf-super #'beed/yasnippet-capf
-                                             #'cape-file
-                                             #'cape-dabbrev
-                                             #'cape-keyword)))))
-
 (use-package cape
   :bind ("C-c p" . cape-prefix-map)
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
-    (add-hook hook (lambda () (beed/when-editing #'beed/setup-capf))))
+    (add-hook hook
+              (lambda ()
+                (beed/when-editing
+                 (lambda ()
+                   (require 'cape)
+                   (setq-local completion-at-point-functions
+                               (append completion-at-point-functions
+                                       (list (cape-capf-super #'beed/yasnippet-capf
+                                                              #'cape-file
+                                                              #'cape-dabbrev
+                                                              #'cape-keyword)))))))))
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
               (unless beed/eglot-capf-has-yasnippet

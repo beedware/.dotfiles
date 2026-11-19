@@ -3,11 +3,10 @@
 ;; Work around distro site-start files that expect this variable.
 (defvar flavor 'emacs)
 
-(defvar beed/normal-gc-cons-threshold (* 16 1024 1024))
 (setq gc-cons-threshold (* 64 1024 1024))
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold beed/normal-gc-cons-threshold)))
+            (setq gc-cons-threshold (* 16 1024 1024))))
 
 (setq package-quickstart t
       package-quickstart-file

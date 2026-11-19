@@ -1,15 +1,12 @@
 ;;; pdf.el --- PDF viewing configuration -*- lexical-binding: t; -*-
 
-(defun beed/pdf-view-setup ()
-  "Configure `pdf-view-mode' buffers."
-  (beed/disable-hl-line)
-  (display-line-numbers-mode 0)
-  (pdf-view-fit-page-to-window))
-
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :magic ("%PDF" . pdf-view-mode)
-  :hook ((pdf-view-mode . beed/pdf-view-setup)
+  :hook ((pdf-view-mode . (lambda ()
+                           (beed/disable-hl-line)
+                           (display-line-numbers-mode 0)
+                           (pdf-view-fit-page-to-window)))
          (pdf-view-mode . pdf-isearch-minor-mode))
   :bind (:map pdf-view-mode-map
               ("j" . pdf-view-next-line-or-next-page)

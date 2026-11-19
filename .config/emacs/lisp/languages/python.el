@@ -55,17 +55,15 @@
     (eglot-shutdown (eglot-current-server)))
   (eglot-ensure))
 
-(defun beed/python-use-project-venv ()
-  "Use a project-local Python virtual environment when present."
-  (when-let* ((project (project-current))
-              (root (project-root project))
-              (venv (seq-find #'file-directory-p
-                              (mapcar (lambda (directory)
-                                        (expand-file-name directory root))
-                                      '(".venv" "venv")))))
-    (beed/python-set-venv venv)))
-
-(add-hook 'python-ts-mode-hook #'beed/python-use-project-venv)
+(add-hook 'python-ts-mode-hook
+          (lambda ()
+            (when-let* ((project (project-current))
+                        (root (project-root project))
+                        (venv (seq-find #'file-directory-p
+                                        (mapcar (lambda (directory)
+                                                  (expand-file-name directory root))
+                                                '(".venv" "venv")))))
+              (beed/python-set-venv venv))))
 
 (beed/formatter-add 'python-ts-mode '(ruff-isort ruff))
 

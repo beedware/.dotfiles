@@ -7,23 +7,6 @@
   "Return FILE inside `beed/journal-directory'."
   (expand-file-name file beed/journal-directory))
 
-(defun beed/format-marks ()
-  "Sort and format marks.org."
-  (let ((default-directory beed/journal-directory))
-    (call-process (expand-file-name "~/Compendium/Journal/.scripts/format")
-                  nil nil nil "-s" "marks.org")))
-
-(defconst beed/journal-agenda-file-names
-  '("inbox.org"
-    "kings.org"
-    "hijri.org"
-    "sched.org"))
-
-(defconst beed/journal-refile-file-names
-  '("inbox.org"
-    "sched.org"
-    "trail.org"))
-
 (use-package org
   :ensure nil
   :mode ("\\.org\\'" . org-mode)
@@ -52,7 +35,8 @@
   (setq org-directory beed/journal-directory)
 
   (setq org-agenda-files
-        (mapcar #'beed/journal-file beed/journal-agenda-file-names))
+        (mapcar #'beed/journal-file
+                '("inbox.org" "kings.org" "hijri.org" "sched.org")))
 
   (setq org-default-notes-file (beed/journal-file "folio.org"))
 
@@ -70,7 +54,11 @@
           ("m" "Mark" entry
            (file ,(beed/journal-file "marks.org"))
            "* %^{Title} %^g\n:PROPERTIES:\n:REPLACE: %^{REPLACE}\n:END:\n\n%?"
-           :after-finalize beed/format-marks)
+           :after-finalize ,(lambda ()
+                              (let ((default-directory beed/journal-directory))
+                                (call-process
+                                 (expand-file-name "~/Compendium/Journal/.scripts/format")
+                                 nil nil nil "-s" "marks.org"))))
           ("n" "Name" entry
            (file ,(beed/journal-file "names.org"))
            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t")
@@ -89,7 +77,8 @@
            :prepend t
            :empty-lines-before 0)))
 
-  (setq org-refile-targets `((,(mapcar #'beed/journal-file beed/journal-refile-file-names)
+  (setq org-refile-targets `((,(mapcar #'beed/journal-file
+                                     '("inbox.org" "sched.org" "trail.org"))
                               :maxlevel . 2))
         org-refile-use-outline-path 'file
         org-reverse-note-order t

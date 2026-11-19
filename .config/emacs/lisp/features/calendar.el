@@ -1,15 +1,12 @@
 ;;; calendar.el --- Calfw calendar configuration -*- lexical-binding: t; -*-
 
-(defun beed/calendar-setup ()
-  "Keep the calendar grid free of line numbers and line highlighting."
-  (beed/disable-hl-line)
-  (display-line-numbers-mode 0)
-  (visual-line-mode -1)
-  (setq-local truncate-lines t))
-
 (use-package calfw
   :commands calfw-open-calendar-buffer
-  :hook (calfw-calendar-mode . beed/calendar-setup)
+  :hook (calfw-calendar-mode . (lambda ()
+                                (beed/disable-hl-line)
+                                (display-line-numbers-mode 0)
+                                (visual-line-mode -1)
+                                (setq-local truncate-lines t)))
   :custom
   (calfw-fchar-vertical-line ?|)
   (calfw-fchar-horizontal-line ?-)
