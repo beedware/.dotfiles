@@ -32,7 +32,7 @@ require("deps.lazy").setup {
   require "lang.shell",
 
   require "lang.python",
-  require "lang.c",
+  require "lang.cpp",
   require "lang.haskell",
   require "lang.prolog",
   require "lang.typst",
