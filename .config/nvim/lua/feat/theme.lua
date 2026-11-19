@@ -8,6 +8,7 @@ return {
       keywords = { italic = false },
     },
     on_highlights = function(highlights, colors)
+      highlights.LspReferenceTarget = {}
       highlights.Whitespace = { fg = colors.bg_status_line_active }
       highlights.NeogitActiveItem = { bg = colors.bg_dim, fg = colors.fg_main }
       highlights.TabLineSel = { bg = colors.bg_alt, fg = colors.fg_main }
