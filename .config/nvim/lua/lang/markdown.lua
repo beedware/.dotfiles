@@ -1,12 +1,9 @@
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-
-treesitter.add {
+require("tools").treesitter.add {
   "markdown",
   "markdown_inline",
 }
 
-quality.formatters {
+require("tools").quality.formatters {
   markdown = { "prettierd" },
 }
 

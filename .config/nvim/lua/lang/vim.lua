@@ -1,6 +1,4 @@
-local treesitter = require("tools").treesitter
-
-treesitter.add {
+require("tools").treesitter.add {
   "vim",
   "vimdoc",
 }

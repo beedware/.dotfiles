@@ -32,27 +32,28 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     if path == "" or path:match "^%w+://" then
       return
     end
-    local opener_ext = {
-      png = true,
-      jpg = true,
-      jpeg = true,
-      gif = true,
-      webp = true,
-      svg = true,
-      bmp = true,
-      ico = true,
-      pdf = true,
-      mp4 = true,
-      mkv = true,
-      mov = true,
-      avi = true,
-      webm = true,
-      mp3 = true,
-      wav = true,
-      flac = true,
-      ogg = true,
-    }
-    if not opener_ext[vim.fn.fnamemodify(path, ":e"):lower()] then
+    if
+      not ({
+        png = true,
+        jpg = true,
+        jpeg = true,
+        gif = true,
+        webp = true,
+        svg = true,
+        bmp = true,
+        ico = true,
+        pdf = true,
+        mp4 = true,
+        mkv = true,
+        mov = true,
+        avi = true,
+        webm = true,
+        mp3 = true,
+        wav = true,
+        flac = true,
+        ogg = true,
+      })[vim.fn.fnamemodify(path, ":e"):lower()]
+    then
       return
     end
     vim.fn.jobstart({ "xdg-open", path }, { detach = true })

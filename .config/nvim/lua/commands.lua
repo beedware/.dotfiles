@@ -1,18 +1,20 @@
 local has_rg = vim.fn.executable "rg" == 1
 
 local function rg_find(query, no_ignore, complete)
-  local files = vim.fn.systemlist {
-    "rg",
-    "--files",
-    "--hidden",
-    no_ignore and "--no-ignore" or "--glob",
-    no_ignore and "--glob" or "!.git",
-    no_ignore and "!.git" or nil,
-  }
   local pattern = vim.pesc(query:gsub("\\", "/")) .. (complete and ".*" or "")
-  return vim.tbl_filter(function(file)
-    return file:match(pattern) or vim.fs.basename(file):match(pattern)
-  end, files)
+  return vim.tbl_filter(
+    function(file)
+      return file:match(pattern) or vim.fs.basename(file):match(pattern)
+    end,
+    vim.fn.systemlist {
+      "rg",
+      "--files",
+      "--hidden",
+      no_ignore and "--no-ignore" or "--glob",
+      no_ignore and "--glob" or "!.git",
+      no_ignore and "!.git" or nil,
+    }
+  )
 end
 
 if has_rg then

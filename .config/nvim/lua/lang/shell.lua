@@ -1,5 +1,3 @@
-local treesitter = require("tools").treesitter
-
-treesitter.add { "bash" }
+require("tools").treesitter.add { "bash" }
 
 return {}

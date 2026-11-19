@@ -1,5 +1,3 @@
-local treesitter = require("tools").treesitter
-
-treesitter.add { "query" }
+require("tools").treesitter.add { "query" }
 
 return {}

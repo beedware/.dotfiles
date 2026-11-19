@@ -1,11 +1,10 @@
 local ls = require "luasnip"
 
-local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
 
 ls.add_snippets("typst", {
-  s("zettel", {
+  ls.snippet("zettel", {
     t {
       '#import ".utility/style.typ": style',
       "#show: style",

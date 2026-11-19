@@ -1,9 +1,6 @@
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
+require("tools").treesitter.add { "scala" }
 
-treesitter.add { "scala" }
-
-quality.formatters {
+require("tools").quality.formatters {
   scala = { "scalafmt" },
   sbt = { "scalafmt" },
 }

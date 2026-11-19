@@ -1,12 +1,8 @@
-local lsp = require("tools").lsp
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
+require("tools").lsp.enable { "tinymist" }
 
-lsp.enable { "tinymist" }
+require("tools").treesitter.add { "typst" }
 
-treesitter.add { "typst" }
-
-quality.formatters {
+require("tools").quality.formatters {
   typst = { "prettypst" },
 }
 

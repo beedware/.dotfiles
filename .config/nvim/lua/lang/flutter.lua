@@ -1,23 +1,24 @@
-local lsp = require("tools").lsp
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-local dap = require("tools").debugging
 local dart = vim.fn.exepath "dart" ~= "" and vim.fn.exepath "dart" or "dart"
 local flutter = vim.fn.exepath "flutter" ~= "" and vim.fn.exepath "flutter" or "flutter"
-local flutter_realpath = vim.uv.fs_realpath(flutter) or flutter
-local flutter_root = vim.fn.fnamemodify(flutter_realpath, ":h:h")
-local flutter_dart = vim.fs.joinpath(flutter_root, "bin", "cache", "dart-sdk", "bin", "dart")
+local flutter_dart = vim.fs.joinpath(
+  vim.fn.fnamemodify(vim.uv.fs_realpath(flutter) or flutter, ":h:h"),
+  "bin",
+  "cache",
+  "dart-sdk",
+  "bin",
+  "dart"
+)
 local dart_sdk = vim.fn.executable(flutter_dart) == 1 and flutter_dart or dart
 
-lsp.enable { "dartls" }
+require("tools").lsp.enable { "dartls" }
 
-treesitter.add { "dart" }
+require("tools").treesitter.add { "dart" }
 
-quality.formatters {
+require("tools").quality.formatters {
   dart = { "dart_format" },
 }
 
-dap.configure(function(dap)
+require("tools").debugging.configure(function(dap)
   dap.adapters.dart = {
     type = "executable",
     command = dart,

@@ -1,18 +1,14 @@
-local lsp = require("tools").lsp
-local mason = require("tools").mason
 local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-local dap = require("tools").debugging
 
-lsp.enable { "clangd" }
-mason.add {
+require("tools").lsp.enable { "clangd" }
+require("tools").mason.add {
   "clangd",
   "codelldb",
   "cpplint",
   "clang-format",
 }
 
-treesitter.add { "c", "cpp" }
+require("tools").treesitter.add { "c", "cpp" }
 
 quality.formatters {
   c = { "clang-format" },
@@ -24,7 +20,7 @@ quality.linters {
   cpp = { "cpplint" },
 }
 
-dap.configure(function(dap)
+require("tools").debugging.configure(function(dap)
   dap.adapters.codelldb = {
     type = "server",
     port = "${port}",

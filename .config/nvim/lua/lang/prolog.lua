@@ -1,7 +1,3 @@
-local lsp = require("tools").lsp
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-
 vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("PrologTreesitterParser", { clear = true }),
   pattern = "TSUpdate",
@@ -20,11 +16,11 @@ vim.api.nvim_create_autocmd("User", {
 
 vim.treesitter.language.register("prolog", "prolog")
 
-lsp.enable { "prolog_ls" }
+require("tools").lsp.enable { "prolog_ls" }
 
-treesitter.add { "prolog" }
+require("tools").treesitter.add { "prolog" }
 
-quality.formatters {
+require("tools").quality.formatters {
   prolog = { "prolog" },
 }
 

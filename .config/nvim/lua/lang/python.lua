@@ -1,19 +1,14 @@
-local lsp = require("tools").lsp
-local mason = require("tools").mason
 local quality = require("tools").quality
-local documentation = require("tools").documentation
-local treesitter = require("tools").treesitter
-local dap = require("tools").debugging
 
-lsp.enable { "ty" }
-mason.add {
+require("tools").lsp.enable { "ty" }
+require("tools").mason.add {
   "ty",
   "debugpy",
   "ruff",
   "djlint",
 }
 
-treesitter.add { "python" }
+require("tools").treesitter.add { "python" }
 
 quality.formatters {
   python = { "ruff_format", "ruff_organize_imports" },
@@ -26,7 +21,7 @@ quality.linters {
   htmldjango = { "djlint" },
 }
 
-documentation.languages {
+require("tools").documentation.languages {
   python = function()
     local template = require("neogen.types.template").item
     return {
@@ -71,7 +66,7 @@ documentation.languages {
   end,
 }
 
-dap.configure(function()
+require("tools").debugging.configure(function()
   require("dap-python").setup(
     vim.fs.joinpath(vim.fn.stdpath "data", "mason", "packages", "debugpy", "venv", "bin", "python")
   )

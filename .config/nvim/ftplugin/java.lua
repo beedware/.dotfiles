@@ -20,14 +20,12 @@ end
 
 local data_dir = vim.fn.stdpath "data"
 local mason_packages = vim.fs.joinpath(data_dir, "mason", "packages")
-local workspace_root = vim.fs.joinpath(data_dir, "jdtls")
-local workspace_name = ("%s-%s"):format(vim.fs.basename(root_dir), vim.fn.sha256(root_dir):sub(1, 8))
-local workspace_dir = vim.fs.joinpath(workspace_root, workspace_name)
+local workspace_dir =
+  vim.fs.joinpath(data_dir, "jdtls", ("%s-%s"):format(vim.fs.basename(root_dir), vim.fn.sha256(root_dir):sub(1, 8)))
 local javac = vim.fn.exepath "javac"
 local jdk_home = nil
 if javac ~= "" then
-  local resolved_javac = (vim.uv or vim.loop).fs_realpath(javac) or javac
-  jdk_home = vim.fs.dirname(vim.fs.dirname(resolved_javac))
+  jdk_home = vim.fs.dirname(vim.fs.dirname((vim.uv or vim.loop).fs_realpath(javac) or javac))
 end
 local java_bin = jdk_home and vim.fs.joinpath(jdk_home, "bin", "java") or vim.fn.exepath "java"
 
@@ -35,8 +33,7 @@ local bundles = {}
 
 local function extend_bundles(pattern, exclude)
   for _, path in ipairs(vim.fn.glob(pattern, true, true)) do
-    local name = vim.fn.fnamemodify(path, ":t")
-    if not exclude or not exclude[name] then
+    if not exclude or not exclude[vim.fn.fnamemodify(path, ":t")] then
       bundles[#bundles + 1] = path
     end
   end
@@ -52,7 +49,6 @@ extend_bundles(vim.fs.joinpath(mason_packages, "java-test", "extension", "server
 
 local launcher = vim.fn.glob(vim.fs.joinpath(mason_packages, "jdtls", "plugins", "org.eclipse.equinox.launcher_*.jar"))
 local config_dir = vim.fs.joinpath(mason_packages, "jdtls", "config_linux")
-local lombok_jar = vim.fs.joinpath(mason_packages, "jdtls", "lombok.jar")
 
 if launcher == "" then
   vim.notify("jdtls launcher not found. Install Mason package 'jdtls' first.", vim.log.levels.WARN)
@@ -81,7 +77,7 @@ vim.fn.mkdir(workspace_dir, "p")
 
 jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
-local config = {
+jdtls.start_or_attach {
   name = "jdtls",
   cmd = {
     java_bin,
@@ -96,7 +92,7 @@ local config = {
     "java.base/java.util=ALL-UNNAMED",
     "--add-opens",
     "java.base/java.lang=ALL-UNNAMED",
-    "-javaagent:" .. lombok_jar,
+    "-javaagent:" .. vim.fs.joinpath(mason_packages, "jdtls", "lombok.jar"),
     "-jar",
     launcher,
     "-configuration",
@@ -145,7 +141,6 @@ local config = {
   },
 }
 
-jdtls.start_or_attach(config)
 jdtls.setup_dap { hotcodereplace = "auto", config_overrides = {} }
 
 local map = function(mode, lhs, rhs, desc)

@@ -1,13 +1,9 @@
-local lsp = require("tools").lsp
-local mason = require("tools").mason
 local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-local dap = require("tools").debugging
 
-lsp.enable { "gdscript" }
-mason.add { "gdtoolkit" }
+require("tools").lsp.enable { "gdscript" }
+require("tools").mason.add { "gdtoolkit" }
 
-treesitter.add { "gdscript" }
+require("tools").treesitter.add { "gdscript" }
 
 quality.formatters {
   gdscript = { "gdformat" },
@@ -17,7 +13,7 @@ quality.linters {
   gdscript = { "gdlint" },
 }
 
-dap.configure(function(dap)
+require("tools").debugging.configure(function(dap)
   dap.adapters.godot = {
     type = "server",
     host = "127.0.0.1",

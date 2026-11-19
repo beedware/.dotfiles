@@ -1,5 +1,3 @@
-local treesitter = require("tools").treesitter
-
-treesitter.add { "yaml" }
+require("tools").treesitter.add { "yaml" }
 
 return {}

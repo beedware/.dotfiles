@@ -1,4 +1,4 @@
-vim.g.nusmv = { executable = 'NuSMV', args = {}, reveal_output = 'always' }
+vim.g.nusmv = { executable = "NuSMV", args = {}, reveal_output = "always" }
 local config = vim.tbl_extend("force", {
   executable = "NuSMV",
   args = {},
@@ -64,94 +64,6 @@ local function terminal(cmd, cwd)
   vim.cmd "startinsert"
 end
 
-local function run_model()
-  if active_run then
-    return notify("A NuSMV run is already in progress; use :NuSMVStop", vim.log.levels.WARN)
-  end
-  local cmd, cwd = model_command()
-  if not cmd then
-    return
-  end
-  output_buf = vim.api.nvim_create_buf(false, true)
-  local buf = output_buf
-  vim.bo[buf].filetype = "nusmvoutput"
-  vim.bo[buf].bufhidden = "hide"
-  local header = { "Command: " .. table.concat(vim.tbl_map(vim.fn.shellescape, cmd), " "), "Directory: " .. cwd, "" }
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, header)
-  if config.reveal_output == "always" then
-    show_output()
-  end
-  local run = { cancelled = false }
-  active_run = run
-  local started = vim.uv.hrtime()
-  local ok, process = pcall(vim.system, cmd, { cwd = cwd, text = true }, function(result)
-    vim.schedule(function()
-      active_run = nil
-      local output = (result.stdout or "") .. "\n" .. (result.stderr or "")
-      local passed, failed = 0, 0
-      for line in output:gmatch "[^\n]+" do
-        local verdict = line:lower():match "^%s*%-%-%s*specification%f[%W].-%f[%w]is%s+(%a+)%f[%W]"
-        if verdict == "true" then
-          passed = passed + 1
-        elseif verdict == "false" then
-          failed = failed + 1
-        end
-      end
-      local status = run.cancelled and "Cancelled"
-        or result.code ~= 0 and "Error"
-        or failed > 0 and "Failed"
-        or "Completed"
-      local level = run.cancelled and vim.log.levels.WARN
-        or result.code ~= 0 and vim.log.levels.ERROR
-        or failed > 0 and vim.log.levels.WARN
-        or vim.log.levels.INFO
-      local summary = ("%s in %.1fs (exit %d). Specs: %d true, %d false."):format(
-        status,
-        (vim.uv.hrtime() - started) / 1e9,
-        result.code,
-        passed,
-        failed
-      )
-      if vim.api.nvim_buf_is_valid(buf) then
-        vim.list_extend(header, vim.split(output, "\n", { plain = true }))
-        header[#header + 1] = summary
-        vim.api.nvim_buf_set_lines(buf, 0, -1, false, header)
-        vim.bo[buf].modifiable = false
-        if config.reveal_output == "onFailure" and level ~= vim.log.levels.INFO then
-          show_output()
-        end
-      end
-      notify(summary, level)
-    end)
-  end)
-  if not ok then
-    active_run = nil
-    return notify("Cannot start NuSMV: " .. tostring(process), vim.log.levels.ERROR)
-  end
-  run.process = process
-end
-
-local function stop_model()
-  if active_run then
-    active_run.cancelled = true
-    active_run.process:kill(15)
-  end
-end
-
-local function run_terminal()
-  local cmd, cwd = model_command()
-  if cmd then
-    terminal(cmd, cwd)
-  end
-end
-
-local function open_shell()
-  if executable() then
-    local path = vim.api.nvim_buf_get_name(0)
-    terminal({ config.executable, "-int" }, path ~= "" and vim.fs.dirname(path) or vim.fn.getcwd())
-  end
-end
-
 vim.api.nvim_create_autocmd("VimLeavePre", {
   group = group,
   callback = function()
@@ -165,15 +77,95 @@ vim.api.nvim_create_autocmd("FileType", {
   group = group,
   pattern = "nusmv",
   callback = function(event)
-    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRun", run_model, {
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRun", function()
+      if active_run then
+        return notify("A NuSMV run is already in progress; use :NuSMVStop", vim.log.levels.WARN)
+      end
+      local cmd, cwd = model_command()
+      if not cmd then
+        return
+      end
+      output_buf = vim.api.nvim_create_buf(false, true)
+      local buf = output_buf
+      vim.bo[buf].filetype = "nusmvoutput"
+      vim.bo[buf].bufhidden = "hide"
+      local header =
+        { "Command: " .. table.concat(vim.tbl_map(vim.fn.shellescape, cmd), " "), "Directory: " .. cwd, "" }
+      vim.api.nvim_buf_set_lines(buf, 0, -1, false, header)
+      if config.reveal_output == "always" then
+        show_output()
+      end
+      local run = { cancelled = false }
+      active_run = run
+      local started = vim.uv.hrtime()
+      local ok, process = pcall(vim.system, cmd, { cwd = cwd, text = true }, function(result)
+        vim.schedule(function()
+          active_run = nil
+          local output = (result.stdout or "") .. "\n" .. (result.stderr or "")
+          local passed, failed = 0, 0
+          for line in output:gmatch "[^\n]+" do
+            local verdict = line:lower():match "^%s*%-%-%s*specification%f[%W].-%f[%w]is%s+(%a+)%f[%W]"
+            if verdict == "true" then
+              passed = passed + 1
+            elseif verdict == "false" then
+              failed = failed + 1
+            end
+          end
+          local level = run.cancelled and vim.log.levels.WARN
+            or result.code ~= 0 and vim.log.levels.ERROR
+            or failed > 0 and vim.log.levels.WARN
+            or vim.log.levels.INFO
+          local summary = ("%s in %.1fs (exit %d). Specs: %d true, %d false."):format(
+            run.cancelled and "Cancelled" or result.code ~= 0 and "Error" or failed > 0 and "Failed" or "Completed",
+            (vim.uv.hrtime() - started) / 1e9,
+            result.code,
+            passed,
+            failed
+          )
+          if vim.api.nvim_buf_is_valid(buf) then
+            vim.list_extend(header, vim.split(output, "\n", { plain = true }))
+            header[#header + 1] = summary
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, header)
+            vim.bo[buf].modifiable = false
+            if config.reveal_output == "onFailure" and level ~= vim.log.levels.INFO then
+              show_output()
+            end
+          end
+          notify(summary, level)
+        end)
+      end)
+      if not ok then
+        active_run = nil
+        return notify("Cannot start NuSMV: " .. tostring(process), vim.log.levels.ERROR)
+      end
+      run.process = process
+    end, {
       desc = "Save and run current NuSMV model; capture output and summarize specs",
     })
-    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVStop", stop_model, { desc = "Cancel the current NuSMV run" })
-    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVOutput", show_output, { desc = "Show the last NuSMV run output" })
-    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRunTerminal", run_terminal, {
-      desc = "Save and run current NuSMV model in a terminal",
-    })
-    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVShell", open_shell, { desc = "Open an interactive NuSMV shell" })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVStop", function()
+      if active_run then
+        active_run.cancelled = true
+        active_run.process:kill(15)
+      end
+    end, { desc = "Cancel the current NuSMV run" })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVRunTerminal", function()
+      local cmd, cwd = model_command()
+      if cmd then
+        terminal(cmd, cwd)
+      end
+    end, { desc = "Save and run current NuSMV model in a terminal" })
+    vim.api.nvim_buf_create_user_command(event.buf, "NuSMVShell", function()
+      if executable() then
+        local path = vim.api.nvim_buf_get_name(0)
+        terminal({ config.executable, "-int" }, path ~= "" and vim.fs.dirname(path) or vim.fn.getcwd())
+      end
+    end, { desc = "Open an interactive NuSMV shell" })
+    vim.api.nvim_buf_create_user_command(
+      event.buf,
+      "NuSMVOutput",
+      show_output,
+      { desc = "Show the last NuSMV run output" }
+    )
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2

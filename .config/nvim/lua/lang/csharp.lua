@@ -1,21 +1,16 @@
-local mason = require("tools").mason
-local treesitter = require("tools").treesitter
-local quality = require("tools").quality
-local dap = require("tools").debugging
-
-mason.add {
+require("tools").mason.add {
   "roslyn-language-server",
   "netcoredbg",
   "csharpier",
 }
 
-treesitter.add { "c_sharp" }
+require("tools").treesitter.add { "c_sharp" }
 
-quality.formatters {
+require("tools").quality.formatters {
   cs = { "csharpier" },
 }
 
-dap.configure(function(dap)
+require("tools").debugging.configure(function(dap)
   dap.adapters.coreclr = {
     type = "executable",
     command = vim.fs.joinpath(vim.fn.stdpath "data", "mason", "bin", "netcoredbg"),

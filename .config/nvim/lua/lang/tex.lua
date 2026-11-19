@@ -1,9 +1,6 @@
-local lsp = require("tools").lsp
-local quality = require("tools").quality
+require("tools").lsp.enable { "texlab" }
 
-lsp.enable { "texlab" }
-
-quality.formatters {
+require("tools").quality.formatters {
   tex = { "tex-fmt" },
 }
 

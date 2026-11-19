@@ -1,17 +1,12 @@
-local lsp = require("tools").lsp
-local mason = require("tools").mason
-local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-
-lsp.enable { "lua_ls" }
-mason.add {
+require("tools").lsp.enable { "lua_ls" }
+require("tools").mason.add {
   "lua-language-server",
   "stylua",
 }
 
-treesitter.add { "lua" }
+require("tools").treesitter.add { "lua" }
 
-quality.formatters {
+require("tools").quality.formatters {
   lua = { "stylua" },
 }
 

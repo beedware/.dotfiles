@@ -1,5 +1,3 @@
-local treesitter = require("tools").treesitter
-
-treesitter.add { "groovy" }
+require("tools").treesitter.add { "groovy" }
 
 return {}

@@ -1,10 +1,6 @@
-local lsp = require("tools").lsp
-local mason = require("tools").mason
 local quality = require("tools").quality
-local treesitter = require("tools").treesitter
-local dap = require("tools").debugging
 
-lsp.enable {
+require("tools").lsp.enable {
   "biome",
   "ts_ls",
   "tailwindcss",
@@ -12,7 +8,7 @@ lsp.enable {
   "jsonls",
 }
 
-mason.add {
+require("tools").mason.add {
   "biome",
   "typescript-language-server",
   "tailwindcss-language-server",
@@ -23,7 +19,7 @@ mason.add {
   "json-lsp",
 }
 
-treesitter.add {
+require("tools").treesitter.add {
   "css",
   "htmldjango",
   "html",
@@ -56,7 +52,7 @@ quality.linters {
   svelte = { "biomejs" },
 }
 
-dap.configure(function(dap)
+require("tools").debugging.configure(function(dap)
   dap.adapters["pwa-node"] = {
     type = "server",
     host = "localhost",

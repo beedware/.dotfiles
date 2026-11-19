@@ -1,5 +1,4 @@
 local opt_local = vim.opt_local
-local map = vim.keymap.set
 local fn = vim.fn
 
 opt_local.spell = true
@@ -32,16 +31,7 @@ function _G.typst_foldtext()
   return marker .. " " .. title
 end
 
-local function opened_with_flag(flag)
-  for _, arg in ipairs(vim.v.argv) do
-    if arg == flag then
-      return true
-    end
-  end
-  return false
-end
-
-if opened_with_flag "-A" then
+if vim.list_contains(vim.v.argv, "-A") then
   opt_local.spell = false
 end
 
@@ -66,17 +56,14 @@ local function compile_typst(buf)
     return
   end
 
-  local dir = vim.fn.fnamemodify(filepath, ":h")
-  local outpath = vim.fs.joinpath(vim.fn.stdpath "cache", "typst-render.pdf")
-
   local function report_output(_, data)
     if data and #data > 0 then
       print(table.concat(data, "\n"))
     end
   end
 
-  vim.fn.jobstart({ "typst", "compile", filepath, outpath }, {
-    cwd = dir,
+  vim.fn.jobstart({ "typst", "compile", filepath, vim.fs.joinpath(vim.fn.stdpath "cache", "typst-render.pdf") }, {
+    cwd = vim.fn.fnamemodify(filepath, ":h"),
     stdout_buffered = true,
     stderr_buffered = true,
     on_stdout = report_output,
@@ -101,10 +88,8 @@ if not vim.g.typst_watch_command_defined then
       return
     end
 
-    local group = vim.api.nvim_create_augroup("TypstWatch", { clear = true })
-
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-      group = group,
+      group = vim.api.nvim_create_augroup("TypstWatch", { clear = true }),
       pattern = "*.typ",
       callback = function(ev)
         compile_typst(ev.buf)
