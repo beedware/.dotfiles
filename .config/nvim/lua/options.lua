@@ -6,6 +6,7 @@ if mode_file then
   mode_file:close()
 end
 vim.o.background = vim.trim(mode) == "light" and "light" or "dark"
+
 vim.o.splitkeep = "screen"
 
 vim.o.cursorline = true
