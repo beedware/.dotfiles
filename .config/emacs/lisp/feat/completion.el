@@ -48,7 +48,7 @@
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Snippet completion must be available before Cape combines the CAPFs.
-(require 'plugins/snippets)
+(require 'feat/snippets)
 
 (use-package corfu
   :commands corfu-mode
@@ -90,5 +90,5 @@
                                     completion-at-point-functions))
                 (setq-local beed/eglot-capf-has-yasnippet t)))))
 
-(provide 'plugins/completion)
+(provide 'feat/completion)
 ;;; completion.el ends here

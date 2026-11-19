@@ -32,5 +32,5 @@
     (set-face-attribute face nil :background (face-background 'fringe nil t)))
   (diff-hl-flydiff-mode 1))
 
-(provide 'plugins/git)
+(provide 'feat/git)
 ;;; git.el ends here

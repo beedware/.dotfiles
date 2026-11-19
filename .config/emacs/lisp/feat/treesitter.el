@@ -9,5 +9,5 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-(provide 'plugins/treesitter)
+(provide 'feat/treesitter)
 ;;; treesitter.el ends here

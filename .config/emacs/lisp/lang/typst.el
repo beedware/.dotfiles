@@ -15,5 +15,5 @@
 
 (beed/formatter-add 'typst-ts-mode '(prettypst))
 
-(provide 'languages/typst)
+(provide 'lang/typst)
 ;;; typst.el ends here

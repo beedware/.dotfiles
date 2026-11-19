@@ -48,5 +48,5 @@
   :config
   (doom-modeline-mode 1))
 
-(provide 'plugins/theme)
+(provide 'feat/theme)
 ;;; theme.el ends here

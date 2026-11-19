@@ -21,5 +21,5 @@
   (setq window-sides-vertical t)
   (add-hook 'dape-start-hook (lambda () (save-some-buffers t t))))
 
-(provide 'plugins/debugging)
+(provide 'feat/debugging)
 ;;; debugging.el ends here

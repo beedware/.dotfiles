@@ -23,5 +23,5 @@
   :custom
   (calfw-read-date-command #'calfw-org-read-date-command))
 
-(provide 'features/calendar)
+(provide 'feat/calendar)
 ;;; calendar.el ends here

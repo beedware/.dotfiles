@@ -27,5 +27,5 @@
                              (when (eq status 'finished)
                                (yas-expand)))))))
 
-(provide 'plugins/snippets)
+(provide 'feat/snippets)
 ;;; snippets.el ends here

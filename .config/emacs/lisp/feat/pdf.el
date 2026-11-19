@@ -24,5 +24,5 @@
   :config
   (pdf-tools-install :no-query))
 
-(provide 'plugins/pdf)
+(provide 'feat/pdf)
 ;;; pdf.el ends here

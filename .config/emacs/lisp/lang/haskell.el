@@ -12,5 +12,5 @@
 (beed/formatter-add 'haskell-mode '(fourmolu))
 (beed/formatter-add 'haskell-literate-mode '(fourmolu))
 
-(provide 'languages/haskell)
+(provide 'lang/haskell)
 ;;; haskell.el ends here

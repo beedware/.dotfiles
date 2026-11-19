@@ -32,5 +32,5 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs server)))
 
-(provide 'plugins/lsp)
+(provide 'feat/lsp)
 ;;; lsp.el ends here

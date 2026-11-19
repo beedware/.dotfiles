@@ -16,5 +16,5 @@
   (with-eval-after-load 'apheleia
     (setf (alist-get formatter apheleia-formatters) command)))
 
-(provide 'plugins/formatting)
+(provide 'feat/formatting)
 ;;; formatting.el ends here

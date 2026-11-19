@@ -67,5 +67,5 @@
 
 (beed/formatter-add 'python-ts-mode '(ruff-isort ruff))
 
-(provide 'languages/python)
+(provide 'lang/python)
 ;;; python.el ends here

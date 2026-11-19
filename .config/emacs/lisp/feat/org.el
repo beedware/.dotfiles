@@ -110,5 +110,5 @@
             (org-agenda-skip-function
              '(org-agenda-skip-entry-if 'notdeadline)))))))
 
-(provide 'features/org)
+(provide 'feat/org)
 ;;; org.el ends here

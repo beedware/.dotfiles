@@ -10,5 +10,5 @@
   (markdown-enable-wiki-links t)
   (markdown-italic-underscore t))
 
-(provide 'languages/markdown)
+(provide 'lang/markdown)
 ;;; markdown.el ends here

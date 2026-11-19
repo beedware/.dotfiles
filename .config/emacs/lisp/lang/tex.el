@@ -35,5 +35,5 @@
 
 (beed/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
 
-(provide 'languages/tex)
+(provide 'lang/tex)
 ;;; tex.el ends here

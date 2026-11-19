@@ -6,5 +6,5 @@
   (setq dired-listing-switches "-alh --group-directories-first")
   (setenv "LC_COLLATE" "C"))
 
-(provide 'plugins/filebrowser)
+(provide 'feat/filebrowser)
 ;;; filebrowser.el ends here
