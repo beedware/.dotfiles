@@ -9,7 +9,7 @@ require("vim._core.ui2").enable {}
 vim.cmd.packadd "nvim.undotree"
 vim.cmd.packadd "nvim.difftool"
 
-require("lazypm").setup {
+require("deps.lazy").setup {
   require "feat.theme",
   require "feat.mini",
   require "feat.git",

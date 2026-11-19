@@ -10,7 +10,6 @@ function M.setup(specs)
     pkg = { enabled = false },
     checker = { enabled = false },
     change_detection = { notify = false },
-    install = { colorscheme = { "modus" } },
     ui = {
       icons = {
         cmd = ": ",
