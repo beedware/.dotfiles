@@ -1,6 +1,6 @@
 ;;; commands.el --- General commands and helpers -*- lexical-binding: t; -*-
 
-(defun beed/update-packages ()
+(defun conf/update-packages ()
   "Refresh package archives and upgrade installed packages."
   (interactive)
   (package-refresh-contents)
@@ -8,13 +8,13 @@
   (when package-quickstart
     (package-quickstart-refresh)))
 
-(defun beed/disable-hl-line ()
+(defun conf/disable-hl-line ()
   "Disable line highlighting in the current buffer."
   (setq-local hl-line-range-function (lambda () (cons (point) (point))))
   (hl-line-mode -1)
   (global-hl-line-unhighlight))
 
-(defun beed/arabic-input-method-title ()
+(defun conf/arabic-input-method-title ()
   "Use a short title for the Arabic input method."
   (when (string= current-input-method "arabic")
     (setq current-input-method-title "ARA")))

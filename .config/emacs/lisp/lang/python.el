@@ -9,10 +9,10 @@
   :mode ("\\.py\\'" . python-ts-mode)
   :interpreter ("python" . python-ts-mode))
 
-(beed/lsp-enable 'python-ts-mode-hook
+(conf/lsp-enable 'python-ts-mode-hook
                  '(python-ts-mode . ("ty" "server")))
 
-(defun beed/python-set-venv (venv)
+(defun conf/python-set-venv (venv)
   "Use VENV for Python tools in the current buffer."
   (interactive "DVirtualenv: ")
   (let* ((venv (file-name-as-directory (expand-file-name venv)))
@@ -37,7 +37,7 @@
                                                          path-separator)))
                          path-separator))))
 
-(defun beed/python-set-venv-restart-lsp (venv)
+(defun conf/python-set-venv-restart-lsp (venv)
   "Use VENV for Python tools and restart Eglot in the current buffer."
   (interactive
    (list (read-directory-name
@@ -49,7 +49,7 @@
                                     (expand-file-name directory root))
                                   '(".venv" "venv"))))
               default-directory))))
-  (beed/python-set-venv venv)
+  (conf/python-set-venv venv)
   (require 'eglot)
   (when (eglot-current-server)
     (eglot-shutdown (eglot-current-server)))
@@ -63,9 +63,9 @@
                                         (mapcar (lambda (directory)
                                                   (expand-file-name directory root))
                                                 '(".venv" "venv")))))
-              (beed/python-set-venv venv))))
+              (conf/python-set-venv venv))))
 
-(beed/formatter-add 'python-ts-mode '(ruff-isort ruff))
+(conf/formatter-add 'python-ts-mode '(ruff-isort ruff))
 
 (provide 'lang/python)
 ;;; python.el ends here

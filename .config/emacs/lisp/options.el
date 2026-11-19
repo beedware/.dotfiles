@@ -1,19 +1,19 @@
 ;;; options.el --- General settings -*- lexical-binding: t; -*-
 
-(defconst beed/emacs-data-directory
+(defconst conf/emacs-data-directory
   (expand-file-name "emacs/" (or (getenv "XDG_DATA_HOME") "~/.local/share/")))
 
 (dolist (directory '("auto-save/" "backups/"))
-  (make-directory (expand-file-name directory beed/emacs-data-directory) t))
+  (make-directory (expand-file-name directory conf/emacs-data-directory) t))
 
 (setq inhibit-startup-message t
       initial-scratch-message nil
       auto-save-default t
       auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "auto-save/" beed/emacs-data-directory) t))
+      `((".*" ,(expand-file-name "auto-save/" conf/emacs-data-directory) t))
       make-backup-files t
       backup-directory-alist
-      `(("." . ,(expand-file-name "backups/" beed/emacs-data-directory)))
+      `(("." . ,(expand-file-name "backups/" conf/emacs-data-directory)))
       backup-by-copying t
       version-control t
       delete-old-versions t

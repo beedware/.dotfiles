@@ -13,7 +13,7 @@
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook (lambda ()
-                     (beed/when-editing (lambda () (diff-hl-mode 1))))))
+                     (conf/when-editing (lambda () (diff-hl-mode 1))))))
   :hook ((dired-mode . diff-hl-dired-mode)
          (magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh))

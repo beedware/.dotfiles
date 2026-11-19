@@ -5,15 +5,15 @@
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook (lambda ()
-                     (beed/when-editing (lambda () (yas-minor-mode 1))))))
+                     (conf/when-editing (lambda () (yas-minor-mode 1))))))
   (setq yas-snippet-dirs
-        (list (expand-file-name "snippets" beed/emacs-config-directory))))
+        (list (expand-file-name "snippets" conf/emacs-config-directory))))
 
 (use-package yasnippet-snippets
   :after yasnippet
   :demand t)
 
-(defun beed/yasnippet-capf ()
+(defun conf/yasnippet-capf ()
   "Complete Yasnippet snippets at point."
   (when (bound-and-true-p yas-minor-mode)
     (when-let* ((bounds (bounds-of-thing-at-point 'symbol))

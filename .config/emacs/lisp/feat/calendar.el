@@ -3,7 +3,7 @@
 (use-package calfw
   :commands calfw-open-calendar-buffer
   :hook (calfw-calendar-mode . (lambda ()
-                                (beed/disable-hl-line)
+                                (conf/disable-hl-line)
                                 (display-line-numbers-mode 0)
                                 (visual-line-mode -1)
                                 (setq-local truncate-lines t)))

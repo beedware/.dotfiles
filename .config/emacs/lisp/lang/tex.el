@@ -27,13 +27,13 @@
   :custom
   (reftex-plug-into-AUCTeX t))
 
-(beed/lsp-enable 'LaTeX-mode-hook
+(conf/lsp-enable 'LaTeX-mode-hook
                  '(LaTeX-mode . ("texlab")))
 
-(beed/formatter-define 'tex-fmt
+(conf/formatter-define 'tex-fmt
                        '("tex-fmt" "--stdin" "--tabsize" (number-to-string tab-width)))
 
-(beed/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
+(conf/formatter-add 'LaTeX-mode '(tex-fmt expand-tab-width))
 
 (provide 'lang/tex)
 ;;; tex.el ends here

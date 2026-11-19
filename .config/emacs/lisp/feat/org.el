@@ -1,11 +1,11 @@
 ;;; org.el --- Org configuration -*- lexical-binding: t; -*-
 
-(defconst beed/journal-directory
+(defconst conf/journal-directory
   (file-truename (expand-file-name "~/Compendium/Journal/")))
 
-(defun beed/journal-file (file)
-  "Return FILE inside `beed/journal-directory'."
-  (expand-file-name file beed/journal-directory))
+(defun conf/journal-file (file)
+  "Return FILE inside `conf/journal-directory'."
+  (expand-file-name file conf/journal-directory))
 
 (use-package org
   :ensure nil
@@ -32,52 +32,52 @@
         '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|"
                     "DONE(d)" "KILL(k)")))
 
-  (setq org-directory beed/journal-directory)
+  (setq org-directory conf/journal-directory)
 
   (setq org-agenda-files
-        (mapcar #'beed/journal-file
+        (mapcar #'conf/journal-file
                 '("inbox.org" "kings.org" "hijri.org" "sched.org")))
 
-  (setq org-default-notes-file (beed/journal-file "folio.org"))
+  (setq org-default-notes-file (conf/journal-file "folio.org"))
 
   (setq org-capture-templates
         `(("f" "Folio" entry
-           (file ,(beed/journal-file "folio.org"))
+           (file ,(conf/journal-file "folio.org"))
            "* %<%Y%m%d/%H%M%S> - %?"
            :prepend t
            :empty-lines-before 0)
           ("i" "Inbox" entry
-           (file ,(beed/journal-file "inbox.org"))
+           (file ,(conf/journal-file "inbox.org"))
            "* %?"
            :prepend t
            :empty-lines-before 0)
           ("m" "Mark" entry
-           (file ,(beed/journal-file "marks.org"))
+           (file ,(conf/journal-file "marks.org"))
            "* %^{Title} %^g\n:PROPERTIES:\n:REPLACE: %^{REPLACE}\n:END:\n\n%?"
            :after-finalize ,(lambda ()
-                              (let ((default-directory beed/journal-directory))
+                              (let ((default-directory conf/journal-directory))
                                 (call-process
                                  (expand-file-name "~/Compendium/Journal/.scripts/format")
                                  nil nil nil "-s" "marks.org"))))
           ("n" "Name" entry
-           (file ,(beed/journal-file "names.org"))
+           (file ,(conf/journal-file "names.org"))
            "* %^{Name}\n:PROPERTIES:\n:PHONE: %^{Phone}\n:EMAIL: %^{Email}\n:ADDRESS: %^{Address}\n:END:\n\n%?\n\n** %\\1's birthday\n%^{Birthday}t")
           ("d" "Device" item
-           (file+headline ,(beed/journal-file "names.org") "Devices")
+           (file+headline ,(conf/journal-file "names.org") "Devices")
            "- %^{Name} : %^{Description}"
            :empty-lines-before 0)
           ("t" "Task" entry
-           (file ,(beed/journal-file "sched.org"))
+           (file ,(conf/journal-file "sched.org"))
            "* TODO %^{Title} %^g\n%?"
            :prepend t
            :empty-lines-before 0)
           ("e" "Event" entry
-           (file ,(beed/journal-file "sched.org"))
+           (file ,(conf/journal-file "sched.org"))
            "* %^{Title} %^g\n%?"
            :prepend t
            :empty-lines-before 0)))
 
-  (setq org-refile-targets `((,(mapcar #'beed/journal-file
+  (setq org-refile-targets `((,(mapcar #'conf/journal-file
                                      '("inbox.org" "sched.org" "trail.org"))
                               :maxlevel . 2))
         org-refile-use-outline-path 'file

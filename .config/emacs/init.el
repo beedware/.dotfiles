@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
-(defconst beed/emacs-config-directory
+(defconst conf/emacs-config-directory
   (file-name-directory (or load-file-name buffer-file-name)))
 
-(add-to-list 'load-path (expand-file-name "lisp" beed/emacs-config-directory))
+(add-to-list 'load-path (expand-file-name "lisp" conf/emacs-config-directory))
 
 (require 'bootstrap)
 (require 'options)
@@ -11,7 +11,7 @@
 (require 'hooks)
 (require 'keymaps)
 
-(setq custom-file (expand-file-name "custom.el" beed/emacs-config-directory))
+(setq custom-file (expand-file-name "custom.el" conf/emacs-config-directory))
 (when (file-exists-p custom-file)
   (load custom-file t))
 

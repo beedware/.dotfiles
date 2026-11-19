@@ -11,12 +11,12 @@
          ("\\.hh\\'" . c++-ts-mode)
          ("\\.hxx\\'" . c++-ts-mode)))
 
-(beed/lsp-enable 'c-ts-mode-hook
+(conf/lsp-enable 'c-ts-mode-hook
                  '((c-ts-mode c++-ts-mode) . ("clangd")))
 (add-hook 'c++-ts-mode-hook #'eglot-ensure)
 
-(beed/formatter-add 'c-ts-mode '(clang-format))
-(beed/formatter-add 'c++-ts-mode '(clang-format))
+(conf/formatter-add 'c-ts-mode '(clang-format))
+(conf/formatter-add 'c++-ts-mode '(clang-format))
 
 (provide 'lang/cpp)
 ;;; cpp.el ends here

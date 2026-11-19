@@ -7,13 +7,13 @@
     (add-to-list 'treesit-language-source-alist
                  '(typst "https://github.com/uben0/tree-sitter-typst"))))
 
-(beed/lsp-enable 'typst-ts-mode-hook
+(conf/lsp-enable 'typst-ts-mode-hook
                  '(typst-ts-mode . ("tinymist")))
 
-(beed/formatter-define 'prettypst
+(conf/formatter-define 'prettypst
                        '("prettypst" "--use-std-in" "--use-std-out"))
 
-(beed/formatter-add 'typst-ts-mode '(prettypst))
+(conf/formatter-add 'typst-ts-mode '(prettypst))
 
 (provide 'lang/typst)
 ;;; typst.el ends here

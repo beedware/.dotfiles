@@ -2,7 +2,7 @@
 
 (require 'commands)
 
-(defun beed/when-editing (function)
+(defun conf/when-editing (function)
   "Run FUNCTION now, or on first interaction with the scratch buffer."
   (if (and (equal (buffer-name) "*scratch*") (not buffer-file-name))
       (let (setup)
@@ -22,11 +22,11 @@
                 treemacs-mode-hook
                 minibuffer-setup-hook))
   (add-hook mode (lambda ()
-                   (beed/disable-hl-line)
+                   (conf/disable-hl-line)
                    (display-line-numbers-mode 0))))
 
-(add-hook 'input-method-activate-hook #'beed/arabic-input-method-title)
-(add-hook 'isearch-mode-hook #'beed/arabic-input-method-title)
+(add-hook 'input-method-activate-hook #'conf/arabic-input-method-title)
+(add-hook 'isearch-mode-hook #'conf/arabic-input-method-title)
 
 (provide 'hooks)
 ;;; hooks.el ends here

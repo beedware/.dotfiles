@@ -4,7 +4,7 @@
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :magic ("%PDF" . pdf-view-mode)
   :hook ((pdf-view-mode . (lambda ()
-                           (beed/disable-hl-line)
+                           (conf/disable-hl-line)
                            (display-line-numbers-mode 0)
                            (pdf-view-fit-page-to-window)))
          (pdf-view-mode . pdf-isearch-minor-mode))

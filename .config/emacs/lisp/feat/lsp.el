@@ -26,7 +26,7 @@
                (display-buffer-reuse-window display-buffer-at-bottom)
                (window-height . 0.24)))
 
-(defun beed/lsp-enable (hook server)
+(defun conf/lsp-enable (hook server)
   "Enable Eglot on HOOK using SERVER."
   (add-hook hook #'eglot-ensure)
   (with-eval-after-load 'eglot
