@@ -8,9 +8,9 @@ Install the minimum tools, clone the repo, and apply the dotfiles:
 
 ```bash
 sudo xbps-install -Sy git stow python3
+mv ~/.bashrc ~/.bashrc.bak
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-mv ~/.bashrc ~/.bashrc.bak
 stow .
 ~/.dotfiles/.local/bin/themer init
 ```
