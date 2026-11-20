@@ -12,12 +12,9 @@ mv ~/.bashrc ~/.bashrc.bak
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 stow .
-sudo cp ~/.dotfiles/.bashrc.root /root/.bashrc
 ~/.dotfiles/.local/bin/themer init
 ```
 
 The repo includes `.stowrc`, so `stow .` uses `--no-folding`. Stow creates real
 directories like `~/.config/nvim` and `~/.local/bin`, then symlinks only the
 files inside them.
-
-`.bashrc.root` is the shell config intended for the root user.
