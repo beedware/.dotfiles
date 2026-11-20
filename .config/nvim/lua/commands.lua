@@ -1,5 +1,46 @@
 local has_rg = vim.fn.executable "rg" == 1
 
+vim.api.nvim_create_user_command("Setup", function()
+  local headless = #vim.api.nvim_list_uis() == 0
+  local ok, err = xpcall(function()
+    local lazy = require "lazy"
+    local function check_plugins()
+      for name, plugin in pairs(require("lazy.core.config").plugins) do
+        for _, task in ipairs(plugin._.tasks or {}) do
+          assert(not task:has_errors(), "Plugin setup failed for " .. name .. ": " .. task:output())
+        end
+      end
+    end
+
+    print "[Setup] Installing missing plugins"
+    lazy.install { wait = true, show = false, lockfile = true }
+    check_plugins()
+    print "[Setup] Restoring locked plugins and running builds"
+    lazy.restore { wait = true, show = false }
+    check_plugins()
+
+    print "[Setup] Installing Treesitter parsers"
+    vim.cmd "TSInstallAll!"
+
+    print "[Setup] Installing Mason packages"
+    local packages = require("tools").mason.packages
+    if #packages > 0 then
+      -- Mason's headless installer streams output and waits for all packages.
+      vim.cmd("MasonInstall " .. table.concat(packages, " "))
+    end
+    print "[Setup] Setup complete"
+  end, debug.traceback)
+
+  if not ok then
+    if headless then
+      vim.api.nvim_err_writeln(err)
+      vim.cmd "cquit 1"
+    else
+      error(err)
+    end
+  end
+end, { desc = "Install locked plugins, Treesitter parsers, and Mason packages" })
+
 local function rg_find(query, no_ignore, complete)
   local pattern = vim.pesc(query:gsub("\\", "/")) .. (complete and ".*" or "")
   return vim.tbl_filter(

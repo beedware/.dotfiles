@@ -3,8 +3,34 @@ return {
   event = { "InsertEnter", "CmdlineEnter" },
   cmd = "BlinkCmp",
   dependencies = { "saghen/blink.lib", "ribru17/blink-cmp-spell", vim.deepcopy(require "deps.snippets") },
-  build = function()
-    require("blink.cmp").build():pwait()
+  build = function(plugin)
+    local task = assert(require("lazy.async").running())
+    ---@cast task LazyTask
+    assert(task:spawn("cargo", {
+      args = { "build", "--locked", "--release" },
+      cwd = plugin.dir,
+      timeout = 30 * 60 * 1000,
+      on_exit = function(ok, output)
+        if not ok then
+          task:error(output)
+        end
+      end,
+    }), "Blink's Rust build failed; see Cargo output above")
+
+    local native = require "blink.lib.native"
+    local extension = native.platform().lib_extension
+    local target = vim.env.CARGO_TARGET_DIR or (plugin.dir .. "/target")
+    if not vim.startswith(target, "/") then
+      target = plugin.dir .. "/" .. target
+    end
+    local commit = native.git_commit(plugin.dir)
+    native.mv(
+      target .. "/release/libblink_cmp_fuzzy" .. extension,
+      native.library_path(plugin.dir, "blink_cmp_fuzzy", commit)
+    )
+    vim.opt.rtp:append(plugin.dir)
+    native.load("blink_cmp_fuzzy", commit)
+    coroutine.yield("Rust matcher built and verified")
   end,
   opts = {
     snippets = { preset = "luasnip" },
