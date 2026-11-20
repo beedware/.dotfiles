@@ -7,7 +7,7 @@ Personal Void Linux dotfiles managed with GNU Stow.
 Install the minimum tools, clone the repo, and apply the dotfiles:
 
 ```bash
-sudo xbps-install -S git stow python3
+sudo xbps-install -Sy git stow python3
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 mv ~/.bashrc ~/.bashrc.bak
