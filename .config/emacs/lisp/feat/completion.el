@@ -26,6 +26,11 @@
   (completion-category-overrides
    '((file (styles basic partial-completion)))))
 
+(use-package embark-consult
+  :after (embark consult)
+  :demand t
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package consult
   :custom
   (xref-show-definitions-function #'consult-xref)
@@ -41,11 +46,6 @@
   :bind (("C-." . embark-act)
          ("C-;" . embark-dwim)
          ("C-h B" . embark-bindings)))
-
-(use-package embark-consult
-  :after (embark consult)
-  :demand t
-  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Snippet completion must be available before Cape combines the CAPFs.
 (require 'feat/snippets)
