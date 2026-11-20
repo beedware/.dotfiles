@@ -61,7 +61,6 @@ ln -sfn ../.dotfiles/.config/pipewire ~/.config/pipewire
 
 # Start services after packages and config links are in place
 sudo ln -sfn /etc/sv/dbus /var/service/dbus
-sudo ln -sfn /etc/sv/elogind /var/service/elogind
 sudo ln -sfn /etc/sv/lightdm /var/service/lightdm
 sudo ln -sfn /etc/sv/polkitd /var/service/polkitd
 sudo ln -sfn /etc/sv/cronie /var/service/cronie
