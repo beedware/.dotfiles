@@ -21,20 +21,22 @@ directories like `~/.config/nvim` and `~/.local/bin`, then symlinks only the
 files inside them.
 
 `.bashrc.root` is the shell config intended for the root user. See
-[`docs/system.md`](./docs/system.md) for the install note.
+[System Notes](https://github.com/beedware/.dotfiles/wiki/system) for the install note.
 
 ## Fresh Install
 
-Use [`docs/fresh-install.md`](./docs/fresh-install.md) for a full Void install
+Use [Fresh Install](https://github.com/beedware/.dotfiles/wiki/fresh-install) for a full Void install
 flow, including desktop setup, graphics drivers, SSH setup, and application
 scripts.
 
 ## Docs
 
-- [`docs/partitioning.md`](./docs/partitioning.md): disk layout and formatting
-- [`docs/fresh-install.md`](./docs/fresh-install.md): end-to-end install flow
-- [`docs/scripts.md`](./docs/scripts.md): `add/` script dependency reference
-- [`docs/system.md`](./docs/system.md): generic system setup notes
-- [`docs/troubleshooting.md`](./docs/troubleshooting.md): common desktop fixes
-- [`docs/laptop.md`](./docs/laptop.md): laptop-specific notes
-- [`docs/update.md`](./docs/update.md): system update checklist
+Documentation is maintained in the [wiki](https://github.com/beedware/.dotfiles/wiki).
+
+- [Partitioning](https://github.com/beedware/.dotfiles/wiki/partitioning): disk layout and formatting
+- [Fresh Install](https://github.com/beedware/.dotfiles/wiki/fresh-install): end-to-end install flow
+- [Scripts](https://github.com/beedware/.dotfiles/wiki/scripts): `add/` script dependency reference
+- [System Notes](https://github.com/beedware/.dotfiles/wiki/system): generic system setup notes
+- [Troubleshooting](https://github.com/beedware/.dotfiles/wiki/troubleshooting): common desktop fixes
+- [Laptop Notes](https://github.com/beedware/.dotfiles/wiki/laptop): laptop-specific notes
+- [System Update Checklist](https://github.com/beedware/.dotfiles/wiki/update): system update checklist
