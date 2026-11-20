@@ -21,8 +21,3 @@ directories like `~/.config/nvim` and `~/.local/bin`, then symlinks only the
 files inside them.
 
 `.bashrc.root` is the shell config intended for the root user.
-
-## Docs
-
-See the repository wiki for installation, script dependencies, system setup,
-troubleshooting, laptop notes, and the system update checklist.
