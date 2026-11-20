@@ -394,6 +394,12 @@ class CLI:
             action="store_true",
             help="Skip confirmation and assume yes",
         )
+        self.parser.add_argument(
+            "command",
+            nargs="?",
+            choices=["init"],
+            help="Copy theme files without applying or reloading them",
+        )
         self.args = argparse.Namespace(rofi=False, theme=None, yes=False)
 
     def parse_args(self, argv: list[str] | None = None) -> argparse.Namespace:
@@ -454,9 +460,29 @@ class CLI:
             print(f"Choose a number between 1 and {len(options)}.")
 
 
+def copy_theme_files(config: Path, mode: Mode) -> None:
+    FileTheme(config / "alacritty", "theme.toml").set(mode)
+    FileTheme(config / "dunst", "dunstrc").set(mode)
+    FileTheme(config / "i3", "theme.conf").set(mode)
+    FileTheme(config / "zathura", "zathurarc").set(mode)
+    FileTheme(config / "rofi", "theme.rasi").set(mode)
+    FileTheme(config / "opencode" / "themes", "modus.json").set(mode)
+    FileTheme(config / "tmux", "theme.conf").set(mode)
+    FileTheme(config / "wallpaper", "theme.jpg").set(mode)
+
+
 def main() -> None:
     cli: CLI = CLI(description="Toggle application themes")
     args: argparse.Namespace = cli.parse_args()
+    home: Path = Path.home()
+    config: Path = home / ".config"
+    if args.command == "init":
+        themer = Themer()
+        mode = args.theme if args.theme is not None else themer.get_mode()
+        copy_theme_files(config, mode)
+        themer.set_mode(mode)
+        return
+
     prompt: str = (
         f"Change to {args.theme} theme?" if args.theme is not None else "Toggle theme?"
     )
@@ -467,20 +493,11 @@ def main() -> None:
     if args.theme:
         mode = args.theme
 
-    home: Path = Path.home()
-    config: Path = home / ".config"
     screen_layout = ScreenLayout(home / ".screenlayout")
     if not screen_layout.setup(cli):
         return
 
-    FileTheme(config / "alacritty", "theme.toml").set(mode)
-    FileTheme(config / "dunst", "dunstrc").set(mode)
-    FileTheme(config / "i3", "theme.conf").set(mode)
-    FileTheme(config / "zathura", "zathurarc").set(mode)
-    FileTheme(config / "rofi", "theme.rasi").set(mode)
-    FileTheme(config / "opencode" / "themes", "modus.json").set(mode)
-    FileTheme(config / "tmux", "theme.conf").set(mode)
-    FileTheme(config / "wallpaper", "theme.jpg").set(mode)
+    copy_theme_files(config, mode)
 
     CalibreTheme(config / "calibre").set(mode)
     GtkTheme(home).set(mode)
