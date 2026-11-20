@@ -12,7 +12,7 @@ mv ~/.bashrc ~/.bashrc.bak
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 stow .
-cp ~/.dotfiles/.bashrc.root /root/.bashrc
+sudo cp ~/.dotfiles/.bashrc.root /root/.bashrc
 ~/.dotfiles/.local/bin/themer init
 ```
 
