@@ -24,28 +24,6 @@ sudo xbps-install -Syu xbps
 sudo xbps-install -Syu
 ```
 
-Install the minimal tools needed to fetch and apply this repo:
-
-```bash
-sudo xbps-install -S git neovim curl stow
-```
-
-Clone the repo:
-
-```bash
-git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-```
-
-Before running any `add/` script, update the system yourself:
-
-```bash
-sudo xbps-install -Syu
-```
-
-The `add/` scripts install their own packages, but they do not run a full
-system update.
-
 ## Install The Desktop
 
 Install XFCE, Xorg, LightDM, PipeWire, Bluetooth, and NetworkManager:
@@ -89,29 +67,6 @@ add/codeberg
 
 The script copies the new public key to the clipboard and waits while you add
 it to GitHub and Codeberg.
-
-## Apply Dotfiles
-
-After GitHub and Codeberg is set up and the repo origin has been switched to
-SSH:
-
-```bash
-cd ~/.dotfiles
-stow .
-```
-
-The repo includes `.stowrc`, so `stow .` runs with `--no-folding`. This keeps
-directories like `~/.config/nvim` and `~/.local/bin` as real directories and
-only symlinks the files inside them.
-
-On a fresh system, Stow may stop if a target file already exists. The common
-one is `~/.bashrc`, which Void creates by default. If that happens, move the
-existing file out of the way and rerun Stow:
-
-```bash
-mv ~/.bashrc ~/.bashrc.bak
-stow .
-```
 
 ## Install Script Dependencies
 

@@ -7,24 +7,17 @@ Personal Void Linux dotfiles managed with GNU Stow.
 Install the minimum tools, clone the repo, and apply the dotfiles:
 
 ```bash
-sudo xbps-install -S git stow
+sudo xbps-install -S git stow python3
 git clone https://github.com/beedware/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
+mv ~/.bashrc ~/.bashrc.bak
 stow .
-themer -y
+~/.dotfiles/.local/bin/themer init
 ```
 
 The repo includes `.stowrc`, so `stow .` uses `--no-folding`. Stow creates real
 directories like `~/.config/nvim` and `~/.local/bin`, then symlinks only the
 files inside them.
-
-If Stow reports an existing target, move or merge that file first. The common
-fresh-install conflict is Void's default `~/.bashrc`:
-
-```bash
-mv ~/.bashrc ~/.bashrc.bak
-stow .
-```
 
 `.bashrc.root` is the shell config intended for the root user. See
 [`docs/system.md`](./docs/system.md) for the install note.
