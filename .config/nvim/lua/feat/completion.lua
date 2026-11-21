@@ -6,7 +6,6 @@ return {
   build = function(plugin)
     local task = assert(require("lazy.async").running())
     ---@cast task LazyTask
-    -- Neogit's ProcessOpts collides with lazy.nvim's; these options are valid for LazyTask.
     ---@diagnostic disable-next-line: missing-fields
     assert(task:spawn("cargo", {
       args = { "build", "--locked", "--release" },
