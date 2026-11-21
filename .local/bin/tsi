@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import subprocess
 import sys
 from collections.abc import Iterable, Sequence
@@ -149,6 +150,27 @@ def get_all_items(config: LauncherConfig) -> tuple[list[str], dict[str, str]]:
     return display, mapping
 
 
+def fzf_theme_options() -> list[str]:
+    try:
+        mode = (Path.home() / ".config/themer/mode").read_text().strip()
+    except FileNotFoundError:
+        mode = "dark"
+
+    theme = "light" if mode == "light" else "dark"
+    path = Path.home() / f".config/bash/{theme}.sh"
+    if not path.is_file():
+        return []
+    options = subprocess.check_output(
+        [
+            "bash", "--noprofile", "--norc", "-c",
+            'source "$1" >/dev/null; printf "%s" "$FZF_DEFAULT_OPTS"',
+            "tsi", str(path),
+        ],
+        text=True,
+    )
+    return shlex.split(options)
+
+
 def fzf_select(
     items: list[str],
     bottom: bool = False,
@@ -162,6 +184,7 @@ def fzf_select(
         "> ",
         "--height=100%" if full_screen else "--height=40%",
         "--exit-0",
+        *fzf_theme_options(),
     ]
     if bottom:
         cmd.append("--layout=default")

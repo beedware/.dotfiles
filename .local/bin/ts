@@ -44,6 +44,13 @@ CTRL_F = 6
 BARE_GIT_PREFIX = "bare="
 
 
+def get_theme_mode() -> str:
+    try:
+        return (Path.home() / ".config/themer/mode").read_text().strip()
+    except FileNotFoundError:
+        return "dark"
+
+
 def is_esc(ch: int) -> bool:
     return ch in (27, curses.KEY_EXIT)
 
@@ -185,7 +192,16 @@ def curses_loop(
     curses.use_default_colors()
 
     stdscr.keypad(True)
-    stdscr.bkgd(" ", curses.A_NORMAL)
+    white = 15 if curses.COLORS >= 16 else curses.COLOR_WHITE
+    foreground, background = (
+        (curses.COLOR_BLACK, white)
+        if get_theme_mode() == "light"
+        else (white, curses.COLOR_BLACK)
+    )
+    curses.init_pair(1, foreground, background)
+    style = curses.color_pair(1)
+    stdscr.bkgd(" ", style)
+    stdscr.attrset(style)
 
     buf: list[str] = list(initial_value)
     pos = len(buf)
