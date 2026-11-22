@@ -28,6 +28,7 @@ GHCUP_URL="https://downloads.haskell.org/~ghcup/${GHCUP_VERSION}/${GHCUP_BIN}"
 GHC_VERSION="9.14.1"
 CABAL_VERSION="3.16.1.0"
 STACK_VERSION="3.7.1"
+HLS_VERSION="2.15.0.0"
 
 ALEX_VERSION="3.5.4.2"
 ALEX_CHECKSUM="df481dc960e2c59a30395f7335031fd4ef8773b8a42894a4f2320e00ff474418"
@@ -97,6 +98,8 @@ ghcup install cabal "$CABAL_VERSION"
 ghcup set cabal "$CABAL_VERSION"
 ghcup install stack "$STACK_VERSION"
 ghcup set stack "$STACK_VERSION"
+ghcup install hls "$HLS_VERSION"
+ghcup set hls "$HLS_VERSION"
 cabal update
 
 install_tool alex "$ALEX_VERSION" "$ALEX_CHECKSUM"
