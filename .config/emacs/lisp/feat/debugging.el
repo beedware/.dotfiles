@@ -17,6 +17,7 @@
          ("C-c d q" . dape-quit))
   :custom
   (dape-buffer-window-arrangement 'right)
+  (dape-inlay-hints nil)
   :config
   (setq window-sides-vertical t)
   (add-hook 'dape-start-hook (lambda () (save-some-buffers t t))))
