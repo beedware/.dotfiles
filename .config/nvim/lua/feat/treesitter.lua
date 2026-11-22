@@ -1,7 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  cmd = { "TSInstall", "TSInstallAll", "TSUpdate", "TSUninstall", "TSLog" },
   build = ":TSUpdate",
+  lazy = false,
   init = function()
     vim.api.nvim_create_autocmd("FileType", {
       group = vim.api.nvim_create_augroup("TreesitterFileTypeStart", { clear = true }),
