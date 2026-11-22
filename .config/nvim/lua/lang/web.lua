@@ -15,7 +15,6 @@ require("tools").mason.add {
   "svelte-language-server",
   "js-debug-adapter",
   "firefox-debug-adapter",
-  "prettierd",
   "json-lsp",
 }
 
