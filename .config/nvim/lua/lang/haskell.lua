@@ -33,7 +33,7 @@ vim.g.haskell_tools = {
       map("<leader>cL", function()
         refresh_codelens(bufnr)
       end, "Refresh code lenses")
-      map("<leader>hs", function(query)
+      map("<leader>ho", function(query)
         query = query or ""
         query = query ~= "" and query or vim.fn.expand "<cword>"
         query = query ~= "" and query or vim.fn.input "Hoogle: "
