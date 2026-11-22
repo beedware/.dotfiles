@@ -9,6 +9,12 @@ return {
     keymaps = {
       ["<leader>v"] = { "actions.select", opts = { vertical = true } },
       ["<leader>s"] = { "actions.select", opts = { horizontal = true } },
+      ["<leader>ff"] = {
+        callback = function()
+          require("fzf-lua").files { cwd = require("oil").get_current_dir() }
+        end,
+        desc = "Find files in the current directory",
+      },
     },
   },
 }

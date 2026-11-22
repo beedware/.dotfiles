@@ -3,7 +3,6 @@ local M = {
   mason = { packages = {} },
   treesitter = { parsers = {} },
   quality = { formatters_by_ft = { ["_"] = { "trim_whitespace" } }, linters_by_ft = {} },
-  documentation = { configs = {} },
   debugging = { configurations = {} },
 }
 
@@ -28,12 +27,6 @@ end
 function M.quality.linters(items)
   for ft, linters in pairs(items) do
     M.quality.linters_by_ft[ft] = linters
-  end
-end
-
-function M.documentation.languages(items)
-  for language, config in pairs(items) do
-    M.documentation.configs[language] = config
   end
 end
 

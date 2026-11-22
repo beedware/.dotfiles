@@ -6,9 +6,16 @@ return {
     vim.api.nvim_create_autocmd("FileType", {
       group = vim.api.nvim_create_augroup("TreesitterFileTypeStart", { clear = true }),
       callback = function(args)
-        if not vim.b[args.buf].bigfile then
-          pcall(vim.treesitter.start)
+        if vim.b[args.buf].bigfile then
+          vim.treesitter.stop(args.buf)
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(args.buf) then
+              vim.bo[args.buf].syntax = "OFF"
+            end
+          end)
+          return
         end
+        pcall(vim.treesitter.start, args.buf)
       end,
     })
   end,

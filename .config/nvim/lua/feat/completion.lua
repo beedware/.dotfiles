@@ -3,35 +3,8 @@ return {
   event = { "InsertEnter", "CmdlineEnter" },
   cmd = "BlinkCmp",
   dependencies = { "saghen/blink.lib", "ribru17/blink-cmp-spell", vim.deepcopy(require "deps.snippets") },
-  build = function(plugin)
-    local task = assert(require("lazy.async").running())
-    ---@cast task LazyTask
-    ---@diagnostic disable-next-line: missing-fields
-    assert(task:spawn("cargo", {
-      args = { "build", "--locked", "--release" },
-      cwd = plugin.dir,
-      timeout = 30 * 60 * 1000,
-      on_exit = function(ok, output)
-        if not ok then
-          task:error(output)
-        end
-      end,
-    }), "Blink's Rust build failed; see Cargo output above")
-
-    local native = require "blink.lib.native"
-    local extension = native.platform().lib_extension
-    local target = vim.env.CARGO_TARGET_DIR or (plugin.dir .. "/target")
-    if not vim.startswith(target, "/") then
-      target = plugin.dir .. "/" .. target
-    end
-    local commit = native.git_commit(plugin.dir)
-    native.mv(
-      target .. "/release/libblink_cmp_fuzzy" .. extension,
-      native.library_path(plugin.dir, "blink_cmp_fuzzy", commit)
-    )
-    vim.opt.rtp:append(plugin.dir)
-    native.load("blink_cmp_fuzzy", commit)
-    coroutine.yield("Rust matcher built and verified")
+  build = function()
+    require("blink.cmp").build():wait(30 * 60 * 1000)
   end,
   opts = {
     snippets = { preset = "luasnip" },
@@ -40,9 +13,6 @@ return {
         ["<Tab>"] = { "show", "select_next" },
       },
       completion = {
-        menu = {
-          auto_show = false,
-        },
         list = {
           selection = {
             preselect = false,
@@ -50,8 +20,13 @@ return {
         },
       },
     },
+    term = {
+      keymap = {
+        ["<C-x><C-o>"] = false,
+        ["<C-x><C-s>"] = false,
+      },
+    },
     appearance = {
-      nerd_font_variant = "mono",
       kind_icons = {
         Text = "[T]",
         Method = "[M]",
@@ -104,13 +79,17 @@ return {
       ["<C-f>"] = { "scroll_documentation_down", "fallback" },
       ["<C-j>"] = { "snippet_forward", "fallback" },
       ["<C-k>"] = { "snippet_backward", "fallback" },
+      ["<C-x><C-o>"] = { "show" },
+      ["<C-x><C-s>"] = {
+        function(cmp)
+          return cmp.show { providers = { "spell" } }
+        end,
+      },
     },
     completion = {
-      ghost_text = { enabled = false },
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 200,
-        window = { border = "none" },
       },
       list = {
         selection = {
@@ -121,15 +100,5 @@ return {
         auto_show = false,
       },
     },
-    signature = { enabled = false },
   },
-  config = function(_, opts)
-    require("blink.cmp").setup(opts)
-    vim.keymap.set("i", "<C-x><C-o>", function()
-      require("blink.cmp").show()
-    end, { desc = "Show completion menu" })
-    vim.keymap.set("i", "<C-x><C-s>", function()
-      require("blink.cmp").show { providers = { "spell" } }
-    end, { desc = "Show spelling completions" })
-  end,
 }

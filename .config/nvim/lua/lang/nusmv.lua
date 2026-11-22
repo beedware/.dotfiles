@@ -1,4 +1,3 @@
-vim.g.nusmv = { executable = "NuSMV", args = {}, reveal_output = "always" }
 local config = vim.tbl_extend("force", {
   executable = "NuSMV",
   args = {},

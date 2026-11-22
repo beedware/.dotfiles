@@ -33,63 +33,23 @@ return {
         "DapViewShow",
         "DapViewNavigate",
       },
-      config = function()
-        require "dap"
-        require("dap-view").setup {
-          winbar = {
-            sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
-            default_section = "scopes",
-            controls = { enabled = true },
-          },
-          windows = { terminal = { size = 0.40, position = "right", hide = { "delve" } } },
-          auto_toggle = true,
-        }
-      end,
+      opts = {
+        winbar = {
+          default_section = "scopes",
+          controls = { enabled = true },
+        },
+        windows = { terminal = { size = 0.40, position = "right", hide = { "delve" } } },
+        auto_toggle = true,
+      },
     },
   },
   keys = {
-    {
-      "<Right>",
-      function()
-        require("dap").step_into()
-      end,
-      desc = "Debug: step into",
-    },
-    {
-      "<Down>",
-      function()
-        require("dap").step_over()
-      end,
-      desc = "Debug: step over",
-    },
-    {
-      "<Left>",
-      function()
-        require("dap").step_out()
-      end,
-      desc = "Debug: step out",
-    },
-    {
-      "<Up>",
-      function()
-        require("dap").restart_frame()
-      end,
-      desc = "Debug: restart frame",
-    },
-    {
-      "<leader>db",
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      desc = "Debug: toggle breakpoint",
-    },
-    {
-      "<leader>dr",
-      function()
-        require("dap").continue()
-      end,
-      desc = "Debug: run or continue",
-    },
+    { "<Right>", "<cmd>DapStepInto<cr>", desc = "Debug: step into" },
+    { "<Down>", "<cmd>DapStepOver<cr>", desc = "Debug: step over" },
+    { "<Left>", "<cmd>DapStepOut<cr>", desc = "Debug: step out" },
+    { "<Up>", "<cmd>DapRestartFrame<cr>", desc = "Debug: restart frame" },
+    { "<leader>db", "<cmd>DapToggleBreakpoint<cr>", desc = "Debug: toggle breakpoint" },
+    { "<leader>dr", "<cmd>DapContinue<cr>", desc = "Debug: run or continue" },
     {
       "<leader>dR",
       function()
@@ -104,37 +64,10 @@ return {
       end,
       desc = "Debug: run last configuration",
     },
-    {
-      "<leader>dt",
-      function()
-        require("dap").terminate()
-      end,
-      desc = "Debug: terminate session",
-    },
-    {
-      "<leader>dw",
-      function()
-        require "dap"
-        require("dap-view").add_expr()
-      end,
-      desc = "Debug: add watch expression",
-    },
-    {
-      "<leader>dk",
-      function()
-        require "dap"
-        require("dap-view").hover()
-      end,
-      desc = "Debug: hover value",
-    },
-    {
-      "<leader>dv",
-      function()
-        require "dap"
-        require("dap-view").virtual_text_toggle()
-      end,
-      desc = "Debug: toggle virtual text",
-    },
+    { "<leader>dt", "<cmd>DapTerminate<cr>", desc = "Debug: terminate session" },
+    { "<leader>dw", "<cmd>DapViewWatch<cr>", desc = "Debug: add watch expression" },
+    { "<leader>dk", "<cmd>DapViewHover<cr>", desc = "Debug: hover value" },
+    { "<leader>dv", "<cmd>DapViewVirtualTextToggle<cr>", desc = "Debug: toggle virtual text" },
   },
   config = function()
     local dap = require "dap"

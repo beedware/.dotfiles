@@ -11,9 +11,6 @@ return {
           color_icons = false,
         },
         fzf_colors = true,
-        fzf_opts = {
-          ["--layout"] = "reverse",
-        },
         keymap = {
           fzf = {
             true,
@@ -26,15 +23,10 @@ return {
             ["ctrl-x"] = require("fzf-lua").actions.file_split,
           },
         },
-        winopts = function()
-          return {
-            split = ("botright %dnew"):format(14),
-            height = 14,
-            preview = {
-              hidden = true,
-            },
-          }
-        end,
+        winopts = {
+          split = "botright 14new",
+          preview = { hidden = true },
+        },
         files = {
           cwd_prompt = false,
         },
@@ -77,17 +69,18 @@ return {
         },
       }
     end,
+    keys = {
+      { "<leader>fa", "<cmd>FzfLua files<cr>", desc = "Find all files" },
+      { "<leader>fr", "<cmd>FzfLua oldfiles<cr>", desc = "Find recent files in current directory" },
+      { "<leader>ff", "<cmd>FzfLua files hidden=false<cr>", desc = "Find files" },
+      { "<leader>fw", "<cmd>FzfLua live_grep<cr>", desc = "Find in project" },
+      { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Find buffers" },
+      { "<leader>fh", "<cmd>FzfLua helptags<cr>", desc = "Find help tags" },
+      { "<leader>fk", "<cmd>FzfLua keymaps<cr>", desc = "Find keymaps" },
+      { "<leader>fm", "<cmd>FzfLua marks<cr>", desc = "Find marks" },
+      { "<leader>fz", "<cmd>FzfLua blines<cr>", desc = "Search current buffer" },
+    },
     init = function()
-      vim.keymap.set("n", "<leader>fa", "<cmd>FzfLua files<CR>", { desc = "Find all files" })
-      vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua oldfiles<CR>", { desc = "Find recent files in current directory" })
-      vim.keymap.set("n", "<leader>ff", "<cmd>FzfLua files hidden=false<CR>", { desc = "Find files" })
-      vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua live_grep<CR>", { desc = "Find in project" })
-      vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Find buffers" })
-      vim.keymap.set("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Find help tags" })
-      vim.keymap.set("n", "<leader>fk", "<cmd>FzfLua keymaps<CR>", { desc = "Find keymaps" })
-      vim.keymap.set("n", "<leader>fm", "<cmd>FzfLua marks<CR>", { desc = "Find marks" })
-      vim.keymap.set("n", "<leader>fz", "<cmd>FzfLua blines<CR>", { desc = "Search current buffer" })
-
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("LspAttachMappings", { clear = true }),
         callback = function(args)
@@ -108,21 +101,11 @@ return {
           end, { buffer = args.buf, desc = "Go to definition" })
         end,
       })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("OilFzfLocalFiles", { clear = true }),
-        pattern = "oil",
-        callback = function(args)
-          vim.keymap.set("n", "<leader>ff", function()
-            require("fzf-lua").files { cwd = require("oil").get_current_dir() or vim.fn.getcwd() }
-          end, { buffer = args.buf, desc = "Find files in the current directory" })
-        end,
-      })
     end,
   },
   {
     "stevearc/quicker.nvim",
-    event = { "BufReadPost quickfix", "FileType qf" },
+    ft = "qf",
     opts = {
       keys = {
         {

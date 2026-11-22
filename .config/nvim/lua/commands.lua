@@ -26,7 +26,7 @@ vim.api.nvim_create_user_command("Setup", function()
     local packages = require("tools").mason.packages
     if #packages > 0 then
       -- Mason's headless installer streams output and waits for all packages.
-      vim.cmd("MasonInstall " .. table.concat(packages, " "))
+      vim.cmd.MasonInstall(packages)
     end
     print "[Setup] Setup complete"
   end, debug.traceback)

@@ -14,8 +14,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-vim.treesitter.language.register("prolog", "prolog")
-
 require("tools").lsp.enable { "prolog_ls" }
 
 require("tools").treesitter.add { "prolog" }

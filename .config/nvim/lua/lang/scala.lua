@@ -9,6 +9,7 @@ return {
   "scalameta/nvim-metals",
   ft = { "scala", "sbt" },
   config = function()
+    vim.opt_global.shortmess:remove "F"
     local config = require("metals").bare_config()
     config.init_options.statusBarProvider = "off"
     vim.api.nvim_create_autocmd("FileType", {

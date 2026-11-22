@@ -51,7 +51,6 @@ function M.setup(specs)
         list = { "-", ">", "*", "+" },
       },
     },
-    performance = { rtp = { disabled_plugins = { "netrwPlugin" } } },
   })
 end
 
