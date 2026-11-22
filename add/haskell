@@ -63,6 +63,7 @@ install_tool() {
     name="$1"
     version="$2"
     checksum="$3"
+    shift 3
     tarball_name="$name-$version.tar.gz"
     source_dir="$TMP_DIR/$name-$version"
     tarball="$TMP_DIR/$tarball_name"
@@ -78,7 +79,8 @@ install_tool() {
             --builddir="$TMP_DIR/build-$name" \
             --installdir="$CABAL_BIN_DIR" \
             --install-method=copy \
-            --overwrite-policy=always
+            --overwrite-policy=always \
+            "$@"
     )
 }
 
@@ -105,7 +107,7 @@ cabal update
 install_tool alex "$ALEX_VERSION" "$ALEX_CHECKSUM"
 install_tool hoogle "$HOOGLE_VERSION" "$HOOGLE_CHECKSUM"
 install_tool fast-tags "$FAST_TAGS_VERSION" "$FAST_TAGS_CHECKSUM"
-install_tool haskell-debugger "$HASKELL_DEBUGGER_VERSION" "$HASKELL_DEBUGGER_CHECKSUM"
+install_tool haskell-debugger "$HASKELL_DEBUGGER_VERSION" "$HASKELL_DEBUGGER_CHECKSUM" --enable-executable-dynamic
 
 remove_link alex
 remove_link fast-tags
