@@ -28,7 +28,7 @@ require("tools").debugging.configure(function()
 end)
 
 return {
-  "mfussenegger/nvim-dap",
+  url = "https://codeberg.org/mfussenegger/nvim-dap",
   optional = true,
   dependencies = { { url = "https://codeberg.org/mfussenegger/nvim-dap-python" } },
 }

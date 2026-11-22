@@ -1,7 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
-  -- Blink registers its completion capabilities before any server starts.
   dependencies = { "saghen/blink.cmp" },
   config = function()
     vim.diagnostic.config {

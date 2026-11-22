@@ -42,7 +42,7 @@ return {
     end,
   },
   {
-    "mfussenegger/nvim-lint",
+    url = "https://codeberg.org/mfussenegger/nvim-lint",
     config = function()
       require("lint").linters_by_ft = require("tools").quality.linters_by_ft
     end,

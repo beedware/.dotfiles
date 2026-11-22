@@ -1,5 +1,5 @@
 return {
-  "mfussenegger/nvim-dap",
+  url = "https://codeberg.org/mfussenegger/nvim-dap",
   cmd = {
     "DapSetLogLevel",
     "DapShowLog",
@@ -20,6 +20,7 @@ return {
   dependencies = {
     {
       "igorlfs/nvim-dap-view",
+      version = "1.*",
       cmd = {
         "DapViewOpen",
         "DapViewClose",
@@ -41,6 +42,14 @@ return {
         windows = { terminal = { size = 0.40, position = "right", hide = { "delve" } } },
         auto_toggle = true,
       },
+      config = function(_, opts)
+        local exceptions = require "dap-view.exceptions"
+        local sync_filters = exceptions.update_exception_breakpoints_filters
+        rawset(exceptions, "update_exception_breakpoints_filters", function()
+          coroutine.wrap(sync_filters)()
+        end)
+        require("dap-view").setup(opts)
+      end,
     },
   },
   keys = {
