@@ -137,9 +137,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 return {
   "MrcJkb/haskell-tools.nvim",
   version = "v11.0.0",
-  ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
+  lazy = false,
   dependencies = { { "mfussenegger/nvim-dap", optional = true } },
-  config = function()
+  init = function()
     local config = vim.g.haskell_tools or {}
     config.dap = config.dap or {}
     config.dap.auto_discover = require("lazy.core.config").plugins["nvim-dap"] ~= nil
