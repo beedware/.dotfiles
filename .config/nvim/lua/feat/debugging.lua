@@ -42,19 +42,6 @@ return {
         windows = { terminal = { size = 0.40, position = "right", hide = { "delve" } } },
         auto_toggle = true,
       },
-      config = function(_, opts)
-        local dap = require "dap"
-        local exceptions = require "dap-view.exceptions"
-        local sync_filters = exceptions.update_exception_breakpoints_filters
-        rawset(exceptions, "update_exception_breakpoints_filters", function()
-          local session = dap.session()
-          if session and session.config.type == "haskell-debugger" and not session.stopped_thread_id then
-            return
-          end
-          coroutine.wrap(sync_filters)()
-        end)
-        require("dap-view").setup(opts)
-      end,
     },
   },
   keys = {
