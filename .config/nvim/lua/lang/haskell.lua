@@ -1,22 +1,9 @@
 local quality = require("tools").quality
 
-local function refresh_codelens(bufnr)
-  if not vim.api.nvim_buf_is_valid(bufnr) then
-    return
-  end
-
-  vim.api.nvim_buf_call(bufnr, function()
-    vim.lsp.codelens.enable(true, { bufnr = bufnr })
-  end)
-
-  vim.defer_fn(function()
-    if vim.api.nvim_buf_is_valid(bufnr) then
-      vim.cmd "redraw"
-    end
-  end, 100)
-end
-
 vim.g.haskell_tools = {
+  tools = {
+    codeLens = { autoRefresh = false },
+  },
   hls = {
     on_attach = function(_, bufnr, ht)
       local function map(lhs, rhs, desc)
@@ -30,9 +17,6 @@ vim.g.haskell_tools = {
       end)
 
       map("<leader>cl", vim.lsp.codelens.run, "Run code lens")
-      map("<leader>cL", function()
-        refresh_codelens(bufnr)
-      end, "Refresh code lenses")
       map("<leader>hs", ht.hoogle.hoogle_signature, "Hoogle search for type signature")
       map("<leader>ha", ht.lsp.buf_eval_all, "Haskell eval all")
       map("<leader>hh", function()
@@ -44,9 +28,6 @@ vim.g.haskell_tools = {
       end, "Haskell REPL file")
       map("<leader>rq", ht.repl.quit, "Haskell REPL quit")
 
-      vim.defer_fn(function()
-        refresh_codelens(bufnr)
-      end, 250)
     end,
   },
   dap = {
@@ -59,14 +40,6 @@ require("tools").treesitter.add { "haskell" }
 
 quality.formatters { haskell = { "fourmolu" } }
 quality.linters { haskell = { "hlint" } }
-
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-  group = vim.api.nvim_create_augroup("HaskellCodeLensRefresh", { clear = true }),
-  pattern = { "*.hs", "*.lhs" },
-  callback = function(args)
-    refresh_codelens(args.buf)
-  end,
-})
 
 return {
   "MrcJkb/haskell-tools.nvim",
