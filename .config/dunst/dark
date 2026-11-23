@@ -3,7 +3,7 @@
 [global]
     follow = mouse
     origin = bottom-left
-    offset = 0x0
+    offset = (0, 0)
 
 [urgency_low]
     background = "#000000"
