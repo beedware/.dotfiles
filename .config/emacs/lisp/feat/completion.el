@@ -1,23 +1,14 @@
 ;;; completion.el --- Minibuffer and in-buffer completion -*- lexical-binding: t; -*-
 
 (use-package vertico
-  :commands vertico-mode
+  :init
+  (vertico-mode 1)
   :custom
   (vertico-count 12))
 
 (use-package marginalia
-  :commands marginalia-mode)
-
-(defun conf/enable-minibuffer-completion (&rest _)
-  "Initialize completion before the first minibuffer is set up."
-  (vertico-mode 1)
-  (marginalia-mode 1)
-  (remove-hook 'pre-command-hook #'conf/enable-minibuffer-completion)
-  (advice-remove 'completing-read #'conf/enable-minibuffer-completion)
-  (advice-remove 'read-from-minibuffer #'conf/enable-minibuffer-completion))
-
-(add-hook 'pre-command-hook #'conf/enable-minibuffer-completion)
-(advice-add 'completing-read :before #'conf/enable-minibuffer-completion)
+  :init
+  (marginalia-mode 1))
 
 (use-package orderless
   :custom
@@ -62,8 +53,6 @@
   :config
   (corfu-popupinfo-mode 1))
 
-(defvar-local conf/eglot-capf-has-yasnippet nil)
-
 (use-package cape
   :bind ("C-c p" . cape-prefix-map)
   :init
@@ -81,14 +70,13 @@
                                                               #'cape-keyword)))))))))
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
-              (unless conf/eglot-capf-has-yasnippet
-                (setq-local completion-at-point-functions
-                            (mapcar (lambda (capf)
-                                      (if (eq capf t)
-                                          t
-                                        (cape-capf-super #'conf/yasnippet-capf capf)))
-                                    completion-at-point-functions))
-                (setq-local conf/eglot-capf-has-yasnippet t)))))
+              ;; The general Cape CAPF already includes snippets.
+              (setq-local completion-at-point-functions
+                          (mapcar (lambda (capf)
+                                    (if (eq capf 'eglot-completion-at-point)
+                                        (cape-capf-super #'conf/yasnippet-capf capf)
+                                      capf))
+                                  completion-at-point-functions)))))
 
 (provide 'feat/completion)
 ;;; completion.el ends here

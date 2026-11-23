@@ -9,7 +9,6 @@
 
 (use-package org
   :ensure nil
-  :mode ("\\.org\\'" . org-mode)
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c l" . org-store-link))
