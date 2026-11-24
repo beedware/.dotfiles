@@ -3,6 +3,9 @@ return {
     "ibhagwan/fzf-lua",
     cmd = "FzfLua",
     opts = function()
+      local laststatus
+      local showmode
+      local ruler
       return {
         { "hide" },
         defaults = {
@@ -26,6 +29,32 @@ return {
         winopts = {
           split = "botright 14new",
           preview = { hidden = true },
+          on_create = function()
+            laststatus = laststatus or vim.o.laststatus
+            if showmode == nil then
+              showmode = vim.o.showmode
+            end
+            if ruler == nil then
+              ruler = vim.o.ruler
+            end
+            vim.o.laststatus = 0
+            vim.o.showmode = false
+            vim.o.ruler = false
+          end,
+          on_close = function()
+            if laststatus ~= nil then
+              vim.o.laststatus = laststatus
+              laststatus = nil
+            end
+            if showmode ~= nil then
+              vim.o.showmode = showmode
+              showmode = nil
+            end
+            if ruler ~= nil then
+              vim.o.ruler = ruler
+              ruler = nil
+            end
+          end,
         },
         files = {
           cwd_prompt = false,
