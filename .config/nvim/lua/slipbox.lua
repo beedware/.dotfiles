@@ -198,17 +198,17 @@ function M.setup()
           return
         end
 
-        local buf, win = api.nvim_get_current_buf(), api.nvim_get_current_win()
+        local target_buf, win = api.nvim_get_current_buf(), api.nvim_get_current_win()
         local row, col = unpack(api.nvim_win_get_cursor(win))
-        col = math.min(col + 1, #api.nvim_buf_get_lines(buf, row - 1, row, false)[1])
+        col = math.min(col + 1, #api.nvim_buf_get_lines(target_buf, row - 1, row, false)[1])
 
         local function insert(note)
-          if not note or not api.nvim_buf_is_valid(buf) then
+          if not note or not api.nvim_buf_is_valid(target_buf) then
             return
           end
           local text = "- " .. note.id
-          api.nvim_buf_set_text(buf, row - 1, col, row - 1, col, { text })
-          if api.nvim_win_is_valid(win) and api.nvim_win_get_buf(win) == buf then
+          api.nvim_buf_set_text(target_buf, row - 1, col, row - 1, col, { text })
+          if api.nvim_win_is_valid(win) and api.nvim_win_get_buf(win) == target_buf then
             api.nvim_win_set_cursor(win, { row, col + #text - 1 })
           end
         end
