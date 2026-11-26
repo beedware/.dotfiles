@@ -33,7 +33,7 @@ vim.api.nvim_create_user_command("Setup", function()
 
   if not ok then
     if headless then
-      vim.api.nvim_err_writeln(err)
+      vim.api.nvim_echo({ { err } }, true, { err = true })
       vim.cmd "cquit 1"
     else
       error(err)
