@@ -7,3 +7,7 @@ export FZF_DEFAULT_OPTS=" \
 --color=border:#a6a6a6,label:#595959"
 
 tmux set-environment -g FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS" 2>/dev/null
+
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat --theme=Light -p'
+fi
